@@ -6,15 +6,15 @@ Port all agents, skills, and commands from `psn-plugin` into `personality-plugin
 
 - **personality-plugin** has: 2 agents (`core.md`, `memory-curator.md`), 5 commands, 3 skills, 1 prompt, hooks, `.mcp.json`
 - **psn-plugin** has: 18 agents, 6 skills (+ 27 code sub-skills), 11 commands (+ 26 CF commands + 8 plugin commands), 1 prompt
-- MCP servers: `core` (psn-mcp) and `speech` (psn-tts) — both from the personality gem
+- MCP servers: `core`, `indexer`, and `local` — all via psn-mcp — from the personality gem
 - Plugin name stays `psn`, tool prefix stays `mcp__plugin_psn_*`
 
 ## Constraints
 
 - Keep `psn` namespace everywhere (plugin name, skill prefixes, directory names)
-- Agents reference MCP tools as `mcp__plugin_psn_core__*` and `mcp__plugin_psn_speech__*`
+- Agents reference MCP tools as `mcp__plugin_psn_core__*`, `mcp__plugin_psn_indexer__*`, and `mcp__plugin_psn_local__*`
 - Skills use `Skill(skill: "psn:...")` naming
-- The personality gem's MCP server exposes: memory (5 tools), index (5 tools), cart (3 tools), resource_read (1 tool) via `core` server, and speak/stop/voices/current/download/test via `speech` server
+- The personality gem's MCP server exposes: memory (5 tools), cart (3 tools), resource_read (1 tool) via `core` server, index (5 tools) via `indexer` server, and speak/stop/voices/current/download/test + voice tools via `local` server
 
 ## MCP Tool Reference (personality gem)
 
@@ -35,13 +35,13 @@ mcp__plugin_psn_core__cart_use
 mcp__plugin_psn_core__cart_create
 mcp__plugin_psn_core__resource_read
 
-# Speech server (psn-tts)
-mcp__plugin_psn_speech__speak
-mcp__plugin_psn_speech__stop
-mcp__plugin_psn_speech__voices
-mcp__plugin_psn_speech__current
-mcp__plugin_psn_speech__download
-mcp__plugin_psn_speech__test
+# Local server (psn-mcp --mode local)
+mcp__plugin_psn_local__speak
+mcp__plugin_psn_local__stop
+mcp__plugin_psn_local__voices
+mcp__plugin_psn_local__current
+mcp__plugin_psn_local__download
+mcp__plugin_psn_local__test
 ```
 
 ---

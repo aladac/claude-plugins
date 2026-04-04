@@ -29,9 +29,7 @@ The following must be installed and accessible on your system:
 | Dependency | Purpose |
 |------------|---------|
 | `psn` | Core CLI (personality gem) |
-| `psn-mcp` | MCP server for memory + indexing |
-| `psn-tts` | MCP server for piper-tts |
-| `psn-voice` | MCP server for voice input pipeline |
+| `psn-mcp` | MCP server (core, indexer, local modes) |
 | `piper-tts` | Neural TTS engine |
 | Ollama | Local LLM for embeddings (nomic-embed-text) |
 

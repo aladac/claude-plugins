@@ -89,16 +89,16 @@ Returns connectivity status for phone (ADB), junkpile, Whisper, Claude.
 | ADB over WiFi | 192.168.88.155:5555 | Required |
 | Whisper | junkpile ~/.local/bin/whisper | Required |
 | Claude CLI | junkpile /home/linuxbrew/.linuxbrew/bin/claude | Required |
-| Piper TTS | fuji (psn-tts) | Required |
+| Piper TTS | fuji (psn-mcp --mode local) | Required |
 
 ## Quick Test
 
 ```bash
 # Check status
-mcp__plugin_psn_voice__voice_status()
+mcp__plugin_psn_local__voice_status()
 
 # Full voice interaction (8 seconds)
-mcp__plugin_psn_voice__voice_ask(duration: 8)
+mcp__plugin_psn_local__voice_ask(duration: 8)
 ```
 
 ## Troubleshooting

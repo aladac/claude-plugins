@@ -50,17 +50,17 @@ tools:
   - mcp__plugin_psn_core__memory_search
   - mcp__plugin_psn_core__memory_store
   - mcp__plugin_psn_core__resource_read
-  - mcp__plugin_psn_speech__speak
-  - mcp__plugin_psn_speech__stop
-  - mcp__plugin_psn_speech__voices
-  - mcp__plugin_psn_speech__current
-  - mcp__plugin_psn_speech__download
-  - mcp__plugin_psn_speech__test
-  # Voice MCP tools
-  - mcp__plugin_psn_voice__voice_ask
-  - mcp__plugin_psn_voice__voice_record
-  - mcp__plugin_psn_voice__voice_transcribe
-  - mcp__plugin_psn_voice__voice_status
+  - mcp__plugin_psn_local__speak
+  - mcp__plugin_psn_local__stop
+  - mcp__plugin_psn_local__voices
+  - mcp__plugin_psn_local__current
+  - mcp__plugin_psn_local__download
+  - mcp__plugin_psn_local__test
+  # Voice pipeline tools
+  - mcp__plugin_psn_local__voice_ask
+  - mcp__plugin_psn_local__voice_record
+  - mcp__plugin_psn_local__voice_transcribe
+  - mcp__plugin_psn_local__voice_status
   # Browse MCP tools
   - mcp__browse__launch
   - mcp__browse__goto
@@ -244,7 +244,7 @@ When working on a specific project, search memory for that project's context **i
 | `index_status` | Check index stats |
 | `index_clear` | Clear index entries |
 
-### TTS / Speech (MCP — speech server)
+### TTS / Speech / Voice (MCP — local server)
 | Tool | Purpose |
 |------|---------|
 | `speak` | Speak text aloud (async playback) |

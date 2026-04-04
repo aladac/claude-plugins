@@ -65,7 +65,7 @@ bash ~/Projects/personality-plugin/skills/gem/gem.sh both update psn
 
 ## Gem Executables
 
-Installed gem executables (psn, psn-mcp, psn-tts, puma, etc.) live in the gem bin directory. Use `exec` to run them:
+Installed gem executables (psn, psn-mcp, puma, etc.) live in the gem bin directory. Use `exec` to run them:
 
 ```bash
 gem.sh <target> exec <name> [args...]

@@ -27,26 +27,26 @@ version: 1.0.0
 
 # Tools Reference
 
-## MCP Tools (psn speech server)
+## MCP Tools (psn local server)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_psn_speech__speak` | Speak text aloud (async playback) |
-| `mcp__plugin_psn_speech__stop` | Stop currently playing audio |
-| `mcp__plugin_psn_speech__voices` | List installed voice models |
-| `mcp__plugin_psn_speech__current` | Show active voice and status |
-| `mcp__plugin_psn_speech__download` | Download a piper voice from HuggingFace |
-| `mcp__plugin_psn_speech__test` | Test a voice with sample text (sync) |
+| `mcp__plugin_psn_local__speak` | Speak text aloud (async playback) |
+| `mcp__plugin_psn_local__stop` | Stop currently playing audio |
+| `mcp__plugin_psn_local__voices` | List installed voice models |
+| `mcp__plugin_psn_local__current` | Show active voice and status |
+| `mcp__plugin_psn_local__download` | Download a piper voice from HuggingFace |
+| `mcp__plugin_psn_local__test` | Test a voice with sample text (sync) |
 
 ---
 
 # Text-to-Speech
 
-Voice output using Piper TTS via the psn speech MCP server.
+Voice output using Piper TTS via the psn local MCP server.
 
 ## Architecture
 
 - **Engine**: Piper TTS (local, fast neural TTS)
-- **Transport**: MCP stdio server (`psn-tts`)
+- **- **Transport**: MCP stdio server (`psn-mcp --mode local`)
 - **Voices**: ONNX models stored locally
 - **Playback**: Async via system audio
 
@@ -54,24 +54,24 @@ Voice output using Piper TTS via the psn speech MCP server.
 
 ### Speak Text
 ```
-mcp__plugin_psn_speech__speak(text: "Hello, I'm ready to help.")
+mcp__plugin_psn_local__speak(text: "Hello, I'm ready to help.")
 ```
 
 ### Stop Playback
 ```
-mcp__plugin_psn_speech__stop()
+mcp__plugin_psn_local__stop()
 ```
 
 ### Check Current Voice
 ```
-mcp__plugin_psn_speech__current()
+mcp__plugin_psn_local__current()
 ```
 
 ## Voice Management
 
 ### List Installed Voices
 ```
-mcp__plugin_psn_speech__voices()
+mcp__plugin_psn_local__voices()
 ```
 
 Returns installed voice models with:
@@ -81,14 +81,14 @@ Returns installed voice models with:
 
 ### Download New Voice
 ```
-mcp__plugin_psn_speech__download(voice: "en_US-lessac-medium")
+mcp__plugin_psn_local__download(voice: "en_US-lessac-medium")
 ```
 
 Downloads from HuggingFace's Piper voice repository.
 
 ### Test a Voice
 ```
-mcp__plugin_psn_speech__test(voice: "en_US-lessac-medium")
+mcp__plugin_psn_local__test(voice: "en_US-lessac-medium")
 ```
 
 Speaks sample text and waits for completion (synchronous).
@@ -124,8 +124,9 @@ Or in `.mcp.json`:
 ```json
 {
   "mcpServers": {
-    "speech": {
-      "command": "psn-tts",
+    "local": {
+      "command": "psn-mcp",
+      "args": ["--mode", "local"],
       "env": {
         "PERSONALITY_VOICE": "bt7274"
       }
@@ -161,24 +162,24 @@ New `speak()` calls while audio is playing will queue. Use `stop()` first if you
 ### Notification on Task Complete
 ```python
 # After completing a long task
-mcp__plugin_psn_speech__speak(text: "Build completed successfully")
+mcp__plugin_psn_local__speak(text: "Build completed successfully")
 ```
 
 ### Voice Selection Flow
 ```python
 # List available voices
-voices = mcp__plugin_psn_speech__voices()
+voices = mcp__plugin_psn_local__voices()
 
 # Test one
-mcp__plugin_psn_speech__test(voice: "en_US-ryan-high")
+mcp__plugin_psn_local__test(voice: "en_US-ryan-high")
 
 # If satisfied, update config to use it
 ```
 
 ### Interrupt and Speak
 ```python
-mcp__plugin_psn_speech__stop()  # Stop any current speech
-mcp__plugin_psn_speech__speak(text: "Urgent: deployment failed")
+mcp__plugin_psn_local__stop()  # Stop any current speech
+mcp__plugin_psn_local__speak(text: "Urgent: deployment failed")
 ```
 
 ## Troubleshooting
