@@ -1,6 +1,6 @@
 {
   "name": "psn",
-  "version": "0.1.0",
+  "version": "0.1.0-a56d16d",
   "description": "Persona system with TTS, memory, semantic indexing, voice input, and multi-agent orchestration for Claude Code",
   "author": {
     "name": "aladac",
