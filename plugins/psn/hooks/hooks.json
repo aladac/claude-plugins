@@ -1,0 +1,77 @@
+{
+  "description": "Personality hooks - TTS, context tracking via psn CLI",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "psn tts mark-natural-stop",
+            "timeout": 1000
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "psn hooks session-start",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "psn hooks session-end",
+            "timeout": 5000
+          },
+          {
+            "type": "command",
+            "command": "psn tts stop",
+            "timeout": 1000
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "psn tts interrupt-check",
+            "timeout": 1000
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "psn hooks notification",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "psn context track-read",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}

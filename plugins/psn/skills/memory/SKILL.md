@@ -1,0 +1,113 @@
+---
+name: Memory Patterns
+description: |
+  This skill should be used when working with persistent memory, storing information for later recall, or building context across sessions. Triggers on questions about remembering, recalling, storing preferences, or session management.
+
+  <example>
+  Context: User wants to store a preference
+  user: "Remember that I prefer 2-space indentation"
+  </example>
+
+  <example>
+  Context: User wants to recall past context
+  user: "What do you remember about my coding style?"
+  </example>
+version: 1.0.0
+---
+
+# Tools Reference
+
+## MCP Tools (psn core server)
+| Tool | Purpose |
+|------|---------|
+| `mcp__plugin_psn_core__memory_store` | Store a memory with subject and content |
+| `mcp__plugin_psn_core__memory_recall` | Semantic search for memories |
+| `mcp__plugin_psn_core__memory_search` | Search by subject pattern |
+| `mcp__plugin_psn_core__memory_forget` | Delete a memory by ID |
+| `mcp__plugin_psn_core__memory_list` | List all memory subjects |
+
+## Related Commands
+| Command | Purpose |
+|---------|---------|
+| `/memory:store` | Store new memory |
+| `/memory:recall` | Recall memories |
+| `/memory:search` | Search by subject |
+
+## Related Agents
+- `psn:memory-curator` - Memory cleanup and organization
+
+---
+
+# Memory Patterns
+
+Guidance for effective use of the personality memory system.
+
+## Memory Architecture
+
+The memory system uses:
+- **Embeddings**: nomic-embed-text via Ollama (local)
+- **Storage**: SQLite + sqlite-vec at `~/.local/share/personality/main.db`
+- **Search**: Vector distance via sqlite-vec virtual tables
+- **CLI**: `psn memory store/recall/search/forget/list`
+- **MCP server**: `psn-mcp` (stdio transport)
+
+## Subject Naming Conventions
+
+Use hierarchical dot notation:
+
+```
+user.preferences.{category}     # User preferences
+user.workflows.{name}           # User workflow patterns
+project.{name}.{aspect}         # Project-specific info
+session.{name}                  # Saved sessions
+tools.{name}.{aspect}           # Tool usage patterns
+code.patterns.{language}        # Code patterns learned
+```
+
+## When to Store
+
+Store automatically when:
+- User expresses a preference ("I prefer...", "Always use...", "Never...")
+- User corrects your behavior
+- A solution works well and might be reused
+- User explicitly asks to remember something
+
+## When to Recall
+
+Recall proactively when:
+- Starting work on a known project
+- User asks about past decisions
+- Applying learned preferences
+- Resuming a saved session
+
+## Memory Lifecycle
+
+1. **Store**: Capture with clear subject and concise content
+2. **Recall**: Search semantically, present relevant memories
+3. **Update**: Store new version with same subject to update
+4. **Forget**: Remove outdated or incorrect memories
+
+## Examples
+
+### Storing a Preference
+```
+Subject: user.preferences.commit_style
+Content: Uses conventional commits with scope, e.g., "feat(api): add endpoint"
+```
+
+### Storing a Project Pattern
+```
+Subject: project.my-api.architecture
+Content: Uses hexagonal architecture with ports/adapters in src/ports/ and src/adapters/
+```
+
+### Session Save/Restore
+```
+Subject: session.morning-work
+Content: {
+  "working_directory": "~/Projects/api",
+  "context": "Implementing pagination for /users endpoint",
+  "pending_tasks": ["Add tests", "Update docs"],
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```

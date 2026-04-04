@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "core": {
+      "command": "psn-mcp",
+      "args": ["--mode", "core"]
+    },
+    "indexer": {
+      "command": "psn-mcp",
+      "args": ["--mode", "indexer"],
+      "env": {
+        "OLLAMA_URL": "${OLLAMA_URL:-http://localhost:11434}"
+      }
+    },
+    "local": {
+      "command": "psn-mcp",
+      "args": ["--mode", "local"],
+      "env": {
+        "PERSONALITY_VOICE": "bt7274"
+      }
+    }
+  }
+}

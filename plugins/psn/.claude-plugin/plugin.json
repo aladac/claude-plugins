@@ -1,0 +1,21 @@
+{
+  "name": "psn",
+  "version": "0.1.0",
+  "description": "Persona system with TTS, memory, semantic indexing, voice input, and multi-agent orchestration for Claude Code",
+  "author": {
+    "name": "aladac",
+    "email": "adam@saiden.dev"
+  },
+  "repository": "https://github.com/aladac/personality-plugin",
+  "license": "MIT",
+  "keywords": [
+    "tts",
+    "persona",
+    "memory",
+    "voice",
+    "agents",
+    "indexer",
+    "piper",
+    "session"
+  ]
+}

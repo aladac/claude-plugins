@@ -1,0 +1,19 @@
+{
+  "name": "aladac",
+  "description": "Claude Code plugins by aladac",
+  "owner": {
+    "name": "aladac",
+    "url": "https://github.com/aladac"
+  },
+  "plugins": [
+    {
+      "name": "psn",
+      "description": "Persona system with TTS, memory, semantic indexing, voice input, and multi-agent orchestration",
+      "source": "./plugins/psn",
+      "version": "0.1.0",
+      "author": {
+        "name": "aladac"
+      }
+    }
+  ]
+}
