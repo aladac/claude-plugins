@@ -1,0 +1,63 @@
+# personality-plugin — PSN Claude Code plugin
+# Version tracks personality gem version
+
+default:
+    @just --list
+
+# Hash bump — sync version from personality gem with hash suffix
+bump:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    GEM_VERSION=$(grep 'VERSION' ~/Projects/personality/lib/personality/version.rb | sed -E 's/.*"([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+    HASH=$(git rev-parse --short HEAD)
+    NEW="${GEM_VERSION}-${HASH}"
+    python3 -c "
+    import json
+    with open('.claude-plugin/plugin.json', 'r') as f: d = json.load(f)
+    d['version'] = '${NEW}'
+    with open('.claude-plugin/plugin.json', 'w') as f: json.dump(d, f, indent=2); f.write('\n')
+    "
+    echo "Version: ${NEW}"
+
+# Patch bump — sync with personality gem patch version
+bump-patch:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd "{{justfile_directory()}}"
+    GEM_VERSION=$(grep 'VERSION' ~/Projects/personality/lib/personality/version.rb | sed -E 's/.*"([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+    python3 -c "
+    import json
+    with open('.claude-plugin/plugin.json', 'r') as f: d = json.load(f)
+    d['version'] = '${GEM_VERSION}'
+    with open('.claude-plugin/plugin.json', 'w') as f: json.dump(d, f, indent=2); f.write('\n')
+    "
+    git add .claude-plugin/plugin.json
+    git commit -m "Bump version to ${GEM_VERSION}"
+    git tag "v${GEM_VERSION}"
+    echo "Tagged v${GEM_VERSION}"
+
+# Minor bump — sync with personality gem
+bump-minor: bump-patch
+
+# Major bump — sync with personality gem
+bump-major: bump-patch
+
+# Show current version
+version:
+    @python3 -c "import json; print(json.load(open('.claude-plugin/plugin.json'))['version'])"
+
+# Show gem version (source of truth)
+gem-version:
+    @grep 'VERSION' ~/Projects/personality/lib/personality/version.rb | sed -E 's/.*"(.+)".*/\1/'
+
+# Sync to junkpile
+sync:
+    #!/usr/bin/env bash
+    HOSTNAME=$(hostname)
+    if [ "$HOSTNAME" = "junkpile" ]; then
+      ssh f "cd ~/Projects/personality-plugin && git pull --rebase"
+    else
+      ssh j "cd ~/Projects/personality-plugin && git pull --rebase"
+    fi
+    echo "Synced"

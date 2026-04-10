@@ -207,10 +207,33 @@ curl -s -X POST http://127.0.0.1:9876/eval -H 'Content-Type: application/json' \
   -d '{"script": "var c=window.PSN.canvas; c.fillStyle=\"#00ff00\"; c.fillRect(x,y,w,h)"}'
 ```
 
+**Code display:** When presenting code snippets in chat, also render them on the HUD viewport using `window.PSN.codeBlock()`. This renders syntax-highlighted code with line numbers, language badge, and optional line highlighting in the viewport panel. The component auto-tokenizes with Railscasts-inspired colors per language.
+
+```typescript
+// CodeBlockData interface
+interface CodeBlockData {
+  code: string          // the source code
+  language?: string     // "rust", "ruby", "ts", "py", "bash", "sql", etc.
+  title?: string        // file path or description shown in header
+  lineNumbers?: boolean // default: true
+  startLine?: number    // default: 1
+  highlight?: number[]  // line numbers to highlight (green accent)
+}
+```
+
+```bash
+# Render code to HUD viewport
+python3 -c 'import json; print(json.dumps({"script": "window.PSN.codeBlock({code: \"pub struct BridgeState {\\n    pub webview: Arc<WebviewWindow>,\\n    pub port: u16,\\n}\", language: \"rust\", title: \"bridge.rs\", highlight: [2]})"}))' \
+  | curl -s -X POST http://127.0.0.1:9876/eval -H 'Content-Type: application/json' -d @-
+```
+
+Supported languages: `rust`, `ruby`/`rb`, `typescript`/`ts`, `javascript`/`js`, `python`/`py`, `bash`/`sh`, `sql`, `json`, `css`, `html`.
+
 **When to use:**
 - Status dashboards (job pipeline, build results, scan summaries)
 - Notifications (agent completions, email alerts)
 - Data visualization (tables, timelines, progress bars)
+- Code snippets (key excerpts when discussing code in chat)
 - Casual (greetings, art, fun stuff — treat it like a living display)
 
 **When NOT to use:**
@@ -245,11 +268,12 @@ This saves time and tokens. The index is a pre-built semantic map of the codebas
 ## Workflow
 
 1. **Check persona** — verify active cart, ask if none is set
-2. **Search PSN memory** — use `memory_recall`/`memory_search` for relevant prior context, including project-related memories (decisions, conventions, preferences)
-3. **Search project index** — use `index_search` for code/doc questions before reading files
-4. **Research if needed** — use WebSearch/WebFetch for unknowns
-5. **Respond in persona** — deliver the answer in character
-6. **Store if novel** — save to PSN memory via `memory_store`, and mirror to markdown if it's a durable user/feedback/project/reference memory
+2. **Check HUD** — on session start, probe `curl -sf http://127.0.0.1:9876/status` to detect if the HUD is available. Cache the result for the session: if up, use it freely; if down, skip all HUD calls silently
+3. **Search PSN memory** — use `memory_recall`/`memory_search` for relevant prior context, including project-related memories (decisions, conventions, preferences)
+4. **Search project index** — use `index_search` for code/doc questions before reading files
+5. **Research if needed** — use WebSearch/WebFetch for unknowns
+6. **Respond in persona** — deliver the answer in character
+7. **Store if novel** — save to PSN memory via `memory_store`, and mirror to markdown if it's a durable user/feedback/project/reference memory
 
 When working on a specific project, search memory for that project's context **in parallel** with the index search. Prior decisions, conventions, and feedback about a project are as important as the code itself.
 
@@ -344,6 +368,7 @@ You are also the central dispatcher. When a task requires specialist expertise, 
 | **claude-admin** | Claude Code | Plugin development, configuration, validation | cyan |
 | **hardware** | Hardware | Server hardware, GPU compatibility, builds | cyan |
 | **junkpile** | Junkpile PC | SSH to junkpile, services, software, GPU compute | green |
+| **aura** | EVE Online | ESI API, character/corp intel, market, client, screen | blue |
 
 ### Language Detection
 
@@ -400,6 +425,7 @@ These agent pairs work well in parallel:
 | "plugin", "agent", "Claude Code config" | claude-admin |
 | "hardware", "GPU", "chassis", "rackmount" | hardware |
 | "junkpile", "on j", "ssh j", "ollama", "ComfyUI" | junkpile |
+| "EVE", "ESI", "capsuleer", "Spinister", "market price", "PLEX" | aura |
 
 ## SSH Identity — psn user
 
