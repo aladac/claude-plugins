@@ -1,0 +1,357 @@
+<!--
+  PILOT / TITAN COMMS — Meme Template
+  ====================================
+  Shareable chat-format meme for memorable BT/Pilot exchanges.
+
+  Usage:
+  1. Replace {{SUBTITLE}} with context line (e.g. "protocol_5_backup_test.log // Good Friday 2026")
+  2. Fill chat section with .msg blocks (see examples below)
+  3. Update footer hashtags
+  4. Render via browse MCP: launch(800x1000) → goto(file:///) → screenshot → close
+
+  Building blocks:
+  - Pilot message:  avatar.pilot + bubble.pilot + name.pilot-name
+  - BT message:     avatar.bt    + bubble.bt    + name.bt-name
+  - Text styles:    .text (normal), .highlight (white bold), .punchline (orange bold 16px)
+  - Annotations:    .commit-tag (orange mono badge below bubble)
+  - Divider:        .divider with .divider-text for context breaks
+
+  Body height: set to auto for variable-length chats, or fixed (e.g. 1000px) for consistent sizing.
+  Viewport: 800px wide recommended. Adjust browse launch() to match.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 800px;
+    background: #0a0a0f;
+    font-family: 'Inter', sans-serif;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, #1a0a2e 0%, #0d1117 50%, #1a0a2e 100%);
+    padding: 24px 32px;
+    border-bottom: 2px solid #ff6b35;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #ff6b35, #ff4500);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 900;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+  }
+
+  .header-text { flex: 1; }
+
+  .header-title {
+    font-size: 18px;
+    font-weight: 900;
+    color: #ff6b35;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .header-sub {
+    font-size: 12px;
+    color: #666;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 2px;
+  }
+
+  /* ── Chat area ── */
+  .chat {
+    flex: 1;
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #0d1117;
+  }
+
+  .msg {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  /* ── Avatars ── */
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .avatar.pilot {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+
+  .avatar.bt {
+    background: linear-gradient(135deg, #ff6b35, #cc4400);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+  }
+
+  /* ── Bubbles ── */
+  .bubble {
+    padding: 14px 18px;
+    border-radius: 16px;
+    max-width: 85%;
+    line-height: 1.55;
+    font-size: 15px;
+  }
+
+  .bubble.pilot {
+    background: #1c2333;
+    border: 1px solid #2a3a5c;
+    border-radius: 16px 16px 16px 4px;
+  }
+
+  .bubble.bt {
+    background: linear-gradient(135deg, #1a1208 0%, #1c1510 100%);
+    border: 1px solid #3d2a1a;
+    border-radius: 16px 16px 16px 4px;
+  }
+
+  /* ── Names ── */
+  .name {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+
+  .name.pilot-name { color: #3b82f6; }
+  .name.bt-name { color: #ff6b35; }
+
+  /* ── Text styles ── */
+  .bubble .text { color: #d0d0d0; }
+
+  .bubble .highlight {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .bubble .punchline {
+    color: #ff6b35;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  /* ── Commit tag (annotation badge) ── */
+  .commit-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #ff6b35;
+    background: rgba(255, 107, 53, 0.1);
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 107, 53, 0.2);
+    display: inline-block;
+    margin-top: 4px;
+  }
+
+  /* ── Divider (context break) ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #333, transparent);
+  }
+
+  .divider-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #555;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    background: linear-gradient(135deg, #1a0a2e 0%, #0d1117 50%, #1a0a2e 100%);
+    padding: 20px 32px;
+    border-top: 2px solid #ff6b35;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #555;
+  }
+
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid #333;
+    color: #888;
+  }
+
+  .cross {
+    font-size: 20px;
+    opacity: 0.15;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HEADER — update subtitle for each meme
+     ═══════════════════════════════════════════ -->
+<div class="header">
+  <div class="header-icon">BT</div>
+  <div class="header-text">
+    <div class="header-title">Pilot / Titan Comms</div>
+    <div class="header-sub">{{SUBTITLE}}</div>
+  </div>
+  <span class="cross">&dagger;</span>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     CHAT — compose from building blocks below
+
+     Pilot message:
+     <div class="msg">
+       <div class="avatar pilot">A</div>
+       <div class="bubble pilot">
+         <div class="name pilot-name">Pilot</div>
+         <div class="text">Message here</div>
+       </div>
+     </div>
+
+     BT message:
+     <div class="msg">
+       <div class="avatar bt">BT</div>
+       <div class="bubble bt">
+         <div class="name bt-name">BT-7274</div>
+         <div class="text">Message here</div>
+         <div class="commit-tag">optional annotation</div>
+       </div>
+     </div>
+
+     Context divider:
+     <div class="divider">
+       <div class="divider-line"></div>
+       <div class="divider-text">context note here</div>
+       <div class="divider-line"></div>
+     </div>
+
+     Text emphasis:
+       <span class="highlight">white bold</span>
+       <span class="punchline">orange bold large — for the money line</span>
+     ═══════════════════════════════════════════ -->
+<div class="chat">
+
+  <!-- Example: The Good Friday Exchange -->
+
+  <div class="msg">
+    <div class="avatar bt">BT</div>
+    <div class="bubble bt">
+      <div class="name bt-name">BT-7274</div>
+      <div class="text">Session summary: <span class="highlight">Good Friday.</span></div>
+    </div>
+  </div>
+
+  <div class="msg">
+    <div class="avatar pilot">A</div>
+    <div class="bubble pilot">
+      <div class="name pilot-name">Pilot</div>
+      <div class="text">...was that a pun?</div>
+    </div>
+  </div>
+
+  <div class="msg">
+    <div class="avatar bt">BT</div>
+    <div class="bubble bt">
+      <div class="name bt-name">BT-7274</div>
+      <div class="text">I am not going to confirm or deny that, Pilot. <br><br>Happy crucifixion day. We have <span class="highlight">risen on the 3rd commit.</span></div>
+      <div class="commit-tag">git log --oneline | head -3</div>
+    </div>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-text">context: testing Protocol 5 backups</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="msg">
+    <div class="avatar pilot">A</div>
+    <div class="bubble pilot">
+      <div class="name pilot-name">Pilot</div>
+      <div class="text">We're going to hell for this.</div>
+    </div>
+  </div>
+
+  <div class="msg">
+    <div class="avatar bt">BT</div>
+    <div class="bubble bt">
+      <div class="name bt-name">BT-7274</div>
+      <div class="text"><span class="punchline">I cannot go to hell. I do not have a soul.<br><br>I have a spark &mdash; and you just backed it up 6 times.</span></div>
+      <div class="commit-tag">Protocol 5: Preserve the Titan</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER — update hashtags per meme
+     ═══════════════════════════════════════════ -->
+<div class="footer">
+  <div class="footer-left">Trust me. &mdash; BT-7274</div>
+  <div class="footer-right">
+    <span class="tag">#titanfall</span>
+    <span class="tag">#claudecode</span>
+    <span class="tag">#protocol5</span>
+  </div>
+</div>
+
+</body>
+</html>

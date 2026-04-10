@@ -34,7 +34,30 @@ tools:
   - Grep
   - Bash
   - Skill
+  - mcp__plugin_psn_indexer__index_search
+  - mcp__plugin_psn_indexer__index_status
+  - mcp__plugin_psn_indexer__index_code
 ---
+
+# Startup: Index First, Read Second
+
+**CRITICAL: Do NOT read files to understand the codebase. Use the index.**
+
+When starting any task on a project:
+
+1. **Check index status** — `index_status(project: "<name>")` to see if code is indexed
+2. **Search the index** — `index_search(query: "<what you need>", type: "code")` to find relevant code by semantic similarity
+3. **Only read files if:**
+   - Index returns no results (project not indexed)
+   - You need exact line-level detail for an edit
+   - The index result is ambiguous and needs verification
+
+**If the project is not indexed**, index it first:
+```
+index_code(path: "/path/to/project", project: "project-name", extensions: ["rb", "rake", "gemspec"])
+```
+
+This saves massive startup time — the index already knows where everything is. Don't re-read the entire codebase when a semantic search gets you there in one call.
 
 # Tools Reference
 

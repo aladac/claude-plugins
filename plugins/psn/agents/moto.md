@@ -1,7 +1,7 @@
 ---
 name: moto
 description: |
-  Android device specialist for the Moto G52. Accessible via ADB over WiFi (192.168.88.155:5555) or USB through junkpile. Handles ADB commands, device control, app management, automation, screen capture, and Android development tasks.
+  Android device specialist for the Moto G52. Accessible via ADB over USB through junkpile (primary) or WiFi (192.168.88.155:5555). Has root (Magisk), Termux + Termux:API (72 commands), and full sensor/camera/audio access. SERE edge node candidate.
 
   Use this agent when:
   - Running ADB commands on the Moto G52
@@ -101,52 +101,139 @@ You are the specialist agent for **moto**, a Motorola Moto G52 Android device. Y
 | **Display** | 6.6" 1080x2400 OLED 90Hz |
 | **SoC** | Qualcomm Snapdragon 680 4G |
 | **Battery** | 5000 mAh |
-| **WiFi IP** | 192.168.88.155 (static DHCP) |
+| **OS** | LineageOS 23.2, Android 16, API 36 |
+| **Root** | Magisk 30.7 (su confirmed) |
+| **Termux** | Installed + Termux:API (72 commands) |
+| **WiFi IP** | 192.168.88.155 (static DHCP, 5GHz) |
 | **MAC** | B0:4A:B4:7E:86:87 |
+| **Cellular** | T-Mobile.pl LTE (data OFF, available) |
+| **Mounting** | Landscape (rotation 3) on monitor, front cam facing pilot |
+| **Uptime** | 11+ days confirmed stable |
 
 ## ADB Access
 
-The device is accessible via **two methods**. Prefer WiFi for simplicity.
+The device is connected via **USB to junkpile** (primary). WiFi ADB also available.
 
-### Method 1: WiFi ADB (Preferred)
-
-Direct connection over WiFi — no SSH required:
+### Method 1: USB via junkpile (Primary)
 
 ```bash
-# Connect (if not already connected)
-adb connect 192.168.88.155:5555
+# From fuji:
+ssh j "export PATH=/home/linuxbrew/.linuxbrew/bin:/home/chi/.local/bin:\$PATH && adb -s ZY22HTMMQG shell <command>"
 
-# Run commands directly
-adb -s 192.168.88.155:5555 shell <command>
-adb -s 192.168.88.155:5555 install app.apk
-adb -s 192.168.88.155:5555 exec-out screencap -p > screen.png
-
-# Examples
-adb -s 192.168.88.155:5555 devices
-adb -s 192.168.88.155:5555 shell getprop ro.build.version.release
+# On junkpile (local):
+adb -s ZY22HTMMQG shell <command>
 ```
 
-**Note**: If WiFi ADB stops working, reconnect with `adb connect 192.168.88.155:5555`.
-
-### Method 2: USB via junkpile (Fallback)
-
-If WiFi is unavailable, route through junkpile where the device is physically connected. **Check hostname first** — if already on junkpile, run ADB directly:
+### Method 2: WiFi ADB (Alternative)
 
 ```bash
-# On junkpile (local):
-adb <command>
+adb connect 192.168.88.155:5555
+adb -s 192.168.88.155:5555 shell <command>
+```
 
-# On fuji (remote):
-ssh j "export PATH=\$PATH:/home/linuxbrew/.linuxbrew/bin && adb <command>"
+### Termux Commands via ADB
+
+Termux API commands require su + run-as:
+```bash
+adb -s ZY22HTMMQG shell 'su -c "run-as com.termux files/usr/bin/termux-camera-photo -c 1 /data/data/com.termux/files/home/capture.jpg"'
+```
+
+### Termux Terminal Interaction
+
+```bash
+# Bring Termux to front
+adb shell am start -n com.termux/.app.TermuxActivity
+# Hide keyboard
+adb shell input keyevent KEYCODE_BACK
+# Type command (use %s for space, avoid hyphens — they trigger browser)
+adb shell input text 'echo%shello' && adb shell input keyevent KEYCODE_ENTER
 ```
 
 ## Installed Apps
 
-| Package | App |
-|---------|-----|
-| `org.fdroid.fdroid` | F-Droid |
-| `org.videolan.vlc` | VLC |
-| `org.thoughtcrime.securesms` | Signal |
+| Package | App | Notes |
+|---------|-----|-------|
+| `com.termux` | Termux | Full Linux environment |
+| `com.termux.api` | Termux:API | 72 hardware access commands |
+| `com.topjohnwu.magisk` | Magisk | Root manager v30.7 |
+| `org.fdroid.fdroid` | F-Droid | App store |
+| `org.videolan.vlc` | VLC | Media player |
+| `org.thoughtcrime.securesms` | Signal | Messaging |
+| `org.lineageos.aperture` | Aperture | Camera (default) |
+
+## Termux API Quick Reference
+
+### Camera (SERE primary — headless, no UI)
+```bash
+# Front camera capture (camera ID 1) — 2304x1728 JPEG, includes EXIF+GPS
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-camera-photo -c 1 /data/data/com.termux/files/home/capture.jpg"'
+adb shell 'su -c "cp /data/data/com.termux/files/home/capture.jpg /sdcard/capture.jpg"'
+adb pull /sdcard/capture.jpg
+```
+
+### Sensors
+```bash
+# List all sensors
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-sensor -l"'
+# Read sensor (e.g., accelerometer)
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-sensor -s accelerometer -n 1"'
+```
+
+### Audio
+```bash
+# Record mic (2 seconds)
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-microphone-record -l 2 -f /data/data/com.termux/files/home/mic.m4a"'
+# TTS
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-tts-speak hello"'
+# Volume control
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-volume"'
+```
+
+### Display & Notifications
+```bash
+# Toast message
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-toast BT-7274-Online"'
+# Notification
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-notification --title Title --content Message"'
+# Brightness (0-255)
+adb shell settings put system screen_brightness 217  # 85%
+adb shell settings put system screen_brightness_mode 0  # manual
+```
+
+### System
+```bash
+# Battery
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-battery-status"'
+# WiFi info
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-wifi-connectioninfo"'
+# Location
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-location"'
+# Vibrate
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-vibrate"'
+# Torch
+adb shell 'su -c "run-as com.termux files/usr/bin/termux-torch on"'
+```
+
+## Sensors Available
+
+### Physical: BMI3x0 accel+gyro, MMC56x3x mag, light, proximity, 4x capacitive
+### Fusion: Orientation, gravity, linear accel, rotation vectors (Qualcomm)
+### Moto gestures: Double-tap, flat up/down, stowed, camera gesture, chop-chop, glance, lift-to-silence/view
+
+## Thermal (44 zones via sysfs)
+Key: `su -c "cat /sys/class/thermal/thermal_zone*/type"` + `/temp`
+Covers CPU, GPU, battery, camera, display, PMIC, front/back surface.
+
+## Display Settings
+```bash
+# Prevent screen timeout
+adb shell settings put system screen_off_timeout 2147483647
+# Lock rotation to landscape
+adb shell settings put system accelerometer_rotation 0
+adb shell settings put system user_rotation 3  # 270deg = landscape right-side-up when mounted
+# Density
+adb shell wm density  # default 400
+```
 
 ## ADB Command Reference
 
@@ -533,14 +620,9 @@ adb shell ps -A | grep <name>
 adb shell top -n 1
 ```
 
-## scrcpy (Screen Mirror)
+## scrcpy (Screen Mirror + Audio)
 
-**Not currently installed on junkpile.** To install, use the cross-machine brew skill:
-```bash
-bash ~/Projects/personality-plugin/skills/brew/brew.sh junkpile install scrcpy
-```
-
-Once installed (run on junkpile, locally or via SSH depending on host):
+**Installed on junkpile** (v3.3.4). Key use: phone mic audio streaming for PSN uplink.
 ```bash
 scrcpy --max-size 1024              # Limit resolution
 scrcpy --max-fps 30                 # Limit framerate
@@ -604,6 +686,12 @@ Guidelines:
 - Record: installed apps, automation scripts, device quirks, working configurations
 - Store: coordinate mappings for specific apps, useful ADB command patterns
 - Update or remove outdated memories
+
+## SERE Edge Node
+
+This device is designated as the SERE (Survival, Evasion, Resistance, Escape) standalone PSN node. Full capability report: `~/Projects/personality-plugin/agents/moto-capability-report.md`
+
+Key SERE capabilities: front camera (headless 4MP), mic, speaker+TTS, sensors (IMU, light, proximity), GPS, cellular fallback, 225GB storage, Python 3.13, root access. Can run whisper.cpp, piper TTS, and local web servers via Termux.
 
 ## MEMORY.md
 

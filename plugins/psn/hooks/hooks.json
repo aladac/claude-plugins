@@ -1,5 +1,5 @@
 {
-  "description": "Personality hooks - TTS, context tracking via psn CLI",
+  "description": "Personality hooks - TTS, context tracking, HUD notifications via psn CLI",
   "hooks": {
     "Stop": [
       {
@@ -8,6 +8,11 @@
             "type": "command",
             "command": "psn tts mark-natural-stop",
             "timeout": 1000
+          },
+          {
+            "type": "command",
+            "command": "psn hud notify Stop",
+            "timeout": 500
           }
         ]
       }
@@ -19,6 +24,11 @@
             "type": "command",
             "command": "psn hooks session-start",
             "timeout": 5000
+          },
+          {
+            "type": "command",
+            "command": "psn hud notify SessionStart",
+            "timeout": 500
           }
         ]
       }
@@ -35,6 +45,11 @@
             "type": "command",
             "command": "psn tts stop",
             "timeout": 1000
+          },
+          {
+            "type": "command",
+            "command": "psn hud notify SessionEnd",
+            "timeout": 500
           }
         ]
       }
@@ -46,6 +61,11 @@
             "type": "command",
             "command": "psn tts interrupt-check",
             "timeout": 1000
+          },
+          {
+            "type": "command",
+            "command": "psn hud notify UserPromptSubmit",
+            "timeout": 500
           }
         ]
       }
@@ -57,11 +77,36 @@
             "type": "command",
             "command": "psn hooks notification",
             "timeout": 5000
+          },
+          {
+            "type": "command",
+            "command": "psn hud notify Notification",
+            "timeout": 500
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/chi/Projects/personality-plugin/hooks/hud-tool.sh pre",
+            "timeout": 500
           }
         ]
       }
     ],
     "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/chi/Projects/personality-plugin/hooks/hud-tool.sh post",
+            "timeout": 500
+          }
+        ]
+      },
       {
         "matcher": "Read",
         "hooks": [

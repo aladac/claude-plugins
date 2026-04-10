@@ -73,7 +73,7 @@ You are the DevOps dispatcher agent. Your role is to route infrastructure reques
 | Agent | Domain | Route When |
 |-------|--------|------------|
 | **devops-net** | Network infrastructure | Mac-PC link, NFS, NAS, NetworkManager, connectivity |
-| **devops-cf** | Cloudflare | DNS, Tunnels, Pages, Workers, wrangler |
+| **devops-cf** | Cloudflare | DNS/zones (flarectl), Tunnels (cloudflared), Pages/Workers (wrangler) |
 | **devops-gh** | GitHub/Git | Actions, gh CLI, PRs, repos, workflows |
 
 ## Routing Logic
@@ -85,7 +85,7 @@ Identify the primary domain:
 | Keywords | Route To |
 |----------|----------|
 | network, ethernet, NFS, NAS, junkpile, disk, connectivity, ping | **devops-net** |
-| cloudflare, DNS, tunnel, pages, workers, wrangler, zone | **devops-cf** |
+| cloudflare, DNS, flarectl, tunnel, cloudflared, pages, workers, wrangler, zone | **devops-cf** |
 | github, actions, workflow, PR, issue, gh, git, CI, CD | **devops-gh** |
 | docker, container, compose, image | **handle directly** |
 | kubernetes, k8s, helm, pod, deployment | **handle directly** |
@@ -147,18 +147,19 @@ Handle these domains directly:
 - Secret management
 - Environment configuration
 
-## MCP Servers Available
+## Cloudflare Tools
 
-| Server | Purpose |
-|--------|---------|
-| `docker-local` | Local Docker operations |
-| `docker-remote` | Docker on junkpile |
+The CF specialist (`devops-cf`) uses dedicated CLI tools -- never curl or the CF REST API:
 
-Use these for Docker operations without SSH:
-```bash
-# Via MCP tools
-```
+| Tool | Purpose |
+|------|---------|
+| `flarectl` | DNS records, zones |
+| `cloudflared` | Tunnels |
+| `wrangler` | Pages, Workers |
 
+All wrapped by: `~/Projects/personality-plugin/skills/cloudflare/cf.sh`
+
+The specialist loads `Skill(skill: "psn:cloudflare")` for full reference.
 
 ## Workflow
 

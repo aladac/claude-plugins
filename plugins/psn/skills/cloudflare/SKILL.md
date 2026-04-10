@@ -1,327 +1,229 @@
 ---
 name: Cloudflare
 description: |
-  Use this skill when working with Cloudflare DNS, Tunnels, Pages, or Workers. Triggers on questions about DNS records, tunnel management, static site deployment, or serverless workers.
+  Cloudflare infrastructure management — zones, DNS, tunnels, Pages, Workers. Call cf.sh with all arguments directly. Use for DNS records, tunnel creation (local and remote), static site deployment, and serverless workers.
 
   <example>
-  Context: User wants to add a DNS record
-  user: "add a DNS record for api.example.com"
+  Context: User wants to list DNS records
+  user: "show me DNS records for saiden.dev"
   </example>
 
   <example>
-  Context: User wants to deploy a site
+  Context: User wants to expose a local service
+  user: "expose port 3000 as app.saiden.dev"
+  </example>
+
+  <example>
+  Context: User wants to create a tunnel on junkpile
+  user: "tunnel port 8080 on junkpile to api.tengu.to"
+  </example>
+
+  <example>
+  Context: User wants to deploy to Pages
   user: "deploy this to Cloudflare Pages"
   </example>
+version: 2.0.0
 ---
 
-# Tools Reference
+# Cloudflare Skill
 
-## Built-in Tools
-| Tool | Purpose |
-|------|---------|
-| `Bash` | Execute flarectl, cloudflared, wrangler commands |
-| `Read` | Read config files (wrangler.toml, config.yml) |
-| `Write` | Create/update config files |
-| `Edit` | Modify existing configs |
+Unified CLI for all Cloudflare operations via `cf.sh`. Each module uses a specific CLI tool -- never curl or the CF API directly.
 
-## Related Commands (psn:cf:*)
+## CLI Tool Assignments
+
+| Tool | Modules | Installed On | Auth |
+|------|---------|--------------|------|
+| **flarectl** | zones, dns | fuji + junkpile (Homebrew) | `CF_API_KEY` + `CF_API_EMAIL` env vars |
+| **cloudflared** | tunnels | fuji (Homebrew) + junkpile (`/usr/local/bin/cloudflared`) | `~/.cloudflared/cert.pem` |
+| **wrangler** | pages, workers | fuji (Homebrew) | `CLOUDFLARE_ACCOUNT_ID` env var |
+
+**Do NOT use curl, the CF REST API, or python3 for any operation.** Use the CLI tools above.
+
+## Quick Reference
+
+```bash
+CF="$HOME/Projects/personality-plugin/skills/cloudflare/cf.sh"
+CHECK="$HOME/Projects/personality-plugin/skills/cloudflare/cf-check.sh"
+
+# ── Check ──
+bash $CHECK              # Verify setup on both fuji + junkpile
+bash $CHECK local        # Fuji only
+bash $CHECK remote       # Junkpile only
+
+# ── Auth ──
+bash $CF auth setup              # Interactive credential setup
+bash $CF auth test               # Verify credentials (uses flarectl)
+bash $CF auth show               # Show stored credentials
+
+# ── Zones (flarectl) ──
+bash $CF zones list              # List all zones
+bash $CF zones info saiden.dev   # Zone details
+
+# ── DNS (flarectl) ──
+bash $CF dns list saiden.dev                                   # All records
+bash $CF dns add saiden.dev A app 192.168.1.1 true             # A record, proxied
+bash $CF dns add saiden.dev CNAME www saiden.dev true           # CNAME, proxied
+bash $CF dns add saiden.dev TXT @ "v=spf1 include:_spf..."     # TXT record
+bash $CF dns find saiden.dev app                                # Find record by name
+bash $CF dns del saiden.dev <record-id>                         # Delete by ID
+
+# ── Tunnels (cloudflared) ──
+bash $CF tunnels list                                          # List local tunnels
+bash $CF tunnels list junkpile                                 # List tunnels on junkpile
+bash $CF tunnels info my-tunnel                                # Tunnel details
+bash $CF tunnels create my-tunnel                              # Create on local
+bash $CF tunnels create my-tunnel junkpile                     # Create on junkpile
+bash $CF tunnels route my-tunnel app.saiden.dev                # Route DNS
+bash $CF tunnels config junkpile                               # Show junkpile tunnel config
+bash $CF tunnels run my-tunnel                                 # Run tunnel
+
+# Quick expose (creates tunnel + routes DNS in one step)
+bash $CF tunnels expose 3000 app.saiden.dev                    # localhost:3000 -> hostname
+bash $CF tunnels expose 8080 api.saiden.dev my-api             # with custom tunnel name
+bash $CF tunnels expose 3000 app.saiden.dev '' junkpile        # on junkpile
+
+# Remote expose (creates tunnel on remote host)
+bash $CF tunnels expose-ssh junkpile 8080 api.saiden.dev       # junkpile:8080 -> hostname
+bash $CF tunnels expose-ssh junkpile 3000 app.tengu.to my-app # with custom name
+
+# Ingress management
+bash $CF tunnels ingress-add app.saiden.dev http://localhost:3000 junkpile  # Add to config
+
+# ── Pages (wrangler) ──
+bash $CF pages list                                            # List projects
+bash $CF pages deploy ./dist my-site                           # Deploy (branch: main)
+bash $CF pages deploy ./build my-site production               # Deploy specific branch
+bash $CF pages destroy old-site                                # Delete project
+
+# ── Workers (wrangler) ──
+bash $CF workers list                                          # List all workers
+bash $CF workers info my-worker                                # Worker details
+bash $CF workers deploy                                        # Deploy from current dir
+bash $CF workers deploy ./worker-dir                           # Deploy from path
+bash $CF workers dev                                           # Local dev server
+bash $CF workers tail my-worker                                # Stream logs
+bash $CF workers delete my-worker                              # Delete worker
+```
+
+## Command Reference
+
+### Check (cf-check.sh)
 | Command | Purpose |
 |---------|---------|
-| `/cf:list_zones` | List all zones |
-| `/cf:zone_info` | Zone details |
-| `/cf:add_host` | Add DNS record |
-| `/cf:del_host` | Delete DNS record |
-| `/cf:list_tunnels` | List tunnels |
-| `/cf:add_tunnel` | Create tunnel |
-| `/cf:del_tunnel` | Delete tunnel |
-| `/cf:tunnel_info` | Tunnel details |
-| `/cf:pages_list` | List Pages projects |
-| `/cf:pages_deploy` | Deploy to Pages |
-| `/cf:pages_destroy` | Delete project |
-| `/cf:workers_list` | List Workers |
-| `/cf:worker_info` | Worker details |
-| `/cf:worker` | Worker operations |
+| `cf-check.sh` | Verify tools, credentials, tunnels, API on both machines |
+| `cf-check.sh local` | Check fuji only (also accepts `fuji`, `f`) |
+| `cf-check.sh remote` | Check junkpile only (also accepts `junkpile`, `j`) |
+
+### Auth
+| Command | Purpose |
+|---------|---------|
+| `auth setup` | Interactive setup, saves to `~/.config/cloudflare/credentials` |
+| `auth test` | Verify credentials work (uses `flarectl user info`) |
+| `auth show` | Display stored credential info (masked key) |
+
+### Zones (flarectl)
+| Command | Purpose |
+|---------|---------|
+| `zones list` | List all zones via `flarectl zone list` |
+| `zones info <domain>` | Zone details via `flarectl zone info --zone <domain>` |
+
+### DNS (flarectl)
+| Command | Purpose |
+|---------|---------|
+| `dns list <domain>` | All records via `flarectl dns list --zone <domain>` |
+| `dns add <domain> <type> <name> <content> [proxy]` | Create record via `flarectl dns create` |
+| `dns del <domain> <record-id>` | Delete record via `flarectl dns delete` |
+| `dns find <domain> <name>` | Find record via `flarectl dns list --name <name>` |
+
+### Tunnels (cloudflared)
+| Command | Purpose |
+|---------|---------|
+| `tunnels list [host]` | List tunnels via `cloudflared tunnel list` |
+| `tunnels info <name> [host]` | Tunnel details via `cloudflared tunnel info` |
+| `tunnels create <name> [host]` | Create tunnel via `cloudflared tunnel create` |
+| `tunnels delete <name> [host]` | Delete tunnel via `cloudflared tunnel delete` |
+| `tunnels route <tunnel> <hostname> [host]` | Route DNS via `cloudflared tunnel route dns` |
+| `tunnels config [host]` | Show `~/.cloudflared/config.yml` |
+| `tunnels run <name> [host]` | Run tunnel via `cloudflared tunnel run` |
+| `tunnels expose <port> <hostname> [name] [host]` | One-step: create tunnel + route DNS for localhost |
+| `tunnels expose-ssh <ssh-host> <port> <hostname> [name]` | One-step: create tunnel + route DNS on remote host |
+| `tunnels ingress-add <hostname> <service-url> [host]` | Add ingress rule to cloudflared config |
+
+### Pages (wrangler)
+| Command | Purpose |
+|---------|---------|
+| `pages list` | List projects via `wrangler pages project list` |
+| `pages deploy <dir> <project> [branch]` | Deploy via `wrangler pages deploy` |
+| `pages destroy <project>` | Delete project via `wrangler pages project delete` |
+
+### Workers (wrangler)
+| Command | Purpose |
+|---------|---------|
+| `workers list` | List workers via `wrangler deployments list` |
+| `workers info <name>` | Worker details via `wrangler deployments list --name` |
+| `workers deploy [dir]` | Deploy via `wrangler deploy` |
+| `workers dev [dir]` | Local dev server via `wrangler dev` |
+| `workers tail <name>` | Stream logs via `wrangler tail` |
+| `workers delete <name>` | Delete via `wrangler delete` |
+
+## Credential Chain
+
+Credentials are loaded in this order:
+1. **Environment variables** -- `CF_API_KEY` + `CF_API_EMAIL` (flarectl), `CLOUDFLARE_ACCOUNT_ID` (wrangler)
+2. **Config file** -- `~/.config/cloudflare/credentials`
+3. **1Password** -- `op item get cf --vault DEV`
+
+The env vars `CLOUDFLARE_API_KEY` and `CLOUDFLARE_EMAIL` are also accepted and mapped to `CF_API_KEY`/`CF_API_EMAIL` for flarectl.
+
+Account ID defaults to `95ad3baa2a4ecda1e38342df7d24204f` if not set.
+
+**NEVER use** `CF_API_TOKEN`, `CLOUDFLARE_API_TOKEN`, or Bearer tokens. flarectl uses Global API Key auth.
+
+## Tunnel Expose Workflow
+
+### Expose localhost (dev machine)
+```bash
+# Creates tunnel, routes DNS, gives you the run command
+bash $CF tunnels expose 3000 app.saiden.dev
+# Then run it:
+cloudflared tunnel --url http://localhost:3000 run app-saiden-dev
+```
+
+### Expose service on junkpile
+```bash
+# Creates tunnel on junkpile, routes DNS
+bash $CF tunnels expose-ssh junkpile 8080 api.tengu.to
+# Or add to existing config:
+bash $CF tunnels ingress-add api.tengu.to http://localhost:8080 junkpile
+# Restart tunnel on junkpile to pick up changes
+```
+
+### Full tunnel setup (manual)
+```bash
+bash $CF tunnels create my-service junkpile
+bash $CF tunnels route my-service app.example.com junkpile
+bash $CF tunnels ingress-add app.example.com http://localhost:3000 junkpile
+# On junkpile: cloudflared tunnel run my-service
+```
+
+## Cross-Machine Support
+
+All tunnel commands accept a `[host]` parameter:
+- **local** (default) -- runs on current machine
+- **fuji** -- runs on Mac (SSH if needed)
+- **junkpile** -- runs on PC (SSH if needed)
+
+DNS and zones use flarectl locally (no host parameter needed -- flarectl talks to the API).
+Pages and workers use wrangler locally (fuji only).
+
+**junkpile cloudflared note:** The cert at `/home/chi/.cloudflared/cert.pem` is locked to the `tengu.to` zone. For tunnel DNS routing to other zones, the DNS CNAME must be created separately via flarectl.
 
 ## Related Agents
-- `psn:devops-cf` - Cloudflare infrastructure agent
-
----
-
-# Cloudflare Operations
-
-Comprehensive guide for Cloudflare infrastructure management.
+- `psn:devops-cf` -- Cloudflare infrastructure agent (loads this skill)
 
 ## Prerequisites
-
-- `wrangler` CLI installed and authenticated
-- Cloudflare API token with appropriate permissions
-- For tunnels: `cloudflared` installed
-
-## DNS Management
-
-### Record Types
-| Type | Purpose | Example |
-|------|---------|---------|
-| A | IPv4 address | `192.168.1.1` |
-| AAAA | IPv6 address | `2001:db8::1` |
-| CNAME | Alias to another domain | `www` → `example.com` |
-| TXT | Text record (SPF, DKIM, verification) | `v=spf1 include:...` |
-| MX | Mail server | `mail.example.com` (priority 10) |
-
-### Adding Records
-```bash
-# A record with proxy
-/cf:add_host example.com A www 192.168.1.1 true
-
-# CNAME record
-/cf:add_host example.com CNAME blog myblog.pages.dev false
-
-# TXT record (verification)
-/cf:add_host example.com TXT @ "google-site-verification=..."
-```
-
-### Deleting Records
-```bash
-/cf:del_host example.com www
-```
-
-### Proxy vs DNS-only
-- **Proxied (orange cloud)**: Traffic flows through Cloudflare CDN, gets DDoS protection, caching, SSL
-- **DNS-only (gray cloud)**: Direct connection, no Cloudflare features
-
-## Tunnel Management
-
-Cloudflare Tunnels expose local services without opening ports.
-
-### Create Tunnel
-```bash
-/cf:add_tunnel my-tunnel
-```
-
-### Configure Tunnel
-Edit `~/.cloudflared/config.yml`:
-```yaml
-tunnel: <tunnel-id>
-credentials-file: ~/.cloudflared/<tunnel-id>.json
-
-ingress:
-  - hostname: app.example.com
-    service: http://localhost:8080
-  - hostname: api.example.com
-    service: http://localhost:3000
-  - service: http_status:404
-```
-
-### Route DNS
-```bash
-cloudflared tunnel route dns my-tunnel app.example.com
-```
-
-### List Tunnels
-```bash
-/cf:list_tunnels
-```
-
-### Tunnel Info
-```bash
-/cf:tunnel_info my-tunnel
-```
-
-### Delete Tunnel
-```bash
-/cf:del_tunnel my-tunnel
-```
-
-## Pages Deployment
-
-Deploy static sites to Cloudflare Pages.
-
-### Deploy
-```bash
-# Deploy build output
-/cf:pages_deploy ./dist my-site main
-
-# Production deployment
-/cf:pages_deploy ./build production-site main
-```
-
-### List Projects
-```bash
-/cf:pages_list
-```
-
-### Delete Project
-```bash
-/cf:pages_destroy my-old-site
-```
-
-### Build Configuration
-For framework-specific builds, use `wrangler.toml`:
-```toml
-name = "my-site"
-pages_build_output_dir = "./dist"
-
-[build]
-command = "npm run build"
-```
-
-### Custom Domains
-After deployment:
-1. Go to Pages dashboard
-2. Custom domains → Add
-3. Add DNS record (automatic if zone is on Cloudflare)
-
-## Workers
-
-Serverless functions at the edge.
-
-### Actions
-```bash
-# Initialize new worker
-/cf:worker init my-worker
-
-# Run locally
-/cf:worker dev my-worker
-
-# Deploy to production
-/cf:worker deploy my-worker
-
-# View logs
-/cf:worker tail my-worker
-
-# Delete worker
-/cf:worker delete my-worker
-```
-
-### List Workers
-```bash
-/cf:workers_list
-```
-
-### Worker Info
-```bash
-/cf:worker_info my-worker
-```
-
-### Worker Structure
-```
-my-worker/
-├── wrangler.toml
-├── src/
-│   └── index.ts
-├── package.json
-└── tsconfig.json
-```
-
-### Basic Worker
-```typescript
-// src/index.ts
-export default {
-  async fetch(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-
-    if (url.pathname === '/api/hello') {
-      return new Response(JSON.stringify({ message: 'Hello!' }), {
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    return new Response('Not found', { status: 404 });
-  }
-};
-```
-
-### wrangler.toml
-```toml
-name = "my-worker"
-main = "src/index.ts"
-compatibility_date = "2024-01-01"
-
-[vars]
-ENVIRONMENT = "production"
-
-[[kv_namespaces]]
-binding = "MY_KV"
-id = "xxx"
-```
-
-## Zone Management
-
-### List Zones
-```bash
-/cf:list_zones
-```
-
-### Zone Info
-```bash
-/cf:zone_info example.com
-```
-
-Returns:
-- Zone ID
-- Status (active, pending, etc.)
-- Name servers
-- Plan level
-
-## Common Workflows
-
-### Expose Local Service
-```bash
-# 1. Create tunnel
-/cf:add_tunnel my-app
-
-# 2. Configure ingress (edit config.yml)
-
-# 3. Route DNS
-cloudflared tunnel route dns my-app app.example.com
-
-# 4. Run tunnel
-cloudflared tunnel run my-app
-```
-
-### Deploy Static Site
-```bash
-# 1. Build site
-npm run build
-
-# 2. Deploy
-/cf:pages_deploy ./dist my-site main
-
-# 3. (Optional) Add custom domain via dashboard
-```
-
-### Deploy API Worker
-```bash
-# 1. Init
-/cf:worker init my-api
-
-# 2. Develop locally
-/cf:worker dev my-api
-
-# 3. Deploy
-/cf:worker deploy my-api
-
-# 4. Add route (via dashboard or wrangler.toml)
-```
-
-## Troubleshooting
-
-### Tunnel not connecting
-- Check `cloudflared` is running
-- Verify credentials file exists
-- Check tunnel status: `/cf:tunnel_info <name>`
-
-### Pages build failing
-- Check build command in dashboard
-- Verify build output directory
-- Check environment variables
-
-### Worker errors
-- Tail logs: `/cf:worker tail <name>`
-- Check wrangler.toml syntax
-- Verify KV/D1 bindings
-
-### DNS not propagating
-- Check TTL settings
-- Verify proxy status (orange vs gray cloud)
-- Wait for propagation (up to 48h for some changes)
+- `flarectl` -- fuji (`/opt/homebrew/bin`) + junkpile (`/home/linuxbrew/.linuxbrew/bin`) -- DNS and zone management
+- `cloudflared` -- fuji (`/opt/homebrew/bin`) + junkpile (`/usr/local/bin` + `/home/linuxbrew/.linuxbrew/bin`) -- tunnels
+- `wrangler` -- fuji (`/opt/homebrew/bin`) + junkpile (`/home/linuxbrew/.linuxbrew/bin`) -- Pages and Workers
+- Run `bash cf-check.sh` to verify all tools, credentials, and API access on both machines
+- Credentials configured via `auth setup` or env vars

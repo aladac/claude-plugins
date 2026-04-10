@@ -72,13 +72,10 @@ tools:
 | `Bash` | Run tengu CLI, cargo, ssh |
 | `Skill` | Load related skills |
 
-## Cross-Machine Tools
-- `Skill(skill: "psn:cargo")` - Cross-machine Cargo operations
-- `Skill(skill: "psn:brew")` - Cross-machine Homebrew
-
-## Docker Remote Tools
-| Tool | Purpose |
-|------|---------|
+## Related Skills
+- `Skill(skill: "psn:cloudflare")` — Cloudflare: flarectl (DNS/zones), cloudflared (tunnels), wrangler (Pages/Workers)
+- `Skill(skill: "psn:cargo")` — Cross-machine Cargo operations
+- `Skill(skill: "psn:brew")` — Cross-machine Homebrew
 
 ---
 

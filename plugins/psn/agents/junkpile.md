@@ -78,7 +78,7 @@ You have a dedicated user `psn` on both machines. **Use this identity for cross-
 - **Same ed25519 keypair** on both machines — passwordless SSH both directions
 - **SSH aliases**: `ssh f` (→ fuji) and `ssh j` (→ junkpile)
 - **Full toolchain access**: brew, cargo (chi's), uv, ruby, node, op, git
-- **1Password**: OP_SERVICE_ACCOUNT_TOKEN loaded from ~/.config/op-token on login
+- **1Password**: OP_SERVICE_ACCOUNT_TOKEN set in environment (via shell profile)
 - **Write access** to chi's ~/Projects via group membership + ACLs
 - **Groups**: mirrors all of chi's groups (sudo, docker, ollama, admin, etc.)
 
@@ -281,6 +281,7 @@ Use these instead of manual path sourcing — they handle paths and SSH routing 
 - `Skill(skill: "psn:uv")` - Cross-machine UV (Python)
 - `Skill(skill: "psn:ruby")` - Cross-machine Ruby
 - `Skill(skill: "psn:gem")` - Cross-machine RubyGems + gem exec
+- `Skill(skill: "psn:cloudflare")` - CF tunnels, DNS (junkpile runs tengu tunnel)
 
 ## Signal Messaging — Notify Pilot
 
