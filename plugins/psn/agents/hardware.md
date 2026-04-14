@@ -43,21 +43,11 @@ description: |
   </commentary>
   </example>
 model: inherit
+maxTurns: 50
 color: cyan
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Task
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - WebSearch
-  - WebFetch
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Tools Reference

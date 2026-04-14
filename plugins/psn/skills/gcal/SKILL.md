@@ -37,7 +37,7 @@ View, search, create, and manage Google Calendar events via `gog` CLI. Multi-acc
 ## Quick Reference
 
 ```bash
-SKILL=~/Projects/personality-plugin/skills/gcal/gcal.sh
+SKILL=${CLAUDE_PLUGIN_ROOT}/skills/gcal/gcal.sh
 
 # Today's events (all calendars)
 bash $SKILL today

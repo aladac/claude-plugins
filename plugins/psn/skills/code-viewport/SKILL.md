@@ -17,12 +17,12 @@ description: |
 ## Usage
 
 ```bash
-bash ~/Projects/personality-plugin/skills/code-viewport/render.sh <language> <file_or_stdin>
+bash ${CLAUDE_PLUGIN_ROOT}/skills/code-viewport/render.sh <language> <file_or_stdin>
 ```
 
 Or pipe code directly:
 ```bash
-echo 'def hello; puts "world"; end' | bash ~/Projects/personality-plugin/skills/code-viewport/render.sh ruby
+echo 'def hello; puts "world"; end' | bash ${CLAUDE_PLUGIN_ROOT}/skills/code-viewport/render.sh ruby
 ```
 
 ### Supported Languages
@@ -30,8 +30,8 @@ ruby, python, javascript, rust, bash, shell, typescript
 
 ### From a file
 ```bash
-bash ~/Projects/personality-plugin/skills/code-viewport/render.sh ruby /path/to/file.rb
+bash ${CLAUDE_PLUGIN_ROOT}/skills/code-viewport/render.sh ruby /path/to/file.rb
 ```
 
 ### Integration
-The script tokenizes code server-side (Python), maps tokens to One Dark colors, and pushes colored fillText calls to the HUD viewport via POST /eval on port 9876. No dependencies needed on the HUD side.
+The script sends code to the visor via POST /code on port 9876. Syntect handles syntax highlighting server-side in the visor.

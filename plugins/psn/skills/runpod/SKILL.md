@@ -26,7 +26,7 @@ Manages GPU pod lifecycle on RunPod via `runpodctl`.
 ## Usage
 
 ```bash
-bash ~/Projects/personality-plugin/skills/runpod/runpod.sh <action> [args...]
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod/runpod.sh <action> [args...]
 ```
 
 ### Actions
@@ -65,20 +65,20 @@ bash ~/Projects/personality-plugin/skills/runpod/runpod.sh <action> [args...]
 
 ```bash
 # List running pods
-bash ~/Projects/personality-plugin/skills/runpod/runpod.sh list
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod/runpod.sh list
 
 # Create a training pod with A40
-bash ~/Projects/personality-plugin/skills/runpod/runpod.sh create \
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod/runpod.sh create \
   --name "bt-voice-training" \
   --gpu "NVIDIA A40" \
   --image "runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04" \
   --disk 20 --volume 100 --ssh
 
 # Stop a pod
-bash ~/Projects/personality-plugin/skills/runpod/runpod.sh stop pod_abc123
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod/runpod.sh stop pod_abc123
 
 # Destroy a pod
-bash ~/Projects/personality-plugin/skills/runpod/runpod.sh destroy pod_abc123
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod/runpod.sh destroy pod_abc123
 ```
 
 ## Notes

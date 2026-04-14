@@ -45,19 +45,11 @@ description: |
   assistant: "I'll use the claude-admin agent to explain the Claude Code hook system."
   </example>
 model: inherit
+maxTurns: 50
 color: cyan
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - Skill
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Tools Reference

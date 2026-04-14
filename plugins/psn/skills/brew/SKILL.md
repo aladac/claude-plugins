@@ -23,7 +23,7 @@ Manages Homebrew across fuji (macOS) and junkpile (Linux) transparently.
 Run the helper script with a target machine and brew arguments:
 
 ```bash
-bash ~/Projects/personality-plugin/skills/brew/brew.sh <target> <brew-args...>
+bash ${CLAUDE_PLUGIN_ROOT}/skills/brew/brew.sh <target> <brew-args...>
 ```
 
 ### Target
@@ -39,23 +39,23 @@ bash ~/Projects/personality-plugin/skills/brew/brew.sh <target> <brew-args...>
 
 ```bash
 # Install on current machine
-bash ~/Projects/personality-plugin/skills/brew/brew.sh local install ripgrep
+bash ${CLAUDE_PLUGIN_ROOT}/skills/brew/brew.sh local install ripgrep
 
 # Install on fuji specifically
-bash ~/Projects/personality-plugin/skills/brew/brew.sh fuji install node
+bash ${CLAUDE_PLUGIN_ROOT}/skills/brew/brew.sh fuji install node
 
 # Install on junkpile specifically
-bash ~/Projects/personality-plugin/skills/brew/brew.sh junkpile install cloudflared
+bash ${CLAUDE_PLUGIN_ROOT}/skills/brew/brew.sh junkpile install cloudflared
 
 # List installed on both machines
-bash ~/Projects/personality-plugin/skills/brew/brew.sh both list
+bash ${CLAUDE_PLUGIN_ROOT}/skills/brew/brew.sh both list
 
 # Search everywhere
-bash ~/Projects/personality-plugin/skills/brew/brew.sh local search qemu
+bash ${CLAUDE_PLUGIN_ROOT}/skills/brew/brew.sh local search qemu
 
 # Update and upgrade on junkpile
-bash ~/Projects/personality-plugin/skills/brew/brew.sh junkpile update
-bash ~/Projects/personality-plugin/skills/brew/brew.sh junkpile upgrade
+bash ${CLAUDE_PLUGIN_ROOT}/skills/brew/brew.sh junkpile update
+bash ${CLAUDE_PLUGIN_ROOT}/skills/brew/brew.sh junkpile upgrade
 ```
 
 ## Machine Reference

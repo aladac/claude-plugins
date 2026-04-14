@@ -21,7 +21,7 @@ Manages Cargo (Rust toolchain) across fuji and junkpile transparently.
 ## Usage
 
 ```bash
-bash ~/Projects/personality-plugin/skills/cargo/cargo.sh <target> <cargo-args...>
+bash ${CLAUDE_PLUGIN_ROOT}/skills/cargo/cargo.sh <target> <cargo-args...>
 ```
 
 ### Target
@@ -37,19 +37,19 @@ bash ~/Projects/personality-plugin/skills/cargo/cargo.sh <target> <cargo-args...
 
 ```bash
 # Build locally
-bash ~/Projects/personality-plugin/skills/cargo/cargo.sh local build --release
+bash ${CLAUDE_PLUGIN_ROOT}/skills/cargo/cargo.sh local build --release
 
 # Install a tool on both machines
-bash ~/Projects/personality-plugin/skills/cargo/cargo.sh both install ripgrep
+bash ${CLAUDE_PLUGIN_ROOT}/skills/cargo/cargo.sh both install ripgrep
 
 # Check versions on both
-bash ~/Projects/personality-plugin/skills/cargo/cargo.sh both --version
+bash ${CLAUDE_PLUGIN_ROOT}/skills/cargo/cargo.sh both --version
 
 # Run tests on junkpile
-bash ~/Projects/personality-plugin/skills/cargo/cargo.sh junkpile test
+bash ${CLAUDE_PLUGIN_ROOT}/skills/cargo/cargo.sh junkpile test
 
 # Install from crates.io on fuji
-bash ~/Projects/personality-plugin/skills/cargo/cargo.sh fuji install cargo-watch
+bash ${CLAUDE_PLUGIN_ROOT}/skills/cargo/cargo.sh fuji install cargo-watch
 ```
 
 ## Machine Reference

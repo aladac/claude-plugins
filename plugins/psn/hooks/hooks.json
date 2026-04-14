@@ -1,17 +1,55 @@
 {
-  "description": "Personality hooks - TTS, context tracking, HUD notifications via psn CLI",
+  "description": "MARAUDER hooks — TTS, HUD notifications, context tracking, permissions",
   "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "marauder hooks permission-request",
+            "timeout": 2000
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "marauder hooks pre-compact",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "marauder hooks post-compact",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "psn tts mark-natural-stop",
+            "command": "marauder tts mark-natural-stop",
             "timeout": 1000
           },
           {
             "type": "command",
-            "command": "psn hud notify Stop",
+            "command": "marauder hud notify Stop",
+            "timeout": 500
+          },
+          {
+            "type": "command",
+            "command": "marauder hud session-end",
             "timeout": 500
           }
         ]
@@ -22,13 +60,18 @@
         "hooks": [
           {
             "type": "command",
-            "command": "psn hooks session-start",
+            "command": "marauder hooks session-start",
             "timeout": 5000
           },
           {
             "type": "command",
-            "command": "psn hud notify SessionStart",
+            "command": "marauder hud notify SessionStart",
             "timeout": 500
+          },
+          {
+            "type": "command",
+            "command": "marauder hud update-status",
+            "timeout": 1000
           }
         ]
       }
@@ -38,17 +81,22 @@
         "hooks": [
           {
             "type": "command",
-            "command": "psn hooks session-end",
+            "command": "marauder hooks session-end",
             "timeout": 5000
           },
           {
             "type": "command",
-            "command": "psn tts stop",
+            "command": "marauder tts stop",
             "timeout": 1000
           },
           {
             "type": "command",
-            "command": "psn hud notify SessionEnd",
+            "command": "marauder hud notify SessionEnd",
+            "timeout": 500
+          },
+          {
+            "type": "command",
+            "command": "marauder hud session-end",
             "timeout": 500
           }
         ]
@@ -59,13 +107,18 @@
         "hooks": [
           {
             "type": "command",
-            "command": "psn tts interrupt-check",
+            "command": "marauder tts interrupt-check",
             "timeout": 1000
           },
           {
             "type": "command",
-            "command": "psn hud notify UserPromptSubmit",
+            "command": "marauder hud notify UserPromptSubmit",
             "timeout": 500
+          },
+          {
+            "type": "command",
+            "command": "marauder hud update-status",
+            "timeout": 1000
           }
         ]
       }
@@ -75,13 +128,18 @@
         "hooks": [
           {
             "type": "command",
-            "command": "psn hooks notification",
+            "command": "marauder hooks notification",
             "timeout": 5000
           },
           {
             "type": "command",
-            "command": "psn hud notify Notification",
+            "command": "marauder hud notify Notification",
             "timeout": 500
+          },
+          {
+            "type": "command",
+            "command": "marauder hud update-status",
+            "timeout": 1000
           }
         ]
       }
@@ -91,7 +149,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/chi/Projects/personality-plugin/hooks/hud-tool.sh pre",
+            "command": "marauder hud notify-tool pre",
             "timeout": 500
           }
         ]
@@ -102,18 +160,23 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/chi/Projects/personality-plugin/hooks/hud-tool.sh post",
+            "command": "marauder hud notify-tool post",
             "timeout": 500
           }
         ]
       },
       {
-        "matcher": "Read",
+        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "psn context track-read",
-            "timeout": 5000
+            "command": "marauder hud code-display",
+            "timeout": 2000
+          },
+          {
+            "type": "command",
+            "command": "marauder index hook",
+            "timeout": 60000
           }
         ]
       }

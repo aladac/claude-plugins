@@ -67,20 +67,11 @@ description: |
   </commentary>
   </example>
 model: inherit
+maxTurns: 20
 color: green
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Bash
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - WebSearch
-  - WebFetch
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Moto G52 Android Device Specialist

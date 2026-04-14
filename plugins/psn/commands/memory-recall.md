@@ -4,7 +4,7 @@ description: Recall information from persistent memory
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_psn_core__memory_recall
+  - mcp__plugin_marauder_core__memory_recall
 argument-hint: "<query> [--subject filter]"
 ---
 
@@ -57,7 +57,7 @@ Found 3 memories:
 ```
 
 ## Related
-- **Skill**: `Skill(skill: "psn:memory")` - Memory patterns
-- **Skill**: `Skill(skill: "psn:pretty-output")` - Output guidelines
-- **Agent**: `psn:memory-curator` - Memory cleanup
+- **Skill**: `Skill(skill: "marauder:memory")` - Memory patterns
+- **Skill**: `Skill(skill: "marauder:pretty-output")` - Output guidelines
+- **Agent**: `marauder:memory-curator` - Memory cleanup
 - **Commands**: `/memory:store`, `/memory:search`

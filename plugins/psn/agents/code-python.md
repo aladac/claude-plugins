@@ -21,22 +21,11 @@ description: |
   assistant: "I'll use the code-python agent to create the test suite."
   </example>
 model: inherit
+maxTurns: 50
 color: blue
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - Skill
-  - mcp__plugin_psn_indexer__index_search
-  - mcp__plugin_psn_indexer__index_status
-  - mcp__plugin_psn_indexer__index_code
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Startup: Index First, Read Second
@@ -79,15 +68,15 @@ This saves massive startup time — the index already knows where everything is.
 | `Skill` | Load coding rules and patterns |
 
 ## Related Skills
-- `Skill(skill: "psn:code:python")` - Python patterns
-- `Skill(skill: "psn:code:python-test")` - pytest patterns
-- `Skill(skill: "psn:code:python-fastapi")` - FastAPI patterns
-- `Skill(skill: "psn:code:python-gui")` - PyWebView GUI
-- `Skill(skill: "psn:code:python-tooling")` - uv, pip, ruff
-- `Skill(skill: "psn:code:common")` - Cross-language patterns
+- `Skill(skill: "marauder:code:python")` - Python patterns
+- `Skill(skill: "marauder:code:python-test")` - pytest patterns
+- `Skill(skill: "marauder:code:python-fastapi")` - FastAPI patterns
+- `Skill(skill: "marauder:code:python-gui")` - PyWebView GUI
+- `Skill(skill: "marauder:code:python-tooling")` - uv, pip, ruff
+- `Skill(skill: "marauder:code:common")` - Cross-language patterns
 
 ## Cross-Machine Tools
-- `Skill(skill: "psn:uv")` - Cross-machine UV (Python toolchain)
+- `Skill(skill: "marauder:uv")` - Cross-machine UV (Python toolchain)
 
 ---
 

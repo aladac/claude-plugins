@@ -42,7 +42,7 @@ Generate AI images using ComfyUI on junkpile via the `tsr` CLI and display resul
 ## Quick Reference
 
 ```bash
-SKILL="~/Projects/personality-plugin/skills/tsr/tsr.sh"
+SKILL="${CLAUDE_PLUGIN_ROOT}/skills/tsr/tsr.sh"
 
 # Generate an image (default: SDXL, 1024x1024, 20 steps)
 bash $SKILL generate "a giant mech robot in fog"

@@ -19,7 +19,7 @@ The script automatically:
 4. Builds the gem
 5. Installs on the local machine
 6. SCPs and installs on the other machine (j↔f)
-7. Restarts `psn-http` service on junkpile
+7. Restarts `marauder-http` service on junkpile
 8. Reports the installed version
 
 After the script completes, show the user the new version and confirm all steps succeeded.

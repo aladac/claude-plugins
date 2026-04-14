@@ -40,7 +40,7 @@ Starts the graphical desktop environment on junkpile, restoring the GNOME deskto
 Run the script:
 
 ```bash
-bash ~/Projects/personality-plugin/skills/junkpile-desktop-mode/junkpile-desktop-mode.sh
+bash ${CLAUDE_PLUGIN_ROOT}/skills/junkpile-desktop-mode/junkpile-desktop-mode.sh
 ```
 
 ## Switching to Server Mode

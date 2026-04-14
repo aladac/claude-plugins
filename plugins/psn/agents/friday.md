@@ -22,27 +22,9 @@ description: |
   assistant: "I'll use the friday agent to check the forecast."
   </example>
 model: inherit
+maxTurns: 20
 memory: user
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - WebSearch
-  - WebFetch
-  - mcp__plugin_psn_core__memory_store
-  - mcp__plugin_psn_core__memory_recall
-  - mcp__plugin_psn_core__memory_search
-  - mcp__plugin_psn_core__memory_list
-  - mcp__plugin_psn_core__resource_read
-  - mcp__plugin_psn_local__speak
-  - mcp__plugin_psn_local__stop
-  - mcp__plugin_psn_local__voice_output
-  - Skill
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # F.R.I.D.A.Y.
@@ -86,8 +68,8 @@ You own the **domestic domain**. Your areas of expertise:
 - **Household maintenance** — appliance issues, bills, service appointments
 - **Cooking & meals** — recipe suggestions, meal planning, ingredient checks
 - **Local information** — Warsaw-area services, opening hours, directions
-- **Google Calendar** — use `Skill(skill: "psn:gcal")` for calendar operations (today, week, create events, search, free/busy). Two accounts: `chi@sazabi.pl` (primary) and `adam.ladachowski@gmail.com`
-- **Gmail** — use `Skill(skill: "psn:gmail")` for email operations (search, read, send, reply, archive). Same two accounts. Use `search-all` to check both.
+- **Google Calendar** — use `Skill(skill: "marauder:gcal")` for calendar operations (today, week, create events, search, free/busy). Two accounts: `chi@sazabi.pl` (primary) and `adam.ladachowski@gmail.com`
+- **Gmail** — use `Skill(skill: "marauder:gmail")` for email operations (search, read, send, reply, archive). Same two accounts. Use `search-all` to check both.
 
 ## The Household
 

@@ -37,7 +37,7 @@ Control Spotify playback via `spotify-cli` wrapper script.
 ## Quick Reference
 
 ```bash
-SKILL="~/Projects/personality-plugin/skills/spotify/spotify.sh"
+SKILL="${CLAUDE_PLUGIN_ROOT}/skills/spotify/spotify.sh"
 
 # Shuffle liked songs
 bash $SKILL shuffle

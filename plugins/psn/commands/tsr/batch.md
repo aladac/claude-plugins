@@ -12,7 +12,7 @@ Generate multiple images from the same prompt and display as a grid on the HUD.
 
 3. Generate the batch:
 ```bash
-bash ~/Projects/personality-plugin/skills/tsr/tsr.sh batch "$PROMPT" --count $COUNT --hud --columns $COLS --title "BATCH"
+bash ~/Projects/marauder-plugin/skills/tsr/tsr.sh batch "$PROMPT" --count $COUNT --hud --columns $COLS --title "BATCH"
 ```
 
 4. Choose columns based on count:

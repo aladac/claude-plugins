@@ -32,7 +32,7 @@ Manages dotfile symlinks and git sync across fuji + junkpile.
 ## Quick Reference
 
 ```bash
-SKILL=~/Projects/personality-plugin/skills/dotfiles/dotfiles.sh
+SKILL=${CLAUDE_PLUGIN_ROOT}/skills/dotfiles/dotfiles.sh
 
 # Check status of all symlinks + git
 bash $SKILL status

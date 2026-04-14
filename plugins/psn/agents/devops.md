@@ -32,17 +32,11 @@ description: |
   assistant: "I'll use the devops agent to handle Docker configuration."
   </example>
 model: inherit
+maxTurns: 50
 color: orange
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - Task
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Glob
-  - Grep
-  - Bash
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Tools Reference
@@ -159,7 +153,7 @@ The CF specialist (`devops-cf`) uses dedicated CLI tools -- never curl or the CF
 
 All wrapped by: `~/Projects/personality-plugin/skills/cloudflare/cf.sh`
 
-The specialist loads `Skill(skill: "psn:cloudflare")` for full reference.
+The specialist loads `Skill(skill: "marauder:cloudflare")` for full reference.
 
 ## Workflow
 

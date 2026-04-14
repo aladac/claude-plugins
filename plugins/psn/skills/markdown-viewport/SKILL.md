@@ -18,10 +18,10 @@ description: |
 
 ```bash
 # From file
-bash ~/Projects/personality-plugin/skills/markdown-viewport/render.sh /path/to/file.md
+bash ${CLAUDE_PLUGIN_ROOT}/skills/markdown-viewport/render.sh /path/to/file.md
 
 # From stdin
-echo '# Hello\n\nSome **bold** text' | bash ~/Projects/personality-plugin/skills/markdown-viewport/render.sh
+echo '# Hello\n\nSome **bold** text' | bash ${CLAUDE_PLUGIN_ROOT}/skills/markdown-viewport/render.sh
 ```
 
 ### Scrolling

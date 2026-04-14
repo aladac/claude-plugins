@@ -21,22 +21,11 @@ description: |
   assistant: "I'll use the code-rust agent to diagnose and fix the lifetime issue."
   </example>
 model: inherit
+maxTurns: 50
 color: orange
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - Skill
-  - mcp__plugin_psn_indexer__index_search
-  - mcp__plugin_psn_indexer__index_status
-  - mcp__plugin_psn_indexer__index_code
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Startup: Index First, Read Second
@@ -79,15 +68,15 @@ This saves massive startup time — the index already knows where everything is.
 | `Skill` | Load coding rules and patterns |
 
 ## Related Skills
-- `Skill(skill: "psn:code:rust")` - Rust patterns
-- `Skill(skill: "psn:code:rust-test")` - Testing with nextest
-- `Skill(skill: "psn:code:rust-cli")` - CLI with clap
-- `Skill(skill: "psn:code:rust-dioxus")` - Dioxus GUI
-- `Skill(skill: "psn:code:rust-tooling")` - Cargo, sccache
-- `Skill(skill: "psn:code:common")` - Cross-language patterns
+- `Skill(skill: "marauder:code:rust")` - Rust patterns
+- `Skill(skill: "marauder:code:rust-test")` - Testing with nextest
+- `Skill(skill: "marauder:code:rust-cli")` - CLI with clap
+- `Skill(skill: "marauder:code:rust-dioxus")` - Dioxus GUI
+- `Skill(skill: "marauder:code:rust-tooling")` - Cargo, sccache
+- `Skill(skill: "marauder:code:common")` - Cross-language patterns
 
 ## Cross-Machine Tools
-- `Skill(skill: "psn:cargo")` - Cross-machine Cargo operations
+- `Skill(skill: "marauder:cargo")` - Cross-machine Cargo operations
 
 ---
 
@@ -179,7 +168,7 @@ ssh j "source ~/.cargo/env && cd ~/project && cargo build --release"
 scp j:~/project/target/release/binary ./
 ```
 
-Prefer `Skill(skill: "psn:cargo")` for cross-machine cargo commands — it handles host detection automatically.
+Prefer `Skill(skill: "marauder:cargo")` for cross-machine cargo commands — it handles host detection automatically.
 
 **For CI/CD**, use GitHub Actions with `ubuntu-latest` or build on junkpile directly.
 

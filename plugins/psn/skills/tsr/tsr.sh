@@ -29,34 +29,24 @@ hud_show_image() {
     return 0
   fi
 
-  # Resize for HUD (max 800px, JPEG 80%)
-  local thumb="/tmp/tsr-hud-thumb-$$.jpg"
-  sips -Z 800 --setProperty format jpeg --setProperty formatOptions 80 "$file" --out "$thumb" >/dev/null 2>&1
-
-  # Use env vars + json.dumps for safe string escaping (no shell injection)
+  # POST to visor /image endpoint — supports file:// paths directly
   HUD_TITLE="$title" HUD_CAPTION="$caption" HUD_CLASS="$classification" \
-  HUD_TINT="$tint" HUD_THUMB="$thumb" HUD_URL="$HUD_URL" \
+  HUD_TINT="$tint" HUD_FILE="$file" HUD_URL="$HUD_URL" \
   python3 << 'PYEOF'
-import json, base64, urllib.request, os
+import json, urllib.request, os
 
-thumb = os.environ["HUD_THUMB"]
-with open(thumb, "rb") as f:
-    b64 = base64.b64encode(f.read()).decode()
-
-src = f"data:image/jpeg;base64,{b64}"
-title = json.dumps(os.environ.get("HUD_TITLE", "IMAGE"))
-caption = json.dumps(os.environ.get("HUD_CAPTION", ""))
-classification = json.dumps(os.environ.get("HUD_CLASS", "[ GENERATED ]"))
-tint = os.environ.get("HUD_TINT", "true")
-
-script = f'window.PSN.showImage("{src}", {{title: {title}, caption: {caption}, classification: {classification}, tint: {tint}}})'
-payload = json.dumps({"script": script}).encode()
+payload = json.dumps({
+    "source": f"file://{os.environ['HUD_FILE']}",
+    "title": os.environ.get("HUD_TITLE", "IMAGE") or None,
+    "caption": os.environ.get("HUD_CAPTION", "") or None,
+    "classification": os.environ.get("HUD_CLASS", "[ GENERATED ]") or None,
+    "tint": os.environ.get("HUD_TINT", "true") == "true",
+}).encode()
 
 url = os.environ.get("HUD_URL", "http://127.0.0.1:9876")
-req = urllib.request.Request(f"{url}/eval", data=payload, headers={"Content-Type": "application/json"})
+req = urllib.request.Request(f"{url}/image", data=payload, headers={"Content-Type": "application/json"})
 urllib.request.urlopen(req)
 PYEOF
-  rm -f "$thumb"
 }
 
 hud_show_grid() {
@@ -68,43 +58,26 @@ hud_show_grid() {
     return 0
   fi
 
-  # Build JSON array of images, safely escaped via json.dumps
+  # POST to visor /image/grid endpoint — supports file:// paths directly
   python3 - "${files[@]}" << 'PYEOF'
-import json, base64, urllib.request, subprocess, sys, os
+import json, urllib.request, sys, os
 
 files = sys.argv[1:]
 images = []
 for f in files:
-    thumb = f"/tmp/tsr-grid-{os.getpid()}-{len(images)}.jpg"
-    subprocess.run(["sips", "-Z", "512", "--setProperty", "format", "jpeg",
-                    "--setProperty", "formatOptions", "75", f, "--out", thumb],
-                   capture_output=True)
-    with open(thumb, "rb") as fh:
-        b64 = base64.b64encode(fh.read()).decode()
     caption = os.path.basename(f).rsplit(".", 1)[0]
-    images.append({"src": f"data:image/jpeg;base64,{b64}", "caption": caption})
-    os.remove(thumb)
+    images.append({"source": f"file://{os.path.abspath(f)}", "caption": caption})
 
-opts = {}
-title = os.environ.get("GRID_TITLE", "GALLERY")
-classification = os.environ.get("GRID_CLASS", "[ GENERATED ]")
-tint = os.environ.get("GRID_TINT", "true") == "true"
-cols = os.environ.get("GRID_COLUMNS", "")
-
-opts["title"] = title
-opts["classification"] = classification
-opts["tint"] = tint
-if cols:
-    opts["columns"] = int(cols)
-
-data = json.dumps(images)
-opts_js = json.dumps(opts)
-# Convert Python dict to JS object literal (keys unquoted is fine, JSON works in JS)
-script = f"window.PSN.showImageGrid({data}, {opts_js})"
-payload = json.dumps({"script": script}).encode()
+payload = json.dumps({
+    "images": images,
+    "title": os.environ.get("GRID_TITLE", "GALLERY") or None,
+    "classification": os.environ.get("GRID_CLASS", "[ GENERATED ]") or None,
+    "tint": os.environ.get("GRID_TINT", "true") == "true",
+    "columns": int(os.environ["GRID_COLUMNS"]) if os.environ.get("GRID_COLUMNS") else None,
+}).encode()
 
 url = os.environ.get("HUD_URL", "http://127.0.0.1:9876")
-req = urllib.request.Request(f"{url}/eval", data=payload, headers={"Content-Type": "application/json"})
+req = urllib.request.Request(f"{url}/image/grid", data=payload, headers={"Content-Type": "application/json"})
 urllib.request.urlopen(req)
 PYEOF
 }

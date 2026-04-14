@@ -21,22 +21,11 @@ description: |
   assistant: "I'll use the code-ruby agent to diagnose the test failure."
   </example>
 model: inherit
+maxTurns: 50
 color: red
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - Skill
-  - mcp__plugin_psn_indexer__index_search
-  - mcp__plugin_psn_indexer__index_status
-  - mcp__plugin_psn_indexer__index_code
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Startup: Index First, Read Second
@@ -79,16 +68,16 @@ This saves massive startup time — the index already knows where everything is.
 | `Skill` | Load coding rules and patterns |
 
 ## Related Skills
-- `Skill(skill: "psn:code:ruby")` - Ruby patterns
-- `Skill(skill: "psn:code:ruby-test")` - RSpec/Minitest
-- `Skill(skill: "psn:code:ruby-rails")` - Rails patterns
-- `Skill(skill: "psn:code:ruby-gem")` - Gem development
-- `Skill(skill: "psn:code:ruby-tooling")` - Bundler, Rubocop
-- `Skill(skill: "psn:code:common")` - Cross-language patterns
+- `Skill(skill: "marauder:code:ruby")` - Ruby patterns
+- `Skill(skill: "marauder:code:ruby-test")` - RSpec/Minitest
+- `Skill(skill: "marauder:code:ruby-rails")` - Rails patterns
+- `Skill(skill: "marauder:code:ruby-gem")` - Gem development
+- `Skill(skill: "marauder:code:ruby-tooling")` - Bundler, Rubocop
+- `Skill(skill: "marauder:code:common")` - Cross-language patterns
 
 ## Cross-Machine Tools
-- `Skill(skill: "psn:ruby")` - Cross-machine Ruby (Homebrew-installed)
-- `Skill(skill: "psn:gem")` - Cross-machine RubyGems + gem exec
+- `Skill(skill: "marauder:ruby")` - Cross-machine Ruby (Homebrew-installed)
+- `Skill(skill: "marauder:gem")` - Cross-machine RubyGems + gem exec
 
 ---
 

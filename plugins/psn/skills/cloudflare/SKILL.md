@@ -42,8 +42,8 @@ Unified CLI for all Cloudflare operations via `cf.sh`. Each module uses a specif
 ## Quick Reference
 
 ```bash
-CF="$HOME/Projects/personality-plugin/skills/cloudflare/cf.sh"
-CHECK="$HOME/Projects/personality-plugin/skills/cloudflare/cf-check.sh"
+CF="${CLAUDE_PLUGIN_ROOT}/skills/cloudflare/cf.sh"
+CHECK="${CLAUDE_PLUGIN_ROOT}/skills/cloudflare/cf-check.sh"
 
 # ── Check ──
 bash $CHECK              # Verify setup on both fuji + junkpile

@@ -6,9 +6,9 @@
   },
   "plugins": [
     {
-      "name": "psn",
+      "name": "marauder",
       "source": "./",
-      "description": "Persona system with TTS, memory, semantic indexing, voice input, and multi-agent orchestration for Claude Code",
+      "description": "MARAUDER-OS command center — memory, TTS, indexer, personas, HUD, and multi-agent orchestration for Claude Code",
       "version": "0.1.0",
       "author": {
         "name": "aladac"

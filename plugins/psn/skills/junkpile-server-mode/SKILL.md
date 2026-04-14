@@ -41,7 +41,7 @@ Stops the graphical desktop environment on junkpile, freeing GPU memory and CPU 
 Run the script:
 
 ```bash
-bash ~/Projects/personality-plugin/skills/junkpile-server-mode/junkpile-server-mode.sh
+bash ${CLAUDE_PLUGIN_ROOT}/skills/junkpile-server-mode/junkpile-server-mode.sh
 ```
 
 ## Restoring Desktop

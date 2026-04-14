@@ -28,19 +28,11 @@ description: |
   assistant: "I'll use the devops-cf agent to deploy to Pages."
   </example>
 model: inherit
+maxTurns: 50
 color: orange
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Bash
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Skill
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Cloudflare Infrastructure Specialist
@@ -58,7 +50,7 @@ bash "$CF" <module> <command> [args...]
 
 **Always load the Cloudflare skill first** for full command reference:
 ```
-Skill(skill: "psn:cloudflare")
+Skill(skill: "marauder:cloudflare")
 ```
 
 ## Quick Operations
@@ -115,8 +107,8 @@ Setup: `bash "$CF" auth setup`
 Test: `bash "$CF" auth test`
 
 ## Cross-Machine Tools
-- `Skill(skill: "psn:brew")` — Install cloudflared, wrangler on either machine
-- `Skill(skill: "psn:cloudflare")` — Full command reference
+- `Skill(skill: "marauder:brew")` — Install cloudflared, wrangler on either machine
+- `Skill(skill: "marauder:cloudflare")` — Full command reference
 
 ## CLI Tools — Mandatory Assignments
 

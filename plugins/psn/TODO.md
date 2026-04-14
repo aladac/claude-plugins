@@ -1,63 +1,82 @@
-# TODO
+# marauder-plugin TODO
 
-## Phase 1: Fix Existing Agents
+## Phase 10 "Guncannon" — Plugin Scaffold (~1.5h cooperative)
 
-- [x] Fix `memory-curator.md` — add MCP memory tools to `tools:` frontmatter and update Tools Reference table
-- [x] Verify `core.md` — confirm MCP tools are correct (no changes expected)
+- [ ] Create `.claude-plugin/plugin.json` (name: "marauder")
+- [ ] Create `.claude-plugin/marketplace.json` (local-dev marketplace)
+- [ ] Create `.mcp.json` pointing to `marauder mcp --mode {core,indexer,local}`
+- [ ] Copy all config-only skills (~38 SKILL.md files) from personality-plugin
+- [ ] Copy all script-based skills (~19 with .sh/.rb/.py) from personality-plugin
+- [ ] Update hardcoded `~/Projects/personality-plugin` paths to `${CLAUDE_PLUGIN_ROOT}`
+- [ ] Create compiled skill SKILL.md stubs referencing `marauder skill <name>`
+- [ ] Copy prompts/ and templates/ directories
+- [ ] Create README.md and LICENSE.md
+- [ ] Verify: `claude plugin validate` passes
 
-## Phase 2: Port Skills
+## Phase 11 "Guntank" — Agent Migration (~45m cooperative)
 
-- [x] Restructure all skills to subdirectory format (`skills/name/SKILL.md`)
-- [x] Update `skills/memory/SKILL.md` — fix MCP tool name format
-- [x] Update `skills/session/SKILL.md` — fix MCP tool name format, add version field
-- [x] Port + fix `skills/indexer/SKILL.md` — third-person description, add examples
-- [x] Port `skills/cloudflare/SKILL.md` from psn-plugin
-- [x] Port `skills/plugin-management/SKILL.md` from psn-plugin
-- [x] Port `skills/code/` directory (27 skills) from psn-plugin as subdirectories
+- [ ] Copy all 23 agent .md files from personality-plugin
+- [ ] Bulk replace: `mcp__plugin_psn_core__` → `mcp__plugin_marauder_core__`
+- [ ] Bulk replace: `mcp__plugin_psn_indexer__` → `mcp__plugin_marauder_indexer__`
+- [ ] Bulk replace: `mcp__plugin_psn_local__` → `mcp__plugin_marauder_local__`
+- [ ] Bulk replace: `psn:` skill prefixes → `marauder:` in agent descriptions
+- [ ] Bulk replace: `psn` → `marauder` in agent body prompts (CLI references)
+- [ ] Validate: grep for any remaining `psn` references in agents/
+- [ ] Test: load plugin, verify agent tool lists resolve against .mcp.json
 
-## Phase 3: Port Coding Agents
+## Phase 12 "Ball" — Hook Migration (~1.5h cooperative)
 
-- [x] Port `agents/code-ruby.md` from psn-plugin
-- [x] Port `agents/code-python.md` from psn-plugin
-- [x] Port `agents/code-rust.md` from psn-plugin
-- [x] Port `agents/code-typescript.md` from psn-plugin
-- [x] Port `agents/code-dx.md` from psn-plugin
+- [ ] Create hooks/hooks.json with all `psn` → `marauder` CLI calls
+- [ ] Copy hud-layout.js unchanged
+- [ ] Copy hud-avatar.js unchanged
+- [ ] Copy hud-bootup.js unchanged (audit size — extract base64 assets if present)
+- [ ] Implement `marauder hooks hud-tool` in marauder-os (replaces hud-tool.sh Ruby JSON parsing)
+- [ ] Add `marauder hooks permission-request` (auto-approve mcp__plugin_marauder_* tools)
+- [ ] Add `marauder hooks pre-compact` / `marauder hooks post-compact`
+- [ ] Test: SessionStart, Stop, PreToolUse, PostToolUse all fire correctly
+- [ ] Test: TTS interrupt-check works on UserPromptSubmit
 
-## Phase 4: Port Utility Agents
+## Phase 13 "GM" — Compiled Skills in marauder-os (~2h cooperative)
 
-- [x] Port `agents/code-analyzer.md` from psn-plugin — add MCP index + memory tools
-- [x] Port `agents/docs.md` from psn-plugin — add MCP index tools
-- [x] Port `agents/draw.md` from psn-plugin
-- [x] Port `agents/hardware.md` from psn-plugin
-- [x] Port `agents/claude-admin.md` from psn-plugin
+- [ ] Create `src/skills/mod.rs` with SkillAction enum
+- [ ] Create `src/skills/cross_machine.rs` — Target enum, ToolPaths, detect_host(), run()
+- [ ] Implement `marauder skill brew <target> <args...>`
+- [ ] Implement `marauder skill cargo <target> <args...>`
+- [ ] Implement `marauder skill uv <target> <args...>`
+- [ ] Implement `marauder skill gem <target> <args...>`
+- [ ] Implement `marauder skill ruby <target> <args...>`
+- [ ] Implement `marauder skill screenshot <all|N|list|clean>`
+- [ ] Implement `marauder skill junkpile <server-mode|desktop-mode>`
+- [ ] Wire Command::Skill into main.rs dispatch
+- [ ] Update SKILL.md files in marauder-plugin to reference `marauder skill` commands
+- [ ] Test: `marauder skill brew local list` works on fuji
+- [ ] Test: `marauder skill cargo junkpile build --release` runs via SSH
 
-## Phase 5: Port Infrastructure Agents
+## Phase 14 "Nemo" — Command Migration (~45m cooperative)
 
-- [x] Port `agents/architect.md` from psn-plugin
-- [x] Port `agents/devops.md` from psn-plugin
-- [x] Port `agents/devops-cf.md` from psn-plugin
-- [x] Port `agents/devops-gh.md` from psn-plugin
-- [x] Port `agents/devops-net.md` from psn-plugin
-- [x] Port `agents/devops-tengu.md` from psn-plugin
+- [ ] Copy all command .md files from personality-plugin
+- [ ] Copy command .sh scripts (gac.sh, gacp.sh, gh/cleanup.sh)
+- [ ] Copy cf/ commands and scripts (14 files)
+- [ ] Copy tsr/ commands (5 files)
+- [ ] Update cf/ scripts: paths to `${CLAUDE_PLUGIN_ROOT}/skills/cloudflare/cf.sh`
+- [ ] Update any `psn` CLI references to `marauder`
+- [ ] Verify: all command .md files have valid frontmatter
 
-## Phase 6: Merge Dispatcher into core.md
+## Phase 15 "Rick Dias" — Cutover (~1h cooperative)
 
-- [x] Add Agent Registry table to `core.md`
-- [x] Add Routing Logic section (classify → detect language → dispatch)
-- [x] Add Language Detection table
-- [x] Add Parallel Execution Candidates
-- [x] Add Quick Reference routing table
+- [ ] Register marauder-plugin in Claude Code settings (local-dev marketplace)
+- [ ] Test with both plugins active (verify no tool name collisions)
+- [ ] Disable personality-plugin in Claude Code settings
+- [ ] Full integration test: agent dispatch, memory store/recall, TTS speak/stop
+- [ ] Full integration test: hook lifecycle, index search, skill execution
+- [ ] Update ~/.claude agent-memory paths if needed
+- [ ] Update marauder-hq CLAUDE.md ecosystem map
+- [ ] Update ~/Projects/CLAUDE.md project index
 
-## Phase 7: Port Commands
+## Post-Cutover
 
-- [x] Port `commands/index-code.md` from psn-plugin
-- [x] Port `commands/index-docs.md` from psn-plugin
-- [x] Port `commands/index-status.md` from psn-plugin
-- [x] Port `commands/cf/` directory (26 files) from psn-plugin
-- [x] Port `commands/plugins/` directory (8 files) from psn-plugin
-
-## Phase 8: Verify & Clean Up
-
-- [ ] Verify hooks.json references resolve to personality gem CLI
-- [ ] Verify prompts/intro.md works with session-start hook
-- [ ] Test agent discovery (all agents appear in /agents list)
+- [ ] Archive personality-plugin repository
+- [ ] Remove `psn-mcp` from PATH / uninstall personality gem
+- [ ] Audit hud-bootup.js for size reduction
+- [ ] Consider compiling more skills (cloudflare, cam, spotify) if shell versions cause issues
+- [ ] Push marauder-plugin to GitHub

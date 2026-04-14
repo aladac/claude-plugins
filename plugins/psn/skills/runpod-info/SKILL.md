@@ -21,7 +21,7 @@ Account info, balance, and billing on RunPod.
 ## Usage
 
 ```bash
-bash ~/Projects/personality-plugin/skills/runpod-info/runpod-info.sh <action>
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod-info/runpod-info.sh <action>
 ```
 
 ### Actions
@@ -36,11 +36,11 @@ bash ~/Projects/personality-plugin/skills/runpod-info/runpod-info.sh <action>
 
 ```bash
 # Full account info
-bash ~/Projects/personality-plugin/skills/runpod-info/runpod-info.sh account
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod-info/runpod-info.sh account
 
 # Check balance
-bash ~/Projects/personality-plugin/skills/runpod-info/runpod-info.sh balance
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod-info/runpod-info.sh balance
 
 # Billing history
-bash ~/Projects/personality-plugin/skills/runpod-info/runpod-info.sh billing
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod-info/runpod-info.sh billing
 ```

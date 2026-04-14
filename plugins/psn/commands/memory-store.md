@@ -4,7 +4,7 @@ description: Store information in persistent memory
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_psn_core__memory_store
+  - mcp__plugin_marauder_core__memory_store
 argument-hint: "<subject> <content>"
 ---
 
@@ -46,7 +46,7 @@ Claude shows spinner: "Storing memory..."
 Then: "Stored in 'user.preferences.theme'"
 
 ## Related
-- **Skill**: `Skill(skill: "psn:memory")` - Memory patterns
-- **Skill**: `Skill(skill: "psn:pretty-output")` - Output guidelines
-- **Agent**: `psn:memory-curator` - Memory cleanup
+- **Skill**: `Skill(skill: "marauder:memory")` - Memory patterns
+- **Skill**: `Skill(skill: "marauder:pretty-output")` - Output guidelines
+- **Agent**: `marauder:memory-curator` - Memory cleanup
 - **Commands**: `/memory:recall`, `/memory:search`

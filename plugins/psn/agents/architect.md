@@ -41,18 +41,13 @@ description: |
   </commentary>
   </example>
 model: inherit
+maxTurns: 100
 color: magenta
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Glob
-  - Grep
-  - WebSearch
-  - WebFetch
+disallowedTools:
+  - Bash
+  - Edit
 ---
 
 # Tools Reference

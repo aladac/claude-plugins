@@ -4,8 +4,8 @@ description: Search memories by subject
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_psn_core__memory_search
-  - mcp__plugin_psn_core__memory_list
+  - mcp__plugin_marauder_core__memory_search
+  - mcp__plugin_marauder_core__memory_list
 argument-hint: "[subject-pattern]"
 ---
 
@@ -66,7 +66,7 @@ Memories in 'user.preferences':
 ```
 
 ## Related
-- **Skill**: `Skill(skill: "psn:memory")` - Memory patterns
-- **Skill**: `Skill(skill: "psn:pretty-output")` - Output guidelines
-- **Agent**: `psn:memory-curator` - Memory cleanup
+- **Skill**: `Skill(skill: "marauder:memory")` - Memory patterns
+- **Skill**: `Skill(skill: "marauder:pretty-output")` - Output guidelines
+- **Agent**: `marauder:memory-curator` - Memory cleanup
 - **Commands**: `/memory:store`, `/memory:recall`

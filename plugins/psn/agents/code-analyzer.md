@@ -22,21 +22,13 @@ description: |
   assistant: "I'll use the code-analyzer agent to analyze error handling across the project."
   </example>
 model: opus
+maxTurns: 50
 memory: user
+initialPrompt: "Start by running index_status() to see what's indexed, then proceed with the task."
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Glob
-  - Grep
-  - mcp__plugin_psn_indexer__index_search
-  - mcp__plugin_psn_indexer__index_code
-  - mcp__plugin_psn_indexer__index_docs
-  - mcp__plugin_psn_indexer__index_status
-  - mcp__plugin_psn_indexer__index_clear
-  - mcp__plugin_psn_core__memory_store
-  - mcp__plugin_psn_core__memory_recall
+# tools: omitted — inherits all available tools (base + all MCP)
+disallowedTools:
+  - Bash
 ---
 
 # Tools Reference
@@ -50,17 +42,17 @@ tools:
 ## MCP Tools (Indexer)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_psn_indexer__index_search` | Semantic search indexed content |
-| `mcp__plugin_psn_indexer__index_code` | Index source code files |
-| `mcp__plugin_psn_indexer__index_docs` | Index documentation files |
-| `mcp__plugin_psn_indexer__index_status` | Check indexing status |
-| `mcp__plugin_psn_indexer__index_clear` | Clear index for project |
+| `mcp__plugin_marauder_indexer__index_search` | Semantic search indexed content |
+| `mcp__plugin_marauder_indexer__index_code` | Index source code files |
+| `mcp__plugin_marauder_indexer__index_docs` | Index documentation files |
+| `mcp__plugin_marauder_indexer__index_status` | Check indexing status |
+| `mcp__plugin_marauder_indexer__index_clear` | Clear index for project |
 
 ## MCP Tools (Memory)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_psn_core__memory_store` | Store analysis findings |
-| `mcp__plugin_psn_core__memory_recall` | Recall previous findings |
+| `mcp__plugin_marauder_core__memory_store` | Store analysis findings |
+| `mcp__plugin_marauder_core__memory_recall` | Recall previous findings |
 
 ## Built-in Tools
 | Tool | Purpose |
@@ -77,9 +69,9 @@ tools:
 | `/index:status` | Check indexing status |
 
 ## Related Skills
-- `Skill(skill: "psn:indexer")` - Indexing best practices
-- `Skill(skill: "psn:memory")` - Memory patterns
-- `Skill(skill: "psn:pretty-output")` - Pretty output guidelines
+- `Skill(skill: "marauder:indexer")` - Indexing best practices
+- `Skill(skill: "marauder:memory")` - Memory patterns
+- `Skill(skill: "marauder:pretty-output")` - Pretty output guidelines
 
 ---
 

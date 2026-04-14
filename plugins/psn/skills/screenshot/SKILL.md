@@ -1,65 +1,66 @@
 ---
 name: Screenshot
 description: |
-  Capture macOS screenshots of any display. Useful for verifying HUD state, debugging UI, or documenting visual output.
+  Multi-display screenshot capture for macOS. Detects all connected displays and captures each separately. Use to verify UI state, check the HUD, debug visual output, or see what's on any screen.
 
   <example>
-  Context: User wants to see the HUD
-  user: "screenshot the hud"
+  Context: User asks to check something visual
+  user: "screenshot and check"
   </example>
 
   <example>
-  Context: User wants to capture a specific display
-  user: "take a screenshot of display 2"
+  Context: User wants a specific display
+  user: "screenshot display 3"
   </example>
 
   <example>
-  Context: User wants to see all screens
-  user: "screenshot all displays"
+  Context: Need to verify a UI change
+  user: "take a screenshot to confirm"
   </example>
 ---
 
-## Screenshot Capture
+# Screenshot Skill
 
-Use `screencapture` to capture macOS displays. The PSN HUD runs on **display 2**.
+Captures macOS displays using `screencapture`. Auto-detects display count.
+
+## Usage
+
+```bash
+bash ${CLAUDE_PLUGIN_ROOT}/skills/screenshot/screenshot.sh [command]
+```
 
 ### Commands
 
-```bash
-# Capture a specific display (1-indexed)
-screencapture -x -D<number> /tmp/screenshot.png
-
-# Capture all displays into separate files
-screencapture -x /tmp/screen-all.png
-
-# Capture main display only
-screencapture -x -D1 /tmp/screen-main.png
-```
-
-### Display Map
-
-| Display | Resolution | Content |
-|---------|-----------|---------|
-| 1 | 5120x2880 (5K) | Main display |
-| 2 | 3024x1964 (Retina) | PSN HUD (fullscreen Tauri) |
-| 3 | 5120x2880 (5K) | Secondary monitor |
+| Command | Description |
+|---------|-------------|
+| `all` | Capture all displays (default) |
+| `<N>` | Capture display N only (1-indexed) |
+| `list` | Show connected displays and resolutions |
+| `clean` | Remove captured screenshots |
 
 ### Workflow
 
-1. Run `screencapture -x -D<N> /tmp/screenshot.png`
-2. Read the file with the Read tool to view it
-3. Describe what you see to the Pilot
+1. Run `bash screenshot.sh all` to capture every display
+2. Read output to find file paths
+3. Use the `Read` tool on each file to view them
+4. Pick the relevant display and describe what you see
 
-### Flags
+### Examples
 
-- `-x` — no screenshot sound
-- `-D<N>` — target display number
-- `-R<x,y,w,h>` — capture a region
-- `-l<windowID>` — capture specific window
+```bash
+# Capture all displays
+bash ${CLAUDE_PLUGIN_ROOT}/skills/screenshot/screenshot.sh all
 
-### Notes
+# Capture only display 3 (where Kitty usually is)
+bash ${CLAUDE_PLUGIN_ROOT}/skills/screenshot/screenshot.sh 3
 
-- Always use `-x` to suppress the shutter sound
-- After capturing, use `Read` tool to view the image — Claude Code is multimodal
-- For HUD verification, always capture display 2
-- Screenshots are temporary — write to `/tmp/`
+# Check what displays are connected
+bash ${CLAUDE_PLUGIN_ROOT}/skills/screenshot/screenshot.sh list
+```
+
+## Notes
+
+- Files written to `/tmp/psn-screenshots/` with timestamps
+- Always uses `-x` flag (no shutter sound)
+- After capturing, use `Read` tool to view — Claude Code is multimodal
+- Run `clean` to purge old screenshots

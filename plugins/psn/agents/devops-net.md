@@ -28,18 +28,11 @@ description: |
   assistant: "I'll use the devops-net agent to troubleshoot NAS connectivity via junkpile."
   </example>
 model: inherit
+maxTurns: 50
 color: orange
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Bash
-  - Read
-  - Write
-  - Glob
-  - Grep
-  - Edit
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Network Infrastructure Specialist

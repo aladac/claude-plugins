@@ -32,7 +32,7 @@ Search, read, send, and manage Gmail via `gog` CLI (gogcli). Multi-account suppo
 ## Quick Reference
 
 ```bash
-SKILL=~/Projects/personality-plugin/skills/gmail/gmail.sh
+SKILL=${CLAUDE_PLUGIN_ROOT}/skills/gmail/gmail.sh
 
 # Search default account (chi@sazabi.pl)
 bash $SKILL search "from:linkedin subject:engineer"

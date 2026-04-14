@@ -22,10 +22,10 @@ Manages RubyGems across fuji and junkpile transparently. Includes an `exec` subc
 
 ```bash
 # Standard gem commands
-bash ~/Projects/personality-plugin/skills/gem/gem.sh <target> <gem-args...>
+bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh <target> <gem-args...>
 
 # Run a gem-installed executable
-bash ~/Projects/personality-plugin/skills/gem/gem.sh <target> exec <executable> [args...]
+bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh <target> exec <executable> [args...]
 ```
 
 ### Target
@@ -41,19 +41,19 @@ bash ~/Projects/personality-plugin/skills/gem/gem.sh <target> exec <executable> 
 
 ```bash
 # Install a gem on both machines
-bash ~/Projects/personality-plugin/skills/gem/gem.sh both install puma
+bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh both install puma
 
 # List installed gems on junkpile
-bash ~/Projects/personality-plugin/skills/gem/gem.sh junkpile list
+bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh junkpile list
 
 # Run a gem executable (e.g. psn-mcp) on junkpile
-bash ~/Projects/personality-plugin/skills/gem/gem.sh junkpile exec psn-mcp --help
+bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh junkpile exec psn-mcp --help
 
 # Run puma on fuji
-bash ~/Projects/personality-plugin/skills/gem/gem.sh fuji exec puma -p 3000
+bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh fuji exec puma -p 3000
 
 # Update a gem on both
-bash ~/Projects/personality-plugin/skills/gem/gem.sh both update psn
+bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh both update psn
 ```
 
 ## Machine Reference

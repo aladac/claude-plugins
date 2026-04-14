@@ -32,7 +32,7 @@ Build and manage Adam's LaTeX CV, cover letters, and skill pill images.
 ## Quick Reference
 
 ```bash
-SKILL=~/Projects/personality-plugin/skills/latex/latex.sh
+SKILL=${CLAUDE_PLUGIN_ROOT}/skills/latex/latex.sh
 
 # Build CV
 bash $SKILL build-cv

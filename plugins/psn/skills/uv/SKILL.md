@@ -21,7 +21,7 @@ Manages uv (Astral Python toolchain) across fuji and junkpile transparently.
 ## Usage
 
 ```bash
-bash ~/Projects/personality-plugin/skills/uv/uv.sh <target> <uv-args...>
+bash ${CLAUDE_PLUGIN_ROOT}/skills/uv/uv.sh <target> <uv-args...>
 ```
 
 ### Target
@@ -37,16 +37,16 @@ bash ~/Projects/personality-plugin/skills/uv/uv.sh <target> <uv-args...>
 
 ```bash
 # Install a tool locally
-bash ~/Projects/personality-plugin/skills/uv/uv.sh local tool install ruff
+bash ${CLAUDE_PLUGIN_ROOT}/skills/uv/uv.sh local tool install ruff
 
 # Pip install on junkpile
-bash ~/Projects/personality-plugin/skills/uv/uv.sh junkpile pip install torch
+bash ${CLAUDE_PLUGIN_ROOT}/skills/uv/uv.sh junkpile pip install torch
 
 # Check versions on both
-bash ~/Projects/personality-plugin/skills/uv/uv.sh both --version
+bash ${CLAUDE_PLUGIN_ROOT}/skills/uv/uv.sh both --version
 
 # Create venv on fuji
-bash ~/Projects/personality-plugin/skills/uv/uv.sh fuji venv .venv
+bash ${CLAUDE_PLUGIN_ROOT}/skills/uv/uv.sh fuji venv .venv
 ```
 
 ## Machine Reference

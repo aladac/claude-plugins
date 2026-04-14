@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# Render markdown on the PSN HUD viewport — GitHub Dark theme
+# Render markdown on the marauder-visor viewport
+# TODO: This script uses the old Tauri webview canvas API (POST /eval + window.PSN.canvas).
+#       The visor is now a Ratatui TUI — this needs a full rewrite to use visor endpoints.
+#       For now, falls back to logging a message. See: marauder-visor POST /code, POST /log
 # Usage: render.sh [file.md]
 # Or:    echo '# Title' | render.sh
 
@@ -9,6 +12,12 @@ BRIDGE="http://127.0.0.1:9876"
 FILE="${1:-}"
 
 curl -sf "$BRIDGE/status" >/dev/null 2>&1 || { echo "HUD not available"; exit 1; }
+
+# TEMPORARY: Log that markdown viewport is deferred until visor gets native markdown support
+echo "Markdown viewport deferred — visor needs native markdown rendering (Phase 5+)"
+curl -s -X POST "$BRIDGE/log" -H 'Content-Type: application/json' \
+  -d '{"segments":[{"text":"Markdown","color":"#ffaa00","bold":true},{"text":"  viewport deferred — needs visor rewrite","color":"#668877"}]}' >/dev/null 2>&1
+exit 0
 
 TMPMD=$(mktemp)
 trap "rm -f $TMPMD" EXIT

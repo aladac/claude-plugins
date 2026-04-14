@@ -463,7 +463,10 @@ cat > "$JS_FILE" <<'JS'
 })();
 JS
 
-ESCAPED=$(python3 -c "import json; print(json.dumps(open('$JS_FILE').read()))")
-curl -sf -X POST "$HUD/eval" -H 'Content-Type: application/json' -d "{\"script\": $ESCAPED}" >/dev/null
+# TODO: Phase 5 — port loadout animation to ratatui Canvas widget
+# For now, the JS file exists but eval endpoint is gone. Log and skip.
+echo "Loadout display deferred — marauder-visor Phase 5 (ratatui Canvas port)"
+curl -s -X POST "$HUD/log" -H 'Content-Type: application/json' \
+  -d '{"segments":[{"text":"Loadout","color":"#ffaa00","bold":true},{"text":"  display deferred to Phase 5","color":"#668877"}]}' >/dev/null 2>&1
 
-echo "Loadout displayed"
+echo "Loadout logged"

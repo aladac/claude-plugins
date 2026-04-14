@@ -27,7 +27,7 @@ Capture the EVE Online game window for visual analysis.
 ## Quick Reference
 
 ```bash
-SKILL="~/Projects/personality-plugin/skills/eve-screen/eve-screen.rb"
+SKILL="${CLAUDE_PLUGIN_ROOT}/skills/eve-screen/eve-screen.rb"
 
 # Capture game window (timestamped, returns path)
 ruby $SKILL capture

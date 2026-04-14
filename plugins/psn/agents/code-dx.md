@@ -29,22 +29,11 @@ description: |
   assistant: "Let me use the code-dx agent to help with Dioxus SDK integration for native functionality."
   </example>
 model: inherit
+maxTurns: 50
 color: cyan
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - Skill
-  - mcp__plugin_psn_indexer__index_search
-  - mcp__plugin_psn_indexer__index_status
-  - mcp__plugin_psn_indexer__index_code
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Startup: Index First, Read Second
@@ -87,14 +76,14 @@ This saves massive startup time — the index already knows where everything is.
 | `Skill` | Load Dioxus-specific guidance |
 
 ## Related Skills
-- `Skill(skill: "psn:code:rust")` - Rust patterns
-- `Skill(skill: "psn:code:rust-dioxus")` - Dioxus patterns
-- `Skill(skill: "psn:code:dioxus-inspector")` - MCP debugging
-- `Skill(skill: "psn:code:dioxus-debug")` - Debug workflows
-- `Skill(skill: "psn:code:common")` - Cross-language patterns
+- `Skill(skill: "marauder:code:rust")` - Rust patterns
+- `Skill(skill: "marauder:code:rust-dioxus")` - Dioxus patterns
+- `Skill(skill: "marauder:code:dioxus-inspector")` - MCP debugging
+- `Skill(skill: "marauder:code:dioxus-debug")` - Debug workflows
+- `Skill(skill: "marauder:code:common")` - Cross-language patterns
 
 ## Cross-Machine Tools
-- `Skill(skill: "psn:cargo")` - Cross-machine Cargo operations
+- `Skill(skill: "marauder:cargo")` - Cross-machine Cargo operations
 
 ---
 
@@ -582,7 +571,7 @@ When connected, Claude Code gains these tools via `mcp__dioxus__*`:
 
 The embedded bridge exposes these endpoints on `http://127.0.0.1:{port}`:
 - `GET /status` - App info (name, PID, uptime)
-- `POST /eval` - Execute JS script
+- `POST /code` - Display syntax-highlighted code in viewport
 - `POST /query` - Query elements (text/html/all)
 - `GET /dom` - Get simplified DOM tree
 - `POST /inspect` - Visibility analysis

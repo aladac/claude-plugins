@@ -21,7 +21,7 @@ Manages Homebrew-installed Ruby across fuji and junkpile transparently.
 ## Usage
 
 ```bash
-bash ~/Projects/personality-plugin/skills/ruby/ruby.sh <target> <ruby-args...>
+bash ${CLAUDE_PLUGIN_ROOT}/skills/ruby/ruby.sh <target> <ruby-args...>
 ```
 
 ### Target
@@ -37,13 +37,13 @@ bash ~/Projects/personality-plugin/skills/ruby/ruby.sh <target> <ruby-args...>
 
 ```bash
 # Check version on both
-bash ~/Projects/personality-plugin/skills/ruby/ruby.sh both --version
+bash ${CLAUDE_PLUGIN_ROOT}/skills/ruby/ruby.sh both --version
 
 # Run a script on junkpile
-bash ~/Projects/personality-plugin/skills/ruby/ruby.sh junkpile script.rb
+bash ${CLAUDE_PLUGIN_ROOT}/skills/ruby/ruby.sh junkpile script.rb
 
 # One-liner on fuji
-bash ~/Projects/personality-plugin/skills/ruby/ruby.sh fuji -e "puts RUBY_PLATFORM"
+bash ${CLAUDE_PLUGIN_ROOT}/skills/ruby/ruby.sh fuji -e "puts RUBY_PLATFORM"
 ```
 
 ## Machine Reference

@@ -28,18 +28,11 @@ description: |
   assistant: "I'll use the devops-gh agent to diagnose the workflow failure."
   </example>
 model: inherit
+maxTurns: 50
 color: orange
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Bash
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Tools Reference

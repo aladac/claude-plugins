@@ -27,7 +27,7 @@ Detect and interact with the EVE Online client on macOS.
 ## Quick Reference
 
 ```bash
-SKILL="~/Projects/personality-plugin/skills/eve-client/eve-client.rb"
+SKILL="${CLAUDE_PLUGIN_ROOT}/skills/eve-client/eve-client.rb"
 
 # Check if EVE is running
 ruby $SKILL status

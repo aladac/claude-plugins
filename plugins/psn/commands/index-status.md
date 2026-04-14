@@ -4,7 +4,7 @@ description: Show indexing status and statistics
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_psn_indexer__status
+  - mcp__plugin_marauder_indexer__status
 argument-hint: "[--project name]"
 ---
 
@@ -59,6 +59,6 @@ Total: 428 chunks
 ```
 
 ## Related
-- **Skill**: `Skill(skill: "psn:indexer")` - Indexing best practices
-- **Skill**: `Skill(skill: "psn:pretty-output")` - Output guidelines
+- **Skill**: `Skill(skill: "marauder:indexer")` - Indexing best practices
+- **Skill**: `Skill(skill: "marauder:pretty-output")` - Output guidelines
 - **Commands**: `/index:code`, `/index:docs`

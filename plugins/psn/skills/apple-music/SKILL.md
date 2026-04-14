@@ -32,7 +32,7 @@ Control Apple Music via `osascript` (AppleScript). Zero dependencies — built i
 ## Quick Reference
 
 ```bash
-SKILL="~/Projects/personality-plugin/skills/apple-music/apple-music.sh"
+SKILL="${CLAUDE_PLUGIN_ROOT}/skills/apple-music/apple-music.sh"
 
 # Play / resume
 bash $SKILL play

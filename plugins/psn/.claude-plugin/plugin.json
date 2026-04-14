@@ -1,14 +1,15 @@
 {
-  "name": "psn",
-  "version": "0.1.6-5f6d86e",
-  "description": "Persona system with TTS, memory, semantic indexing, voice input, and multi-agent orchestration for Claude Code",
+  "name": "marauder",
+  "version": "0.1.0",
+  "description": "MARAUDER-OS command center — memory, TTS, indexer, personas, HUD, and multi-agent orchestration for Claude Code",
   "author": {
     "name": "aladac",
     "email": "adam@saiden.dev"
   },
-  "repository": "https://github.com/aladac/personality-plugin",
-  "license": "MIT",
+  "repository": "https://github.com/aladac/marauder-plugin",
+  "license": "PolyForm-Small-Business-1.0.0",
   "keywords": [
+    "marauder",
     "tts",
     "persona",
     "memory",
@@ -16,6 +17,7 @@
     "agents",
     "indexer",
     "piper",
-    "session"
+    "hud",
+    "visor"
   ]
 }

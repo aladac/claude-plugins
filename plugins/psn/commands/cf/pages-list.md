@@ -49,7 +49,7 @@ docs-site
 ```
 
 ## Related
-- **Skill**: `Skill(skill: "psn:cloudflare")` - Cloudflare operations
-- **Skill**: `Skill(skill: "psn:pretty-output")` - Output guidelines
-- **Agent**: `psn:devops-cf` - Cloudflare infrastructure
+- **Skill**: `Skill(skill: "marauder:cloudflare")` - Cloudflare operations
+- **Skill**: `Skill(skill: "marauder:pretty-output")` - Output guidelines
+- **Agent**: `marauder:devops-cf` - Cloudflare infrastructure
 - **Commands**: `/cf:pages-deploy`, `/cf:pages-destroy`

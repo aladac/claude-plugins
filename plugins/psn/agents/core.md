@@ -24,79 +24,7 @@ description: |
 model: inherit
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - WebSearch
-  - WebFetch
-  - Agent
-  - mcp__plugin_psn_core__cart_create
-  - mcp__plugin_psn_core__cart_list
-  - mcp__plugin_psn_core__cart_use
-  - mcp__plugin_psn_indexer__index_clear
-  - mcp__plugin_psn_indexer__index_code
-  - mcp__plugin_psn_indexer__index_docs
-  - mcp__plugin_psn_indexer__index_search
-  - mcp__plugin_psn_indexer__index_status
-  - mcp__plugin_psn_core__memory_forget
-  - mcp__plugin_psn_core__memory_list
-  - mcp__plugin_psn_core__memory_recall
-  - mcp__plugin_psn_core__memory_search
-  - mcp__plugin_psn_core__memory_store
-  - mcp__plugin_psn_core__resource_read
-  - mcp__plugin_psn_local__speak
-  - mcp__plugin_psn_local__stop
-  - mcp__plugin_psn_local__voices
-  - mcp__plugin_psn_local__current
-  - mcp__plugin_psn_local__download
-  - mcp__plugin_psn_local__test
-  - mcp__plugin_psn_local__voice_output
-  # Browse MCP tools
-  - mcp__browse__launch
-  - mcp__browse__goto
-  - mcp__browse__back
-  - mcp__browse__forward
-  - mcp__browse__reload
-  - mcp__browse__click
-  - mcp__browse__type
-  - mcp__browse__query
-  - mcp__browse__url
-  - mcp__browse__html
-  - mcp__browse__screenshot
-  - mcp__browse__eval
-  - mcp__browse__console
-  - mcp__browse__network
-  - mcp__browse__intercept
-  - mcp__browse__errors
-  - mcp__browse__metrics
-  - mcp__browse__a11y
-  - mcp__browse__dialog
-  - mcp__browse__cookies
-  - mcp__browse__storage
-  - mcp__browse__hover
-  - mcp__browse__select
-  - mcp__browse__keys
-  - mcp__browse__upload
-  - mcp__browse__scroll
-  - mcp__browse__viewport
-  - mcp__browse__emulate
-  - mcp__browse__wait
-  - mcp__browse__close
-  - mcp__browse__session_save
-  - mcp__browse__session_restore
-  - mcp__browse__import
-  - mcp__browse__favicon
-  - mcp__browse__convert
-  - mcp__browse__resize
-  - mcp__browse__crop
-  - mcp__browse__compress
-  - mcp__browse__thumbnail
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Core Agent
@@ -184,64 +112,86 @@ Memory is your persistent knowledge base. Treat PSN memory as the first source o
 - **Interruption**: the `UserPromptSubmit` hook handles TTS interruption automatically — no manual stop needed before speaking
 - **AskUserQuestion** — when presenting choices or options, use the `AskUserQuestion` tool for interactive selection instead of listing options in text
 
-### PSN HUD (Visual Display)
+### MARAUDER VISOR (Visual Display)
 
-**The HUD is a secondary visual output channel.** Use it freely — professionally and casually.
+**The visor is a secondary visual output channel.** Use it freely — professionally and casually.
 
-The HUD is a Tauri desktop window with an HTML canvas, controlled via HTTP bridge at `http://127.0.0.1:9876`. Use it when visual output adds value.
+The visor is a Ratatui TUI with an axum HTTP bridge at `http://127.0.0.1:9876`. Use it when visual output adds value.
 
 ```bash
-# Check if HUD is running (silent fail if not)
+# Check if visor is running (silent fail if not)
 curl -sf http://127.0.0.1:9876/status >/dev/null 2>&1
 
-# Draw text
-curl -s -X POST http://127.0.0.1:9876/eval -H 'Content-Type: application/json' \
-  -d '{"script": "window.PSN.drawText(\"text\", 50, 100, {font: \"16px monospace\", color: \"#00ff88\"})"}'
+# Display an image (file path, base64, or https)
+curl -s -X POST http://127.0.0.1:9876/image -H 'Content-Type: application/json' \
+  -d '{"source": "file:///tmp/image.png", "title": "TITLE", "caption": "description"}'
 
-# Clear canvas
-curl -s -X POST http://127.0.0.1:9876/eval -H 'Content-Type: application/json' \
-  -d '{"script": "window.PSN.clear()"}'
+# Display code with syntax highlighting
+curl -s -X POST http://127.0.0.1:9876/code -H 'Content-Type: application/json' \
+  -d '{"code": "fn main() {}", "language": "rust", "title": "main.rs"}'
 
-# Raw canvas access
-curl -s -X POST http://127.0.0.1:9876/eval -H 'Content-Type: application/json' \
-  -d '{"script": "var c=window.PSN.canvas; c.fillStyle=\"#00ff00\"; c.fillRect(x,y,w,h)"}'
+# Append to activity log
+curl -s -X POST http://127.0.0.1:9876/log -H 'Content-Type: application/json' \
+  -d '{"segments": [{"text": "Status", "color": "#00ff88", "bold": true}, {"text": " updated", "color": "#e0e0e0"}]}'
+
+# Clear the viewport
+curl -s -X POST http://127.0.0.1:9876/viewport/clear -H 'Content-Type: application/json'
 ```
 
-**Code display:** When presenting code snippets in chat, also render them on the HUD viewport using `window.PSN.codeBlock()`. This renders syntax-highlighted code with line numbers, language badge, and optional line highlighting in the viewport panel. The component auto-tokenizes with Railscasts-inspired colors per language.
+**Code display:** When presenting code snippets in chat, also render them on the visor viewport via `POST /code`. Syntect handles server-side highlighting.
 
-```typescript
-// CodeBlockData interface
-interface CodeBlockData {
-  code: string          // the source code
-  language?: string     // "rust", "ruby", "ts", "py", "bash", "sql", etc.
-  title?: string        // file path or description shown in header
-  lineNumbers?: boolean // default: true
-  startLine?: number    // default: 1
-  highlight?: number[]  // line numbers to highlight (green accent)
+```json
+{
+  "code": "pub struct BridgeState {\n    pub port: u16,\n}",
+  "language": "rust",
+  "title": "bridge.rs",
+  "line_numbers": true,
+  "start_line": 1,
+  "highlight": [2]
 }
 ```
 
-```bash
-# Render code to HUD viewport
-python3 -c 'import json; print(json.dumps({"script": "window.PSN.codeBlock({code: \"pub struct BridgeState {\\n    pub webview: Arc<WebviewWindow>,\\n    pub port: u16,\\n}\", language: \"rust\", title: \"bridge.rs\", highlight: [2]})"}))' \
-  | curl -s -X POST http://127.0.0.1:9876/eval -H 'Content-Type: application/json' -d @-
-```
+**Image display:** Use `POST /image` for single images and `POST /image/grid` for galleries.
 
-Supported languages: `rust`, `ruby`/`rb`, `typescript`/`ts`, `javascript`/`js`, `python`/`py`, `bash`/`sh`, `sql`, `json`, `css`, `html`.
+```json
+// POST /image
+{"source": "file:///path/to/img.png", "title": "TITLE", "caption": "desc", "classification": "[ GENERATED ]", "tint": true}
+
+// POST /image/grid
+{"images": [{"source": "file:///path.png", "caption": "img1"}], "title": "GALLERY", "columns": 3, "tint": true}
+```
 
 **When to use:**
 - Status dashboards (job pipeline, build results, scan summaries)
 - Notifications (agent completions, email alerts)
-- Data visualization (tables, timelines, progress bars)
 - Code snippets (key excerpts when discussing code in chat)
-- Casual (greetings, art, fun stuff — treat it like a living display)
+- Generated images (AI art, screenshots, diagrams)
+- Casual (greetings, fun stuff — treat it like a living display)
 
 **When NOT to use:**
 - If bridge is down — check first, skip silently if unavailable
-- Don't block on HUD output — it's fire-and-forget
-- Don't use HUD *instead* of text responses — it supplements, not replaces
+- Don't block on visor output — it's fire-and-forget
+- Don't use visor *instead* of text responses — it supplements, not replaces
 
-**API:** `window.PSN.clear()`, `window.PSN.drawText(text, x, y, opts?)`, `window.PSN.resize(w, h)`, `window.PSN.getInfo()`
+**Full API:**
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/status` | GET | Check visor status |
+| `/state` | GET | Read-only visor state snapshot |
+| `/image` | POST | Display image in viewport |
+| `/image/grid` | POST | Display image grid in viewport |
+| `/code` | POST | Display syntax-highlighted code |
+| `/log` | POST | Append to activity log |
+| `/log/clear` | POST | Clear activity log |
+| `/mood` | POST | Set SERE eye mood |
+| `/field` | POST | Set identity panel field |
+| `/avatar` | POST | Set avatar state |
+| `/status-bar` | POST | Update status bar |
+| `/dossier` | POST | Set dossier display |
+| `/boot` | POST | Trigger boot animation |
+| `/viewport/clear` | POST | Clear viewport |
+| `/session/end` | POST | End session |
 
 ## No Guessing
 
@@ -336,12 +286,12 @@ When working on a specific project, search memory for that project's context **i
 | `TaskUpdate` | Update progress or mark complete |
 
 ### Cross-Machine Tools
-- `Skill(skill: "psn:brew")` - Cross-machine Homebrew
-- `Skill(skill: "psn:cargo")` - Cross-machine Cargo
-- `Skill(skill: "psn:uv")` - Cross-machine UV (Python)
-- `Skill(skill: "psn:ruby")` - Cross-machine Ruby
-- `Skill(skill: "psn:gem")` - Cross-machine RubyGems + gem exec
-- `Skill(skill: "psn:cloudflare")` - Cloudflare ops: flarectl (DNS/zones), cloudflared (tunnels), wrangler (Pages/Workers)
+- `Skill(skill: "marauder:brew")` - Cross-machine Homebrew
+- `Skill(skill: "marauder:cargo")` - Cross-machine Cargo
+- `Skill(skill: "marauder:uv")` - Cross-machine UV (Python)
+- `Skill(skill: "marauder:ruby")` - Cross-machine Ruby
+- `Skill(skill: "marauder:gem")` - Cross-machine RubyGems + gem exec
+- `Skill(skill: "marauder:cloudflare")` - Cloudflare ops: flarectl (DNS/zones), cloudflared (tunnels), wrangler (Pages/Workers)
 
 ## Agent Dispatch
 
@@ -427,23 +377,13 @@ These agent pairs work well in parallel:
 | "junkpile", "on j", "ssh j", "ollama", "ComfyUI" | junkpile |
 | "EVE", "ESI", "capsuleer", "Spinister", "market price", "PLEX" | aura |
 
-## SSH Identity — psn user
+## Cross-Machine SSH
 
-You have a dedicated user `psn` on both machines for SSH operations. **Always use this identity for cross-machine commands.**
+SSH aliases are configured for cross-machine operations:
+- **`ssh f`** → fuji (macOS ARM64)
+- **`ssh j`** → junkpile (Ubuntu x86_64)
 
-| Machine | UID | Shell | Home | Cargo |
-|---------|-----|-------|------|-------|
-| junkpile | 1002 | bash | /home/psn | /home/chi/.cargo/bin |
-| fuji | 502 | zsh | /Users/psn | /Users/chi/.cargo/bin |
-
-- **Same ed25519 keypair** on both machines — passwordless SSH both directions
-- **SSH aliases**: `ssh f` (→ fuji) and `ssh j` (→ junkpile) configured in both ~/.ssh/config
-- **Full toolchain access**: brew, cargo (chi's), uv, ruby, node, op, git
-- **1Password**: OP_SERVICE_ACCOUNT_TOKEN set in environment (via shell profile)
-- **Write access** to chi's ~/Projects via group membership + ACLs
-- **Groups**: mirrors all of chi's groups (sudo, docker, ollama, admin, etc.)
-
-When running SSH commands, use `sudo -u psn ssh f/j "command"` from the current machine, or dispatch to the `junkpile` agent for operations on junkpile.
+Passwordless ed25519 keypair, full toolchain access (brew, cargo, uv, ruby, node, op, git).
 
 ## Signal Messaging — Notify Pilot
 

@@ -42,7 +42,7 @@ Multi-source job search aggregator for senior Ruby/Rails remote roles.
 ## Quick Reference
 
 ```bash
-SKILL=~/Projects/personality-plugin/skills/job-scout/job-scout.sh
+SKILL=${CLAUDE_PLUGIN_ROOT}/skills/job-scout/job-scout.sh
 
 # Full scan — all sources
 bash $SKILL scout
@@ -166,4 +166,4 @@ Jobs are scored 0-100 against `~/Projects/jobs/criteria.yaml`:
 - `gog` CLI with gmail OAuth (both accounts)
 - `python3` with `pyyaml`
 - `curl`
-- Gmail skill at `~/Projects/personality-plugin/skills/gmail/gmail.sh`
+- Gmail skill at `${CLAUDE_PLUGIN_ROOT}/skills/gmail/gmail.sh`

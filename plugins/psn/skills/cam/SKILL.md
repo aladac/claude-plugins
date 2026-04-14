@@ -37,7 +37,7 @@ Control the Tapo C225 PTZ camera via the psn-cam Python CLI.
 ## Quick Reference
 
 ```bash
-SKILL="~/Projects/personality-plugin/skills/cam/cam.sh"
+SKILL="${CLAUDE_PLUGIN_ROOT}/skills/cam/cam.sh"
 
 # Preset shortcuts
 bash $SKILL desk

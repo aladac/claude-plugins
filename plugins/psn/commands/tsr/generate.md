@@ -10,7 +10,7 @@ Generate an image using ComfyUI on junkpile via tsr. Always display on the HUD.
 
 2. Generate the image:
 ```bash
-bash ~/Projects/personality-plugin/skills/tsr/tsr.sh generate "$PROMPT" --hud --title "GENERATED" --caption "$PROMPT"
+bash ~/Projects/marauder-plugin/skills/tsr/tsr.sh generate "$PROMPT" --hud --title "GENERATED" --caption "$PROMPT"
 ```
 
 3. After generation, read the output image with the Read tool to show it to the user.

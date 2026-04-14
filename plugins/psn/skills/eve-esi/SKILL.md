@@ -37,7 +37,7 @@ Query the EVE Swagger Interface for public capsuleer intelligence.
 ## Quick Reference
 
 ```bash
-SKILL="~/Projects/personality-plugin/skills/eve-esi/eve-esi.rb"
+SKILL="${CLAUDE_PLUGIN_ROOT}/skills/eve-esi/eve-esi.rb"
 
 # Server status
 ruby $SKILL status

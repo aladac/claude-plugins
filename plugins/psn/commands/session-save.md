@@ -4,7 +4,7 @@ description: Save current session state for later restoration
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_psn_core__memory_store
+  - mcp__plugin_marauder_core__memory_store
   - Bash
 argument-hint: "<name> [description]"
 ---
@@ -60,6 +60,6 @@ Restore with: /session:restore morning-work
 ```
 
 ## Related
-- **Skill**: `Skill(skill: "psn:session")` - Session patterns
-- **Skill**: `Skill(skill: "psn:pretty-output")` - Output guidelines
+- **Skill**: `Skill(skill: "marauder:session")` - Session patterns
+- **Skill**: `Skill(skill: "marauder:pretty-output")` - Output guidelines
 - **Commands**: `/session:restore`

@@ -1,323 +1,102 @@
-# Plan: Self-Contained personality-plugin
+# marauder-plugin Implementation Plan
 
-Port all agents, skills, and commands from `psn-plugin` into `personality-plugin` so it operates as a standalone Claude Code plugin backed by the `personality` Ruby gem.
+Claude Code plugin replacing `personality-plugin`. Uses the `marauder` Rust binary for MCP servers, hooks, and compiled skills.
 
-## Current State
+## Architecture
 
-- **personality-plugin** has: 2 agents (`core.md`, `memory-curator.md`), 5 commands, 3 skills, 1 prompt, hooks, `.mcp.json`
-- **psn-plugin** has: 18 agents, 6 skills (+ 27 code sub-skills), 11 commands (+ 26 CF commands + 8 plugin commands), 1 prompt
-- MCP servers: `core`, `indexer`, and `local` — all via psn-mcp — from the personality gem
-- Plugin name stays `psn`, tool prefix stays `mcp__plugin_psn_*`
-
-## Constraints
-
-- Keep `psn` namespace everywhere (plugin name, skill prefixes, directory names)
-- Agents reference MCP tools as `mcp__plugin_psn_core__*`, `mcp__plugin_psn_indexer__*`, and `mcp__plugin_psn_local__*`
-- Skills use `Skill(skill: "psn:...")` naming
-- The personality gem's MCP server exposes: memory (5 tools), cart (3 tools), resource_read (1 tool) via `core` server, index (5 tools) via `indexer` server, and speak/stop/voices/current/download/test + voice tools via `local` server
-
-## MCP Tool Reference (personality gem)
+**Separate repo** from `marauder-os`. The plugin is the Claude Code integration layer (markdown, JSON, scripts). The binary is a runtime dependency on PATH, not a build dependency.
 
 ```
-# Core server (psn-mcp)
-mcp__plugin_psn_core__memory_store
-mcp__plugin_psn_core__memory_recall
-mcp__plugin_psn_core__memory_search
-mcp__plugin_psn_core__memory_forget
-mcp__plugin_psn_core__memory_list
-mcp__plugin_psn_core__index_code
-mcp__plugin_psn_core__index_docs
-mcp__plugin_psn_core__index_search
-mcp__plugin_psn_core__index_status
-mcp__plugin_psn_core__index_clear
-mcp__plugin_psn_core__cart_list
-mcp__plugin_psn_core__cart_use
-mcp__plugin_psn_core__cart_create
-mcp__plugin_psn_core__resource_read
+marauder-plugin/          ← Claude Code reads this
+  .claude-plugin/plugin.json
+  .mcp.json               → marauder mcp --mode {core,indexer,local}
+  hooks/hooks.json        → marauder hooks <event>, marauder tts <cmd>
+  agents/*.md             → 23 agents, tool refs: mcp__plugin_marauder_*
+  skills/*/SKILL.md       → 60+ skills (config-only + scripts + compiled refs)
+  commands/*.md           → 50+ slash commands
 
-# Local server (psn-mcp --mode local)
-mcp__plugin_psn_local__speak
-mcp__plugin_psn_local__stop
-mcp__plugin_psn_local__voices
-mcp__plugin_psn_local__current
-mcp__plugin_psn_local__download
-mcp__plugin_psn_local__test
+marauder-os/              ← Compiled binary
+  marauder mcp            → MCP server (rmcp, stdio)
+  marauder hooks          → Hook handlers (JSONL, stdin JSON)
+  marauder skill          → Compiled skills (brew, cargo, uv, gem, ruby, screenshot, music)
+  marauder tts            → TTS (piper process management)
+  marauder memory/cart/index → Core operations
 ```
 
----
+## Skill Tiers
 
-## Phase 1: Fix Existing Agents
+| Tier | Count | Where | Example |
+|------|-------|-------|---------|
+| **Config-only** (SKILL.md, no code) | ~38 | Plugin `skills/*/SKILL.md` | code/rust, memory, persona, browse |
+| **Script-based** (SKILL.md + .sh/.rb/.py) | ~19 | Plugin `skills/*/` | cloudflare, eve-esi, cam, job-scout, gmail |
+| **Compiled** (SKILL.md → `marauder skill`) | 8 | marauder-os binary | brew, cargo, uv, gem, ruby, screenshot, junkpile modes |
+| **Already in marauder** | 6 | marauder-os existing CLI | memory, persona/cart, speech/tts, indexer |
 
-Fix the 2 agents that already exist but have incomplete tool declarations.
+## MCP Tool Naming
 
-### 1.1 Fix `memory-curator.md`
+Plugin name: `marauder`. Server keys: `core`, `indexer`, `local`.
 
-Add MCP memory tools to the `tools:` frontmatter so the agent can actually operate on the database:
-
-```yaml
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - mcp__plugin_psn_core__memory_forget
-  - mcp__plugin_psn_core__memory_list
-  - mcp__plugin_psn_core__memory_recall
-  - mcp__plugin_psn_core__memory_search
-  - mcp__plugin_psn_core__memory_store
+```
+mcp__plugin_marauder_core__memory_store
+mcp__plugin_marauder_core__memory_recall
+mcp__plugin_marauder_indexer__index_code
+mcp__plugin_marauder_local__speak
 ```
 
-Update the Tools Reference table in the body to match.
+## Hook Strategy
 
-### 1.2 Update `core.md` (persona agent)
+- **Shell hooks** → find-replace `psn` → `marauder` in hooks.json
+- **JS hooks** (hud-layout.js, hud-avatar.js, hud-bootup.js) → **stay as JS** — they run in Claude Code's Node.js runtime with canvas/DOM APIs that can't move to Rust
+- **hud-tool.sh** (Ruby JSON parsing) → **compile** into `marauder hooks hud-tool` with serde_json
 
-Already has correct MCP tools. No changes needed unless role changes (see Phase 4).
+## Migration Strategy
 
----
+Incremental. Both plugins coexist during transition:
+- Different plugin names (`psn` vs `marauder`) = different tool namespaces
+- Same config.toml, same database (WAL concurrent access)
+- Rollback: just re-enable personality-plugin
 
-## Phase 2: Port Skills
+## Phases
 
-Skills are referenced by agents via `Skill(skill: "psn:...")`. Port from psn-plugin, updating MCP tool names where referenced.
+### Phase 10 "Guncannon" — Plugin Scaffold
+Create repo structure, manifest, MCP config. Copy config-only skills and script-based skills.
 
-### 2.1 Port existing skills (verify/update)
+### Phase 11 "Guntank" — Agent Migration
+Copy 23 agents, bulk find-replace tool prefixes `psn` → `marauder`.
 
-Already present in personality-plugin:
-- `memory.md` — update MCP tool names from `mcp__psn__memory.store` to `mcp__plugin_psn_core__memory_store` format
-- `pretty-output.md` — no changes needed
-- `session.md` — update MCP tool names
+### Phase 12 "Ball" — Hook Migration
+Rewrite hooks.json, copy JS hooks unchanged, compile hud-tool into marauder.
 
-### 2.2 Port indexer skill
+### Phase 13 "GM" — Compiled Skills
+Implement `marauder skill` subcommand in marauder-os: cross_machine module + brew/cargo/uv/gem/ruby/screenshot.
 
-- Copy `psn-plugin/skills/indexer.md` → `personality-plugin/skills/indexer.md`
-- Update MCP tool references
+### Phase 14 "Nemo" — Command Migration
+Copy 50+ commands, update paths and CLI references.
 
-### 2.3 Port cloudflare skill
+### Phase 15 "Rick Dias" — Cutover
+Disable personality-plugin, enable marauder-plugin as sole plugin. Full integration test.
 
-- Copy `psn-plugin/skills/cloudflare.md` → `personality-plugin/skills/cloudflare.md`
-- No MCP dependencies
+## Estimated Effort
 
-### 2.4 Port plugin-management skill
+| Phase | Naive | Coop | Sessions | Notes |
+|-------|-------|------|----------|-------|
+| 10 "Guncannon" — Scaffold | 3h | ~1.5h | 1 | Mechanical copy + path fixup |
+| 11 "Guntank" — Agents | 2h | ~45m | 1 | Bulk sed, verify tool refs |
+| 12 "Ball" — Hooks | 3h | ~1.5h | 1 | hooks.json rewrite + hud-tool compile |
+| 13 "GM" — Compiled Skills | 4h | ~2h | 1 | cross_machine module in marauder-os |
+| 14 "Nemo" — Commands | 2h | ~45m | 1 | Mechanical copy + path fixup |
+| 15 "Rick Dias" — Cutover | 2h | ~1h | 1 | Integration test, soak |
+| **Total** | **16h** | **~7.5h** | **4-6** | |
 
-- Copy `psn-plugin/skills/plugin-management.md` → `personality-plugin/skills/plugin-management.md`
+Phases 10-11 and 13 can overlap (plugin scaffold while compiling skills in marauder-os).
 
-### 2.5 Port code skills directory
+## Risk Register
 
-- Copy entire `psn-plugin/skills/code/` → `personality-plugin/skills/code/`
-- 27 files covering Ruby, Python, Rust, TypeScript, Dioxus, and common patterns
-- No MCP tool references in code skills — pure coding guidance
-
----
-
-## Phase 3: Port Coding Agents
-
-These agents handle code writing, debugging, and refactoring. They use built-in tools + Bash only (no MCP).
-
-### 3.1 `code-ruby.md`
-
-- Copy from psn-plugin
-- Tools: TaskCreate, TaskUpdate, Read, Write, Edit, Glob, Grep, Bash, Skill
-- No MCP tools needed — coding agents use file/bash tools
-- Critical for working on the personality gem itself
-
-### 3.2 `code-python.md`
-
-- Copy from psn-plugin
-- Same tool set as code-ruby
-- Needed for PSN Python codebase work
-
-### 3.3 `code-rust.md`
-
-- Copy from psn-plugin
-- Same tool set
-
-### 3.4 `code-typescript.md`
-
-- Copy from psn-plugin
-- Same tool set
-
-### 3.5 `code-dx.md` (Dioxus)
-
-- Copy from psn-plugin
-- Same tool set
-
----
-
-## Phase 4: Port Infrastructure Agents
-
-### 4.1 `architect.md`
-
-- Copy from psn-plugin
-- Tools: TaskCreate, TaskUpdate, Read, Glob, Grep, WebSearch, WebFetch, Bash, Skill
-- Language-agnostic, works with any backend
-
-### 4.2 `devops.md` (dispatcher)
-
-- Copy from psn-plugin
-- Routes to devops-net, devops-cf, devops-gh
-- Tools: Task, TaskCreate, TaskUpdate, Agent
-
-### 4.3 `devops-cf.md`
-
-- Copy from psn-plugin
-- Cloudflare specialist
-- Tools: TaskCreate, TaskUpdate, Read, Glob, Grep, Bash, Skill
-
-### 4.4 `devops-gh.md`
-
-- Copy from psn-plugin
-- GitHub/Git specialist
-- Tools: TaskCreate, TaskUpdate, Read, Glob, Grep, Bash
-
-### 4.5 `devops-net.md`
-
-- Copy from psn-plugin
-- Network specialist (Mac-PC link, NAS, NFS)
-- Tools: TaskCreate, TaskUpdate, Read, Glob, Grep, Bash
-
-### 4.6 `devops-tengu.md`
-
-- Copy from psn-plugin
-- Tengu PaaS specialist
-- Tools: TaskCreate, TaskUpdate, Read, Glob, Grep, Bash, WebSearch, WebFetch
-
----
-
-## Phase 5: Port Utility Agents
-
-### 5.1 `code-analyzer.md`
-
-- Copy from psn-plugin
-- **Add missing MCP index tools** to the `tools:` frontmatter:
-
-```yaml
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Glob
-  - Grep
-  - mcp__plugin_psn_core__index_search
-  - mcp__plugin_psn_core__index_code
-  - mcp__plugin_psn_core__index_docs
-  - mcp__plugin_psn_core__index_status
-  - mcp__plugin_psn_core__index_clear
-  - mcp__plugin_psn_core__memory_store
-  - mcp__plugin_psn_core__memory_recall
-```
-
-- Update the empty MCP tools tables in the body
-
-### 5.2 `docs.md`
-
-- Copy from psn-plugin
-- Documentation management agent
-- Add index MCP tools for semantic doc search
-
-### 5.3 `draw.md`
-
-- Copy from psn-plugin
-- Stable Diffusion on junkpile
-- Tools: TaskCreate, TaskUpdate, Bash, Read
-
-### 5.4 `hardware.md`
-
-- Copy from psn-plugin
-- Hardware guidance and research
-- Tools: TaskCreate, TaskUpdate, WebSearch, WebFetch, Read
-
-### 5.5 `claude-admin.md`
-
-- Copy from psn-plugin
-- Claude Code plugin development specialist
-- Tools: TaskCreate, TaskUpdate, Read, Write, Edit, Glob, Grep, Bash
-
----
-
-## Phase 6: Port or Merge Dispatcher
-
-The psn-plugin `core.md` is a **dispatcher + general coder** that routes to specialist agents. The personality-plugin `core.md` is the **persona agent**. These are different roles.
-
-### 6.1 Decision: Keep persona `core.md`, add dispatch table
-
-Rather than adding a separate dispatcher agent, **extend** the personality-plugin's `core.md` to include the dispatch routing table from psn-plugin's `core.md`. The persona agent is always the entry point — it should know how to route to specialists.
-
-Add to the existing `core.md`:
-- Agent Registry table (all 18 agents)
-- Routing Logic section (classify → detect language → determine execution → dispatch)
-- Language Detection table
-- Parallel Execution Candidates
-- Quick Reference routing table
-
-This keeps a single entry point that stays in persona while being able to dispatch.
-
----
-
-## Phase 7: Port Commands
-
-### 7.1 Index commands
-
-- Copy `index-code.md`, `index-docs.md`, `index-status.md` from psn-plugin
-- These invoke MCP index tools
-
-### 7.2 CF commands
-
-- Copy entire `commands/cf/` directory (26 files: 13 .md + 13 .sh)
-- Cloudflare operations via flarectl/cloudflared/wrangler
-
-### 7.3 Plugin commands
-
-- Copy `commands/plugins/` directory (8 files: 4 .md + 4 .sh)
-- Plugin management utilities
-
-### 7.4 Verify existing commands
-
-Already present and likely correct:
-- `memory-recall.md`, `memory-search.md`, `memory-store.md`
-- `session-restore.md`, `session-save.md`
-
----
-
-## Phase 8: Verify & Clean Up
-
-### 8.1 Update skills MCP tool references
-
-All skills that reference `mcp__psn__memory.store` format must be updated to `mcp__plugin_psn_core__memory_store` format. Check:
-- `skills/memory.md`
-- `skills/session.md`
-
-### 8.2 Verify hooks.json
-
-Current hooks.json references `psn` CLI commands (e.g., `psn tts mark-natural-stop`). Verify these resolve to the personality gem's CLI, not the Python PSN. The gem installs as `psn` via `exe/psn`, so this should work if the gem is installed.
-
-### 8.3 Verify prompt
-
-`prompts/intro.md` — check it works with personality gem's session-start hook.
-
-### 8.4 Test agent discovery
-
-Restart Claude CLI and verify all agents appear in `/agents` list.
-
----
-
-## Implementation Order
-
-1. **Phase 1** — Fix existing agents (quick wins)
-2. **Phase 2** — Port skills (agents depend on these)
-3. **Phase 3** — Port coding agents (most frequently used)
-4. **Phase 5** — Port utility agents (code-analyzer needs index tools)
-5. **Phase 4** — Port infrastructure agents
-6. **Phase 6** — Merge dispatcher into core.md
-7. **Phase 7** — Port commands
-8. **Phase 8** — Verify & clean up
-
-## File Count
-
-| Category | Files to Port | Files to Fix |
-|----------|---------------|--------------|
-| Agents | 16 new | 1 existing (memory-curator) |
-| Skills | 29 new (1 dir + 28 files) | 2 existing (memory, session) |
-| Commands | 37 new (2 dirs + 3 files) | 0 |
-| Total | **82 new** | **3 fixes** |
+| Risk | Severity | Mitigation |
+|------|----------|------------|
+| Agent tool refs missed in find-replace | Medium | Grep validator: every `mcp__plugin_` in agents/ must match .mcp.json server |
+| JS hooks depend on window.PSN namespace | Low | Namespace set by HUD, not plugin — no change needed |
+| hud-bootup.js is huge (~130K tokens) | Medium | Audit for base64 images, extract static assets |
+| Script paths break | Medium | Use `${CLAUDE_PLUGIN_ROOT}` everywhere, never hardcode |
+| marauder binary not on PATH | Medium | Use absolute path in .mcp.json initially |
+| Ruby skills require Ruby runtime | Low | Eve scripts stay as Ruby — Ruby stays required on host |

@@ -4,8 +4,8 @@ description: Index documentation for semantic search
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_psn_indexer__index_docs
-  - mcp__plugin_psn_indexer__status
+  - mcp__plugin_marauder_indexer__index_docs
+  - mcp__plugin_marauder_indexer__status
   - Glob
 argument-hint: "[path] [--project name]"
 ---
@@ -57,7 +57,7 @@ Search with: /index:search <query>
 ```
 
 ## Related
-- **Skill**: `Skill(skill: "psn:indexer")` - Indexing best practices
-- **Skill**: `Skill(skill: "psn:pretty-output")` - Output guidelines
-- **Agent**: `psn:code-analyzer` - Deep code analysis
+- **Skill**: `Skill(skill: "marauder:indexer")` - Indexing best practices
+- **Skill**: `Skill(skill: "marauder:pretty-output")` - Output guidelines
+- **Agent**: `marauder:code-analyzer` - Deep code analysis
 - **Commands**: `/index:code`, `/index:status`

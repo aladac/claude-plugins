@@ -146,7 +146,7 @@ check_remote() {
   remote_output="$(ssh -T j "bash -s" <<'REMOTE_SCRIPT'
 export PATH="/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:$PATH"
 CRED_FILE="$HOME/.config/cloudflare/credentials"
-CF_SCRIPT="$HOME/Projects/personality-plugin/skills/cloudflare/cf.sh"
+CF_SCRIPT="${CLAUDE_PLUGIN_ROOT}/skills/cloudflare/cf.sh"
 
 # Tools
 for tool in flarectl cloudflared wrangler; do

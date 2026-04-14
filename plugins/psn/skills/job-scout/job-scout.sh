@@ -9,7 +9,7 @@ JOBS_DIR="$HOME/Projects/jobs"
 LEADS_DIR="$JOBS_DIR/leads"
 CRITERIA="$JOBS_DIR/criteria.yaml"
 STATUS="$JOBS_DIR/status.yaml"
-GMAIL_SKILL="$HOME/Projects/MVP/personality-plugin/skills/gmail/gmail.sh"
+GMAIL_SKILL="${CLAUDE_PLUGIN_ROOT}/skills/gmail/gmail.sh"
 SCOUT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PYTHON="$JOBS_DIR/.venv/bin/python"
 

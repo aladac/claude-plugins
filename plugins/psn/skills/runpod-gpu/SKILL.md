@@ -21,7 +21,7 @@ Query GPU availability and datacenter info on RunPod.
 ## Usage
 
 ```bash
-bash ~/Projects/personality-plugin/skills/runpod-gpu/runpod-gpu.sh <action> [args...]
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod-gpu/runpod-gpu.sh <action> [args...]
 ```
 
 ### Actions
@@ -36,14 +36,14 @@ bash ~/Projects/personality-plugin/skills/runpod-gpu/runpod-gpu.sh <action> [arg
 
 ```bash
 # List all available GPUs
-bash ~/Projects/personality-plugin/skills/runpod-gpu/runpod-gpu.sh list
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod-gpu/runpod-gpu.sh list
 
 # List datacenters
-bash ~/Projects/personality-plugin/skills/runpod-gpu/runpod-gpu.sh datacenters
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod-gpu/runpod-gpu.sh datacenters
 
 # Find A40 pricing
-bash ~/Projects/personality-plugin/skills/runpod-gpu/runpod-gpu.sh search A40
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod-gpu/runpod-gpu.sh search A40
 
 # Find A100 options
-bash ~/Projects/personality-plugin/skills/runpod-gpu/runpod-gpu.sh search A100
+bash ${CLAUDE_PLUGIN_ROOT}/skills/runpod-gpu/runpod-gpu.sh search A100
 ```

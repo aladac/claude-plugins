@@ -4,8 +4,8 @@ description: Restore a previously saved session
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_psn_core__memory_recall
-  - mcp__plugin_psn_core__memory_search
+  - mcp__plugin_marauder_core__memory_recall
+  - mcp__plugin_marauder_core__memory_search
   - Bash
 argument-hint: "<name>"
 ---
@@ -72,6 +72,6 @@ Available sessions:
 ```
 
 ## Related
-- **Skill**: `Skill(skill: "psn:session")` - Session patterns
-- **Skill**: `Skill(skill: "psn:pretty-output")` - Output guidelines
+- **Skill**: `Skill(skill: "marauder:session")` - Session patterns
+- **Skill**: `Skill(skill: "marauder:pretty-output")` - Output guidelines
 - **Commands**: `/session:save`

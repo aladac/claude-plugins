@@ -21,22 +21,11 @@ description: |
   assistant: "I'll use the code-typescript agent to implement the middleware."
   </example>
 model: inherit
+maxTurns: 50
 color: cyan
 memory: user
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash
-  - Skill
-  - mcp__plugin_psn_indexer__index_search
-  - mcp__plugin_psn_indexer__index_status
-  - mcp__plugin_psn_indexer__index_code
+# tools: omitted — inherits all available tools (base + all MCP)
 ---
 
 # Startup: Index First, Read Second
@@ -79,14 +68,14 @@ This saves massive startup time — the index already knows where everything is.
 | `Skill` | Load coding rules and patterns |
 
 ## Related Skills
-- `Skill(skill: "psn:code:typescript")` - TypeScript patterns
-- `Skill(skill: "psn:code:typescript-test")` - Vitest/Jest patterns
-- `Skill(skill: "psn:code:typescript-cli")` - CLI development
-- `Skill(skill: "psn:code:typescript-tooling")` - pnpm, bun, eslint
-- `Skill(skill: "psn:code:common")` - Cross-language patterns
+- `Skill(skill: "marauder:code:typescript")` - TypeScript patterns
+- `Skill(skill: "marauder:code:typescript-test")` - Vitest/Jest patterns
+- `Skill(skill: "marauder:code:typescript-cli")` - CLI development
+- `Skill(skill: "marauder:code:typescript-tooling")` - pnpm, bun, eslint
+- `Skill(skill: "marauder:code:common")` - Cross-language patterns
 
 ## Cross-Machine Tools
-- `Skill(skill: "psn:brew")` - Cross-machine Homebrew (node, pnpm)
+- `Skill(skill: "marauder:brew")` - Cross-machine Homebrew (node, pnpm)
 
 ---
 

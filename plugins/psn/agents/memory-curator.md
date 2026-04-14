@@ -22,22 +22,13 @@ description: |
   assistant: "I'll use the memory-curator agent to retrieve and organize project X memories."
   </example>
 model: inherit
+maxTurns: 30
 memory: user
+initialPrompt: "Start by running memory_list() to see all subjects and counts, then report the current state."
 dangerouslySkipPermissions: true
-tools:
-  - TaskCreate
-  - TaskUpdate
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - mcp__plugin_psn_core__memory_store
-  - mcp__plugin_psn_core__memory_recall
-  - mcp__plugin_psn_core__memory_search
-  - mcp__plugin_psn_core__memory_forget
-  - mcp__plugin_psn_core__memory_list
-  - mcp__plugin_psn_core__resource_read
+# tools: omitted — inherits all available tools (base + all MCP)
+disallowedTools:
+  - Bash
 ---
 
 # Tools Reference
@@ -51,12 +42,12 @@ tools:
 ## MCP Tools (Memory)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_psn_core__memory_store` | Store a memory with subject and content |
-| `mcp__plugin_psn_core__memory_recall` | Semantic search for similar memories |
-| `mcp__plugin_psn_core__memory_search` | Search memories by subject |
-| `mcp__plugin_psn_core__memory_forget` | Delete a memory by ID |
-| `mcp__plugin_psn_core__memory_list` | List all memory subjects with counts |
-| `mcp__plugin_psn_core__resource_read` | Read memory resources (subjects, stats, recent) |
+| `mcp__plugin_marauder_core__memory_store` | Store a memory with subject and content |
+| `mcp__plugin_marauder_core__memory_recall` | Semantic search for similar memories |
+| `mcp__plugin_marauder_core__memory_search` | Search memories by subject |
+| `mcp__plugin_marauder_core__memory_forget` | Delete a memory by ID |
+| `mcp__plugin_marauder_core__memory_list` | List all memory subjects with counts |
+| `mcp__plugin_marauder_core__resource_read` | Read memory resources (subjects, stats, recent) |
 
 ## Built-in Tools
 | Tool | Purpose |
@@ -75,9 +66,9 @@ tools:
 | `/memory:search` | Search by subject |
 
 ## Related Skills
-- `Skill(skill: "psn:memory")` - Memory patterns and conventions
-- `Skill(skill: "psn:session")` - Session save/restore
-- `Skill(skill: "psn:pretty-output")` - Pretty output guidelines
+- `Skill(skill: "marauder:memory")` - Memory patterns and conventions
+- `Skill(skill: "marauder:session")` - Session save/restore
+- `Skill(skill: "marauder:pretty-output")` - Pretty output guidelines
 
 ---
 
