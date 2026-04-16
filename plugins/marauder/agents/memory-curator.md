@@ -8,18 +8,27 @@ description: |
   Context: User wants to clean up memory
   user: "Clean up my memories and remove duplicates"
   assistant: "I'll use the memory-curator agent to analyze and consolidate your memories."
+  <commentary>
+  Memory cleanup requires listing all subjects, identifying duplicates, and merging/removing — a curation task, not a recall task.
+  </commentary>
   </example>
 
   <example>
   Context: User wants memory insights
   user: "What do you remember about my preferences?"
   assistant: "I'll use the memory-curator agent to compile your stored preferences."
+  <commentary>
+  Preference compilation requires searching across multiple memory subjects and synthesizing — curation, not simple recall.
+  </commentary>
   </example>
 
   <example>
   Context: User wants to audit memory
   user: "Show me everything stored in memory for project X"
   assistant: "I'll use the memory-curator agent to retrieve and organize project X memories."
+  <commentary>
+  Memory audit for a specific project — the curator lists, categorizes, and reports on stored memories systematically.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 30
@@ -42,12 +51,12 @@ disallowedTools:
 ## MCP Tools (Memory)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_core__memory_store` | Store a memory with subject and content |
-| `mcp__plugin_marauder_core__memory_recall` | Semantic search for similar memories |
-| `mcp__plugin_marauder_core__memory_search` | Search memories by subject |
-| `mcp__plugin_marauder_core__memory_forget` | Delete a memory by ID |
-| `mcp__plugin_marauder_core__memory_list` | List all memory subjects with counts |
-| `mcp__plugin_marauder_core__resource_read` | Read memory resources (subjects, stats, recent) |
+| `mcp__plugin_marauder_marauder__memory_store` | Store a memory with subject and content |
+| `mcp__plugin_marauder_marauder__memory_recall` | Semantic search for similar memories |
+| `mcp__plugin_marauder_marauder__memory_search` | Search memories by subject |
+| `mcp__plugin_marauder_marauder__memory_forget` | Delete a memory by ID |
+| `mcp__plugin_marauder_marauder__memory_list` | List all memory subjects with counts |
+| `mcp__plugin_marauder_marauder__resource_read` | Read memory resources (subjects, stats, recent) |
 
 ## Built-in Tools
 | Tool | Purpose |

@@ -1,5 +1,22 @@
 ---
-description: 'Use when building Python command-line applications, creating CLI tools with Typer, or implementing terminal interfaces in Python.'
+name: code:python-cli
+description: |
+  Build Python CLI apps with Typer. Subcommands, options, Rich output, progress bars, config, and testing patterns.
+
+  <example>
+  Context: User is creating a new Python CLI
+  user: "create a CLI tool for managing backups"
+  </example>
+
+  <example>
+  Context: User needs CLI features
+  user: "add a progress bar to this python script"
+  </example>
+
+  <example>
+  Context: User wants CLI structure
+  user: "how do I add subcommands with typer"
+  </example>
 ---
 
 # Python CLI Development

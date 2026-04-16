@@ -1,10 +1,7 @@
 ---
 name: Code Analysis
 description: |
-  This skill should be used when the user says "index this codebase", "search the code for",
-  "find implementations of", "what's the architecture", or needs semantic code search across
-  indexed projects. Triggers on questions about code search, finding implementations, or
-  understanding codebase structure.
+  Index codebases and docs for semantic search. Use to find implementations, search code patterns, or understand architecture across indexed projects.
 
   <example>
   Context: User wants to search code semantically
@@ -20,14 +17,14 @@ version: 1.0.0
 
 # Tools Reference
 
-## MCP Tools (psn indexer server - local)
+## MCP Tools (marauder server)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_psn_indexer__index_code` | Index source code files |
-| `mcp__plugin_psn_indexer__index_docs` | Index documentation |
-| `mcp__plugin_psn_indexer__index_search` | Semantic search indexed content |
-| `mcp__plugin_psn_indexer__index_status` | Check indexing status |
-| `mcp__plugin_psn_indexer__index_clear` | Clear index for project |
+| `mcp__plugin_marauder_marauder__index_code` | Index source code files |
+| `mcp__plugin_marauder_marauder__index_docs` | Index documentation |
+| `mcp__plugin_marauder_marauder__index_search` | Semantic search indexed content |
+| `mcp__plugin_marauder_marauder__index_status` | Check indexing status |
+| `mcp__plugin_marauder_marauder__index_clear` | Clear index for project |
 
 ## Related Commands
 | Command | Purpose |
@@ -37,7 +34,7 @@ version: 1.0.0
 | `/index:status` | Show indexing status |
 
 ## Related Agents
-- `psn:code-analyzer` - Deep code analysis with indexer
+- `marauder:code-analyzer` - Deep code analysis with indexer
 
 ---
 

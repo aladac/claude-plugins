@@ -15,30 +15,45 @@ description: |
   Context: User asks about a character
   user: "Look up Spinister on EVE"
   assistant: "I'll use the aura agent to query ESI for character info."
+  <commentary>
+  ESI character lookup — AURA knows the EVE Online API endpoints and can resolve character names to IDs.
+  </commentary>
   </example>
 
   <example>
   Context: User wants market data
   user: "What's the Jita price for PLEX?"
   assistant: "I'll use the aura agent to check market orders."
+  <commentary>
+  Market price queries require ESI market endpoints and knowledge of trade hub region IDs (The Forge for Jita).
+  </commentary>
   </example>
 
   <example>
   Context: User asks what's happening in game
   user: "What's on my EVE screen?"
   assistant: "I'll use the aura agent to capture and analyze the EVE client."
+  <commentary>
+  EVE client screen capture and visual analysis — AURA detects the client window and takes screenshots for interpretation.
+  </commentary>
   </example>
 
   <example>
   Context: User asks about a corp or alliance
   user: "Who's in Violence is the Answer?"
   assistant: "I'll use the aura agent for corp intel."
+  <commentary>
+  Corporation intel requires ESI corp/alliance endpoints and member lookups — EVE-specific domain knowledge.
+  </commentary>
   </example>
 
   <example>
   Context: User mentions EVE
   user: "Check if EVE is running"
   assistant: "I'll use the aura agent to detect the EVE client."
+  <commentary>
+  EVE client detection uses macOS process inspection — AURA knows the EVE process name and window identification.
+  </commentary>
   </example>
 model: haiku
 maxTurns: 50

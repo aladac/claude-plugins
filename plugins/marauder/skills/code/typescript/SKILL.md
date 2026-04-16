@@ -1,5 +1,17 @@
 ---
-description: 'Use when writing TypeScript code, implementing TypeScript features, or needing TypeScript best practices and idioms.'
+name: code:typescript
+description: |
+  TypeScript coding practices and idioms. Strict mode, discriminated unions, Zod validation, type guards, utility types.
+
+  <example>
+  Context: User is writing TypeScript code
+  user: "implement a type-safe API client"
+  </example>
+
+  <example>
+  Context: User needs TypeScript patterns
+  user: "how should I model this state with unions"
+  </example>
 ---
 
 # Tools Reference
@@ -15,10 +27,9 @@ description: 'Use when writing TypeScript code, implementing TypeScript features
 | `Grep` | Search TypeScript code |
 
 ## Related Skills
-- `psn:code:typescript-cli` - Commander.js CLI development
-- `psn:code:typescript-test` - Vitest testing
-- `psn:code:typescript-tooling` - Lint/format/typecheck
-- `psn:code:typescript-validate` - Full validation workflow
+- `marauder:code:typescript-cli` - Commander.js CLI development
+- `marauder:code:typescript-test` - Vitest testing
+- `marauder:code:typescript-tooling` - Lint/format/typecheck/validate
 
 ---
 

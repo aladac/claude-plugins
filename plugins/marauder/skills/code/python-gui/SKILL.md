@@ -1,5 +1,17 @@
 ---
-description: 'Use when building Python desktop GUI applications with PyWebView, creating cross-platform desktop apps, or bundling Python apps for distribution.'
+name: code:python-gui
+description: |
+  Build Python desktop GUI apps with PyWebView. JS API bridge, macOS bundling, Vite frontend, no-TTY constraints.
+
+  <example>
+  Context: User is building a desktop app
+  user: "create a PyWebView desktop app with a Vue frontend"
+  </example>
+
+  <example>
+  Context: User has desktop app issues
+  user: "my pywebview app crashes when launched from Finder"
+  </example>
 ---
 
 # Python GUI Development (PyWebView)

@@ -1,7 +1,7 @@
 ---
 name: code-typescript
 description: |
-  TypeScript coding agent. Node.js, React, Vue, full-stack web development.
+  TypeScript coding agent. Node.js, React, Vue, full-stack web development. npm, pnpm, ESLint, Prettier, tsconfig, Vite, Nuxt.
 
   Use this agent when:
   - Working with TypeScript/JavaScript projects (package.json, tsconfig.json present)
@@ -13,12 +13,18 @@ description: |
   Context: User is working on a React application.
   user: "Create a form component with validation"
   assistant: "I'll use the code-typescript agent to build the React component."
+  <commentary>
+  React component creation requires JSX/TSX patterns, hooks, and state management — TypeScript specialist territory.
+  </commentary>
   </example>
 
   <example>
   Context: User needs Node.js backend help.
   user: "Set up an Express middleware for authentication"
   assistant: "I'll use the code-typescript agent to implement the middleware."
+  <commentary>
+  Express middleware patterns are Node.js/TypeScript-specific — the TS agent knows async middleware chains and type-safe request handling.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 50

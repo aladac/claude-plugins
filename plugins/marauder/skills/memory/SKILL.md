@@ -17,14 +17,14 @@ version: 1.0.0
 
 # Tools Reference
 
-## MCP Tools (psn core server)
+## MCP Tools (marauder server)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_psn_core__memory_store` | Store a memory with subject and content |
-| `mcp__plugin_psn_core__memory_recall` | Semantic search for memories |
-| `mcp__plugin_psn_core__memory_search` | Search by subject pattern |
-| `mcp__plugin_psn_core__memory_forget` | Delete a memory by ID |
-| `mcp__plugin_psn_core__memory_list` | List all memory subjects |
+| `mcp__plugin_marauder_marauder__memory_store` | Store a memory with subject and content |
+| `mcp__plugin_marauder_marauder__memory_recall` | Semantic search for memories |
+| `mcp__plugin_marauder_marauder__memory_search` | Search by subject pattern |
+| `mcp__plugin_marauder_marauder__memory_forget` | Delete a memory by ID |
+| `mcp__plugin_marauder_marauder__memory_list` | List all memory subjects |
 
 ## Related Commands
 | Command | Purpose |
@@ -34,7 +34,7 @@ version: 1.0.0
 | `/memory:search` | Search by subject |
 
 ## Related Agents
-- `psn:memory-curator` - Memory cleanup and organization
+- `marauder:memory-curator` - Memory cleanup and organization
 
 ---
 
@@ -48,8 +48,8 @@ The memory system uses:
 - **Embeddings**: nomic-embed-text via Ollama (local)
 - **Storage**: SQLite + sqlite-vec at `~/.local/share/personality/main.db`
 - **Search**: Vector distance via sqlite-vec virtual tables
-- **CLI**: `psn memory store/recall/search/forget/list`
-- **MCP server**: `psn-mcp` (stdio transport)
+- **CLI**: `marauder memory store/recall/search/forget/list`
+- **MCP server**: `marauder mcp` (stdio transport)
 
 ## Subject Naming Conventions
 

@@ -1,5 +1,17 @@
 ---
-description: 'Use for TypeScript linting, formatting, type checking, test coverage, and project validation. Covers ESLint, Prettier, Biome, tsc, and Vitest coverage.'
+name: code:typescript-tooling
+description: |
+  TypeScript linting (ESLint/Biome), formatting (Prettier), type checking (tsc), coverage (Vitest), and CI validation.
+
+  <example>
+  Context: User wants to set up linting
+  user: "configure eslint for this typescript project"
+  </example>
+
+  <example>
+  Context: User needs to validate their project
+  user: "run all checks on this typescript project"
+  </example>
 ---
 
 # TypeScript Tooling
@@ -308,6 +320,14 @@ jobs:
 | Format fix | `prettier --write src/` | `biome format --write src/` |
 | All checks | `npm run check` | `biome check src/` |
 | All fixes | `npm run fix` | `biome check --apply src/` |
+
+## Quick Validation
+
+One-liner to validate a TypeScript project is CI-ready:
+
+```bash
+npx tsc --noEmit && npx eslint src/ && npx prettier --check src/ && npx vitest run
+```
 
 ## Recommended Stack
 

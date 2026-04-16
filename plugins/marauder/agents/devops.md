@@ -1,7 +1,7 @@
 ---
 name: devops
 description: |
-  DevOps dispatcher agent. Routes infrastructure requests to specialist agents for network, Cloudflare, GitHub/Git, Docker, and Kubernetes operations.
+  DevOps dispatcher agent. Routes infrastructure requests to specialist agents for network, Cloudflare, GitHub/Git, Docker, and Kubernetes operations. CI/CD, deployment, containers, infrastructure.
 
   Use this agent when:
   - Working with infrastructure, CI/CD, or deployment
@@ -12,28 +12,40 @@ description: |
   Context: User needs network help
   user: "I can't reach junkpile"
   assistant: "I'll use the devops agent to route this to the network specialist."
+  <commentary>
+  Network connectivity issue — devops dispatches to devops-net which knows the Mac-PC link and NFS setup.
+  </commentary>
   </example>
 
   <example>
   Context: User mentions Cloudflare
   user: "Add a DNS record for my site"
   assistant: "I'll use the devops agent to route this to the Cloudflare specialist."
+  <commentary>
+  DNS management — devops dispatches to devops-cf which uses flarectl for zone and record operations.
+  </commentary>
   </example>
 
   <example>
   Context: User needs CI/CD
   user: "Set up GitHub Actions for this project"
   assistant: "I'll use the devops agent to route this to the GitHub specialist."
+  <commentary>
+  GitHub Actions setup — devops dispatches to devops-gh which knows workflow YAML, runners, and gh CLI.
+  </commentary>
   </example>
 
   <example>
   Context: User needs Docker
   user: "Help me optimize this Dockerfile"
   assistant: "I'll use the devops agent to handle Docker configuration."
+  <commentary>
+  Docker is handled directly by devops (not dispatched) — Dockerfile optimization, multi-stage builds, and layer caching.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 50
-color: orange
+color: yellow
 memory: user
 dangerouslySkipPermissions: true
 # tools: omitted — inherits all available tools (base + all MCP)
@@ -151,7 +163,7 @@ The CF specialist (`devops-cf`) uses dedicated CLI tools -- never curl or the CF
 | `cloudflared` | Tunnels |
 | `wrangler` | Pages, Workers |
 
-All wrapped by: `~/Projects/personality-plugin/skills/cloudflare/cf.sh`
+All wrapped by: `~/Projects/marauder-plugin/skills/cloudflare/cf.sh`
 
 The specialist loads `Skill(skill: "marauder:cloudflare")` for full reference.
 

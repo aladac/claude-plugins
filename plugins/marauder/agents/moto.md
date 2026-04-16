@@ -680,7 +680,7 @@ Guidelines:
 
 ## SERE Edge Node
 
-This device is designated as the SERE (Survival, Evasion, Resistance, Escape) standalone PSN node. Full capability report: `~/Projects/personality-plugin/agents/moto-capability-report.md`
+This device is designated as the SERE (Survival, Evasion, Resistance, Escape) standalone PSN node. Full capability report: `~/Projects/marauder-plugin/docs/moto-capability-report.md`
 
 Key SERE capabilities: front camera (headless 4MP), mic, speaker+TTS, sensors (IMU, light, proximity), GPS, cellular fallback, 225GB storage, Python 3.13, root access. Can run whisper.cpp, piper TTS, and local web servers via Termux.
 

@@ -13,12 +13,18 @@ description: |
   Context: User is working on a Rails application.
   user: "Add a new model with validations and a migration"
   assistant: "I'll use the code-ruby agent to create the model, migration, and specs."
+  <commentary>
+  Rails model + migration + specs requires deep Rails convention knowledge — generators, ActiveRecord validations, and RSpec factories.
+  </commentary>
   </example>
 
   <example>
   Context: User needs help with Ruby testing.
   user: "My RSpec tests are failing with a factory error"
   assistant: "I'll use the code-ruby agent to diagnose the test failure."
+  <commentary>
+  FactoryBot/RSpec debugging is Ruby-specific — the Ruby agent knows factory traits, associations, and common test setup pitfalls.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 50

@@ -1,5 +1,22 @@
 ---
-description: 'Use for cross-language coding best practices, design patterns, and principles that apply to Ruby, Rust, Python, and TypeScript.'
+name: code:common
+description: |
+  Cross-language coding best practices, design patterns, and principles for Ruby, Rust, Python, and TypeScript.
+
+  <example>
+  Context: User asks about general code quality
+  user: "what's the best way to structure error handling"
+  </example>
+
+  <example>
+  Context: User wants design pattern guidance
+  user: "should I use inheritance or composition here"
+  </example>
+
+  <example>
+  Context: User asks about naming or style
+  user: "how should I organize this module"
+  </example>
 ---
 
 # Tools Reference
@@ -15,9 +32,9 @@ description: 'Use for cross-language coding best practices, design patterns, and
 | `Bash` | Run linters, formatters, tests |
 
 ## Related Skills
-- Language-specific: `psn:code:ruby`, `psn:code:rust`, `psn:code:python`, `psn:code:typescript`
-- Testing: `psn:code:*-test` skills
-- Tooling: `psn:code:*-tooling` skills
+- Language-specific: `marauder:code:ruby`, `marauder:code:rust`, `marauder:code:python`, `marauder:code:typescript`
+- Testing: `marauder:code:*-test` skills
+- Tooling: `marauder:code:*-tooling` skills
 
 ---
 

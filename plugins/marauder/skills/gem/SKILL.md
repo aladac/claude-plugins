@@ -1,7 +1,7 @@
 ---
 name: RubyGems
 description: |
-  Cross-machine RubyGems operations (Homebrew-installed). Runs gem on fuji (macOS) or junkpile (Linux) transparently, routing via SSH when needed. Supports gem install/update/list and running gem-installed executables via exec subcommand.
+  Cross-machine RubyGems operations (NOT coding practices). Runs gem on fuji (macOS) or junkpile (Linux) transparently via SSH. Install, update, list gems and run executables via exec.
 
   <example>
   Context: User wants to install a gem
@@ -10,7 +10,7 @@ description: |
 
   <example>
   Context: User wants to run a gem executable
-  user: "run psn-mcp on junkpile"
+  user: "run itt on junkpile"
   </example>
 ---
 
@@ -46,14 +46,14 @@ bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh both install puma
 # List installed gems on junkpile
 bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh junkpile list
 
-# Run a gem executable (e.g. psn-mcp) on junkpile
-bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh junkpile exec psn-mcp --help
+# Run a gem executable (e.g. itt) on junkpile
+bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh junkpile exec itt --help
 
 # Run puma on fuji
 bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh fuji exec puma -p 3000
 
 # Update a gem on both
-bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh both update psn
+bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh both update marauder
 ```
 
 ## Machine Reference
@@ -65,7 +65,7 @@ bash ${CLAUDE_PLUGIN_ROOT}/skills/gem/gem.sh both update psn
 
 ## Gem Executables
 
-Installed gem executables (psn, psn-mcp, puma, etc.) live in the gem bin directory. Use `exec` to run them:
+Installed gem executables (itt, puma, etc.) live in the gem bin directory. Use `exec` to run them:
 
 ```bash
 gem.sh <target> exec <name> [args...]

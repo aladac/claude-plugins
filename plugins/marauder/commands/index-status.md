@@ -4,7 +4,7 @@ description: Show indexing status and statistics
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_marauder_indexer__status
+  - mcp__plugin_marauder_marauder__status
 argument-hint: "[--project name]"
 ---
 

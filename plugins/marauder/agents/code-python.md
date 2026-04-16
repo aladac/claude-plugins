@@ -1,7 +1,7 @@
 ---
 name: code-python
 description: |
-  Python coding agent. Django, Flask, FastAPI, data science, PyWebView GUI.
+  Python coding agent. Django, Flask, FastAPI, data science, PyWebView GUI. uv, pytest, ruff, mypy, pyproject.toml.
 
   Use this agent when:
   - Working with Python projects (pyproject.toml, requirements.txt present)
@@ -13,12 +13,18 @@ description: |
   Context: User is working on a FastAPI project.
   user: "Add a new endpoint with Pydantic validation"
   assistant: "I'll use the code-python agent to implement the endpoint."
+  <commentary>
+  FastAPI + Pydantic requires Python framework-specific knowledge — code-python knows dependency injection, validation models, and async endpoint patterns.
+  </commentary>
   </example>
 
   <example>
   Context: User needs help with Python testing.
   user: "Write pytest tests for this service class"
   assistant: "I'll use the code-python agent to create the test suite."
+  <commentary>
+  pytest has Python-specific patterns (fixtures, parametrize, conftest) that the Python specialist handles best.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 50

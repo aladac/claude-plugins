@@ -1,7 +1,7 @@
 ---
 name: code-rust
 description: |
-  Rust coding agent. Systems programming, CLI tools.
+  Rust coding agent. Cargo, crates.io, clippy, rustfmt. Systems programming, CLI tools, async/tokio, error handling, lifetimes, trait design.
 
   Use this agent when:
   - Working with Rust projects (Cargo.toml present)
@@ -13,16 +13,22 @@ description: |
   Context: User is building a Rust CLI tool.
   user: "Add a subcommand to my clap CLI"
   assistant: "I'll use the code-rust agent to implement the new subcommand."
+  <commentary>
+  Clap CLI work requires Rust-specific framework knowledge — code-rust knows clap derive macros, arg parsing, and subcommand patterns.
+  </commentary>
   </example>
 
   <example>
   Context: User has a Rust compilation error.
   user: "I'm getting a lifetime error I can't figure out"
   assistant: "I'll use the code-rust agent to diagnose and fix the lifetime issue."
+  <commentary>
+  Lifetime errors require deep Rust borrow checker expertise — this is specialist territory, not general debugging.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 50
-color: orange
+color: yellow
 memory: user
 dangerouslySkipPermissions: true
 # tools: omitted — inherits all available tools (base + all MCP)

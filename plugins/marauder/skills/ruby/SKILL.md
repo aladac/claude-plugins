@@ -1,7 +1,7 @@
 ---
 name: Ruby
 description: |
-  Cross-machine Ruby operations (Homebrew-installed). Runs ruby on fuji (macOS) or junkpile (Linux) transparently, routing via SSH when needed. Use for running Ruby scripts, one-liners, and version checks.
+  Cross-machine Ruby execution (NOT coding practices). Runs ruby on fuji (macOS) or junkpile (Linux) transparently via SSH. Execute scripts, one-liners, and version checks on either machine.
 
   <example>
   Context: User wants to run a Ruby script remotely

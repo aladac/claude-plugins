@@ -1,5 +1,17 @@
 ---
-description: 'Use when writing TypeScript tests, setting up Vitest or Jest, creating mocks, or implementing test patterns in TypeScript.'
+name: code:typescript-test
+description: |
+  Write TypeScript tests with Vitest. Test doubles, parametrized tests, module mocking, and coverage.
+
+  <example>
+  Context: User needs to add tests
+  user: "write tests for this service"
+  </example>
+
+  <example>
+  Context: User needs test patterns
+  user: "how do I mock a module in vitest"
+  </example>
 ---
 
 # TypeScript Testing

@@ -1,5 +1,17 @@
 ---
-description: 'Use when building Rails applications, creating Rails APIs with RSwag, or implementing Rails patterns and conventions.'
+name: code:ruby-rails
+description: |
+  Build Rails API apps with RSwag documentation. Controllers, service objects, request specs, factories.
+
+  <example>
+  Context: User is building a Rails API
+  user: "create a users endpoint with RSwag docs"
+  </example>
+
+  <example>
+  Context: User needs Rails patterns
+  user: "write a service object for order processing"
+  </example>
 ---
 
 # Ruby on Rails Development

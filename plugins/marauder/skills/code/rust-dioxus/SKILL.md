@@ -1,5 +1,17 @@
 ---
-description: 'Use when building Rust desktop GUI applications with Dioxus, implementing reactive UIs, or creating cross-platform desktop apps in Rust.'
+name: code:rust-dioxus
+description: |
+  Build Dioxus desktop GUI apps in Rust. Signals, components, hooks, async patterns, RSX, and state management.
+
+  <example>
+  Context: User is building a Dioxus app
+  user: "add a search component to this dioxus app"
+  </example>
+
+  <example>
+  Context: User needs Dioxus patterns
+  user: "how do I manage global state in dioxus"
+  </example>
 ---
 
 # Rust GUI Development (Dioxus)

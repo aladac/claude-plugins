@@ -1,5 +1,22 @@
 ---
-description: 'Use when debugging Dioxus Desktop applications using dioxus-inspector MCP tools, investigating UI issues, querying DOM state, or interacting with running Dioxus apps.'
+name: code:dioxus-debug
+description: |
+  Debug Dioxus Desktop apps via dioxus-inspector MCP tools. Query DOM, inspect elements, click, type, take screenshots of running apps.
+
+  <example>
+  Context: User has a running Dioxus app
+  user: "why isn't this button showing up in my dioxus app"
+  </example>
+
+  <example>
+  Context: User wants to inspect UI state
+  user: "get the DOM tree of my dioxus app"
+  </example>
+
+  <example>
+  Context: User wants to interact with the app
+  user: "click the submit button in the dioxus window"
+  </example>
 ---
 
 # Debugging Dioxus Apps with Inspector
@@ -8,7 +25,7 @@ Workflows for debugging running Dioxus Desktop apps via MCP.
 
 ## Prerequisites
 
-- dioxus-inspector embedded in app (see `psn:code:dioxus-inspector`)
+- dioxus-inspector embedded in app (see `marauder:code:dioxus-inspector`)
 - App running with desktop feature
 - Claude Code restarted after MCP config
 
@@ -164,5 +181,5 @@ Add `window.debugLastEvent = evt` in your Dioxus event handlers to capture.
 
 ## Related Skills
 
-- `psn:code:dioxus-inspector` - Setup and configuration
-- `psn:code:rust-dioxus` - Dioxus development patterns
+- `marauder:code:dioxus-inspector` - Setup and configuration
+- `marauder:code:rust-dioxus` - Dioxus development patterns

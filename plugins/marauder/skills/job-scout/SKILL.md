@@ -1,7 +1,7 @@
 ---
 name: Job Scout
 description: |
-  Multi-source job search aggregator. Scans Gmail, NoFluffJobs, Just Join IT, RubyOnRemote, Rails Job Board, HN Who's Hiring, Bulldogjob, and Welcome to the Jungle for senior Ruby/Rails roles. Scores matches, tracks pipeline, manages watchlist and blacklist.
+  Multi-source job search aggregator. Scans Gmail, NoFluffJobs, Just Join IT, RubyOnRemote, HN Who's Hiring, and more for senior Ruby/Rails roles. Scores matches, tracks pipeline, manages watchlist.
 
   <example>
   Context: User wants to find new jobs

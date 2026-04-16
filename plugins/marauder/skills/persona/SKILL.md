@@ -22,12 +22,12 @@ version: 1.0.0
 
 # Tools Reference
 
-## MCP Tools (psn core server)
+## MCP Tools (marauder server)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_psn_core__cart_list` | List all available personas |
-| `mcp__plugin_psn_core__cart_use` | Switch to a different persona |
-| `mcp__plugin_psn_core__cart_create` | Create a new persona |
+| `mcp__plugin_marauder_marauder__cart_list` | List all available personas |
+| `mcp__plugin_marauder_marauder__cart_use` | Switch to a different persona |
+| `mcp__plugin_marauder_marauder__cart_create` | Create a new persona |
 
 ---
 
@@ -45,17 +45,17 @@ Manage AI personas (carts) for consistent voice and behavior.
 
 ### Check Available Personas
 ```
-mcp__plugin_psn_core__cart_list()
+mcp__plugin_marauder_marauder__cart_list()
 ```
 
 ### Switch Persona
 ```
-mcp__plugin_psn_core__cart_use(tag: "developer")
+mcp__plugin_marauder_marauder__cart_use(tag: "developer")
 ```
 
 ### Create New Persona
 ```
-mcp__plugin_psn_core__cart_create(
+mcp__plugin_marauder_marauder__cart_create(
   tag: "reviewer",
   name: "Code Reviewer",
   type: "assistant"
@@ -101,7 +101,7 @@ Each persona (cart) has:
 ### Session Startup
 ```python
 # Check what's available
-personas = mcp__plugin_psn_core__cart_list()
+personas = mcp__plugin_marauder_marauder__cart_list()
 
 # If no active persona, prompt user
 if not personas.active:
@@ -111,24 +111,24 @@ if not personas.active:
 
 ### Create Task-Specific Persona
 ```python
-mcp__plugin_psn_core__cart_create(
+mcp__plugin_marauder_marauder__cart_create(
   tag: "debug-assistant",
   name: "Debug Helper",
   type: "technical"
 )
-mcp__plugin_psn_core__cart_use(tag: "debug-assistant")
+mcp__plugin_marauder_marauder__cart_use(tag: "debug-assistant")
 ```
 
 ### Switch for Different Contexts
 ```python
 # For code review
-mcp__plugin_psn_core__cart_use(tag: "reviewer")
+mcp__plugin_marauder_marauder__cart_use(tag: "reviewer")
 
 # For documentation
-mcp__plugin_psn_core__cart_use(tag: "writer")
+mcp__plugin_marauder_marauder__cart_use(tag: "writer")
 
 # For pair programming
-mcp__plugin_psn_core__cart_use(tag: "pair-partner")
+mcp__plugin_marauder_marauder__cart_use(tag: "pair-partner")
 ```
 
 ## Related

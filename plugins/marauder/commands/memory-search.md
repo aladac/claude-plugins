@@ -4,8 +4,8 @@ description: Search memories by subject
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_marauder_core__memory_search
-  - mcp__plugin_marauder_core__memory_list
+  - mcp__plugin_marauder_marauder__memory_search
+  - mcp__plugin_marauder_marauder__memory_list
 argument-hint: "[subject-pattern]"
 ---
 

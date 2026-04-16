@@ -1,7 +1,7 @@
 ---
 name: Homebrew
 description: |
-  Cross-machine Homebrew management. Runs brew on fuji (macOS) or junkpile (Linux) transparently, routing via SSH when needed. Use for installing, updating, searching, or managing packages on either machine.
+  Cross-machine Homebrew package management (NOT coding practices). Runs brew on fuji (macOS) or junkpile (Linux) transparently via SSH. Install, update, search, or manage packages on either machine.
 
   <example>
   Context: User wants to install a package

@@ -1,5 +1,17 @@
 ---
-description: 'Use when writing Ruby code, implementing Ruby features, or needing Ruby best practices and idioms.'
+name: code:ruby
+description: |
+  Ruby coding practices and idioms. Service objects, Data classes, pattern matching, dry-rb, memoization.
+
+  <example>
+  Context: User is writing Ruby code
+  user: "implement a service object for user registration"
+  </example>
+
+  <example>
+  Context: User needs Ruby patterns
+  user: "what's the best way to handle config in Ruby"
+  </example>
 ---
 
 # Tools Reference
@@ -15,12 +27,11 @@ description: 'Use when writing Ruby code, implementing Ruby features, or needing
 | `Grep` | Search Ruby code |
 
 ## Related Skills
-- `psn:code:ruby-cli` - Thor CLI development
-- `psn:code:ruby-test` - RSpec testing
-- `psn:code:ruby-rails` - Rails API development
-- `psn:code:ruby-gem` - Gem development
-- `psn:code:ruby-tooling` - Lint/format/typecheck
-- `psn:code:ruby-validate` - Full validation workflow
+- `marauder:code:ruby-cli` - Thor CLI development
+- `marauder:code:ruby-test` - RSpec testing
+- `marauder:code:ruby-rails` - Rails API development
+- `marauder:code:ruby-gem` - Gem development
+- `marauder:code:ruby-tooling` - Lint/format/typecheck/validate
 
 ---
 

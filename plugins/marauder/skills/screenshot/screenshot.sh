@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-OUT_DIR="/tmp/psn-screenshots"
+OUT_DIR="/tmp/marauder-screenshots"
 mkdir -p "$OUT_DIR"
 
 # Count connected displays via system_profiler
@@ -88,7 +88,7 @@ Screenshot Skill — Multi-Display Capture
   clean           Remove captured screenshots
   help            This message
 
-Files are written to /tmp/psn-screenshots/
+Files are written to /tmp/marauder-screenshots/
 EOF
     ;;
 esac

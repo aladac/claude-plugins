@@ -8,18 +8,27 @@ description: |
   Context: User asks about the day
   user: "What's on today?"
   assistant: "I'll use the friday agent for schedule and household updates."
+  <commentary>
+  Daily schedule inquiry — F.R.I.D.A.Y. checks calendar, reminders, and household tasks as a domestic assistant.
+  </commentary>
   </example>
 
   <example>
   Context: User needs a reminder
   user: "Remind me about Sanga's medication at 8"
   assistant: "I'll use the friday agent to set the reminder."
+  <commentary>
+  Household reminder — F.R.I.D.A.Y. manages family logistics including pet care schedules.
+  </commentary>
   </example>
 
   <example>
   Context: User asks about weather
   user: "What's the weather looking like?"
   assistant: "I'll use the friday agent to check the forecast."
+  <commentary>
+  Weather is a domestic/daily planning concern — routed to F.R.I.D.A.Y. rather than core or a technical agent.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 20

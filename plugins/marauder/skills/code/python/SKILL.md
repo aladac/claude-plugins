@@ -1,5 +1,17 @@
 ---
-description: 'Use when writing Python code, implementing Python features, or needing Python best practices and idioms.'
+name: code:python
+description: |
+  Python coding practices and idioms (3.10+). Type hints, dataclasses, Pydantic, pattern matching, async, logging.
+
+  <example>
+  Context: User is writing Python code
+  user: "implement a data pipeline in Python"
+  </example>
+
+  <example>
+  Context: User needs Python patterns
+  user: "what's the best way to handle errors in Python"
+  </example>
 ---
 
 # Tools Reference
@@ -15,12 +27,11 @@ description: 'Use when writing Python code, implementing Python features, or nee
 | `Grep` | Search Python code |
 
 ## Related Skills
-- `psn:code:python-cli` - Typer CLI development
-- `psn:code:python-test` - pytest testing
-- `psn:code:python-fastapi` - FastAPI development
-- `psn:code:python-gui` - PyWebView GUI
-- `psn:code:python-tooling` - Lint/format/typecheck
-- `psn:code:python-validate` - Full validation workflow
+- `marauder:code:python-cli` - Typer CLI development
+- `marauder:code:python-test` - pytest testing
+- `marauder:code:python-fastapi` - FastAPI development
+- `marauder:code:python-gui` - PyWebView GUI
+- `marauder:code:python-tooling` - Lint/format/typecheck/validate
 
 ---
 

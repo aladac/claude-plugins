@@ -14,24 +14,36 @@ description: |
   Context: User needs Apple signing secrets set up for a repo
   user: "Set up Apple signing secrets on this repo"
   assistant: "I'll use the vaultkeeper agent to pull the certificate from 1Password and set the GitHub secrets."
+  <commentary>
+  Apple codesigning requires pulling certs from 1Password and setting GitHub secrets — a multi-step credential pipeline.
+  </commentary>
   </example>
 
   <example>
   Context: User wants to sync credentials to GitHub Actions
   user: "Sync secrets to GitHub"
   assistant: "I'll use the vaultkeeper agent to read from the DEV vault and push to GitHub."
+  <commentary>
+  1Password-to-GitHub secret sync — vaultkeeper knows the DEV vault structure and gh secret set workflow.
+  </commentary>
   </example>
 
   <example>
   Context: User needs a credential from 1Password
   user: "Get the certificate from 1Password"
   assistant: "I'll use the vaultkeeper agent to retrieve it from the DEV vault."
+  <commentary>
+  Direct 1Password retrieval via op CLI — vaultkeeper handles vault access, item lookup, and secure output.
+  </commentary>
   </example>
 
   <example>
   Context: User wants to rotate or audit credentials
   user: "Rotate the Cloudflare API key"
   assistant: "I'll use the vaultkeeper agent to handle the credential rotation."
+  <commentary>
+  Credential rotation involves generating new keys, updating 1Password, and propagating to all dependent systems.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 30

@@ -1,7 +1,7 @@
 ---
 name: Google Calendar
 description: |
-  View, search, create, and manage Google Calendar events via the gog CLI. Supports multiple accounts (chi@sazabi.pl, adam.ladachowski@gmail.com). Quick shortcuts for today, tomorrow, week, and N-day agenda. Use today-all/week-all to check both accounts at once.
+  Manage Google Calendar events via gog CLI. Multi-account (chi@sazabi.pl, adam.ladachowski@gmail.com). Shortcuts for today, tomorrow, week. Use today-all/week-all for both accounts.
 
   <example>
   Context: User asks about their day

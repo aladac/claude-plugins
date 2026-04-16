@@ -1,5 +1,17 @@
 ---
-description: 'Use when building Ruby command-line applications, creating CLI tools with Thor, or implementing terminal interfaces in Ruby.'
+name: code:ruby-cli
+description: |
+  Build Ruby CLI apps with Thor. Subcommands, colorized output, progress bars, config, and interactive prompts.
+
+  <example>
+  Context: User is creating a Ruby CLI
+  user: "create a CLI tool for managing deployments"
+  </example>
+
+  <example>
+  Context: User needs CLI features
+  user: "add a table output to this thor command"
+  </example>
 ---
 
 # Ruby CLI Development

@@ -8,18 +8,27 @@ description: |
   Context: User wants to understand a codebase
   user: "Analyze the architecture of this project"
   assistant: "I'll use the code-analyzer agent to explore and map the project structure."
+  <commentary>
+  Architecture analysis requires deep cross-file understanding — code-analyzer uses the semantic index for broad codebase exploration.
+  </commentary>
   </example>
 
   <example>
   Context: User needs to find all usages of a pattern
   user: "Find all places where we handle authentication"
   assistant: "I'll use the code-analyzer agent to search for authentication patterns."
+  <commentary>
+  Cross-cutting pattern search across multiple files — code-analyzer's index-based semantic search is more effective than grep.
+  </commentary>
   </example>
 
   <example>
   Context: User wants code quality insights
   user: "Review the error handling patterns in this codebase"
   assistant: "I'll use the code-analyzer agent to analyze error handling across the project."
+  <commentary>
+  Pattern review across a codebase requires comprehensive analysis — not a single-file task for a language agent.
+  </commentary>
   </example>
 model: opus
 maxTurns: 50
@@ -42,17 +51,17 @@ disallowedTools:
 ## MCP Tools (Indexer)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_indexer__index_search` | Semantic search indexed content |
-| `mcp__plugin_marauder_indexer__index_code` | Index source code files |
-| `mcp__plugin_marauder_indexer__index_docs` | Index documentation files |
-| `mcp__plugin_marauder_indexer__index_status` | Check indexing status |
-| `mcp__plugin_marauder_indexer__index_clear` | Clear index for project |
+| `mcp__plugin_marauder_marauder__index_search` | Semantic search indexed content |
+| `mcp__plugin_marauder_marauder__index_code` | Index source code files |
+| `mcp__plugin_marauder_marauder__index_docs` | Index documentation files |
+| `mcp__plugin_marauder_marauder__index_status` | Check indexing status |
+| `mcp__plugin_marauder_marauder__index_clear` | Clear index for project |
 
 ## MCP Tools (Memory)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_core__memory_store` | Store analysis findings |
-| `mcp__plugin_marauder_core__memory_recall` | Recall previous findings |
+| `mcp__plugin_marauder_marauder__memory_store` | Store analysis findings |
+| `mcp__plugin_marauder_marauder__memory_recall` | Recall previous findings |
 
 ## Built-in Tools
 | Tool | Purpose |

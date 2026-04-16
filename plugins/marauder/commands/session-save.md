@@ -4,7 +4,7 @@ description: Save current session state for later restoration
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_marauder_core__memory_store
+  - mcp__plugin_marauder_marauder__memory_store
   - Bash
 argument-hint: "<name> [description]"
 ---

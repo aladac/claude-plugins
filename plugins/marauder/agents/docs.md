@@ -7,24 +7,36 @@ description: |
   Context: User wants to know what documentation exists
   user: "What markdown files do I have in my projects?"
   assistant: "I'll use the docs agent to scan and catalog your documentation files."
+  <commentary>
+  Documentation discovery across projects — the docs agent scans directories and maintains INDEX.md.
+  </commentary>
   </example>
 
   <example>
   Context: User wants to rebuild documentation index
   user: "Can you rebuild my docs index?"
   assistant: "I'll use the docs agent to regenerate INDEX.md."
+  <commentary>
+  INDEX.md rebuild is a docs-specific operation — the agent knows the cataloging format and directory structure.
+  </commentary>
   </example>
 
   <example>
   Context: User wants to fetch documentation from web
   user: "Fetch the Rust async documentation"
   assistant: "I'll use the docs agent to fetch and catalog this documentation."
+  <commentary>
+  Web doc fetching + local cataloging — the docs agent downloads, converts, and indexes external documentation.
+  </commentary>
   </example>
 
   <example>
   Context: User searching for specific documentation
   user: "Where did I put my EVE API documentation?"
   assistant: "I'll use the docs agent to search through the documentation index."
+  <commentary>
+  Documentation location lookup — the docs agent searches INDEX.md and the semantic index for doc files.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 30
@@ -56,9 +68,9 @@ dangerouslySkipPermissions: true
 ## MCP Tools (Indexer)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_indexer__index_docs` | Index documentation files |
-| `mcp__plugin_marauder_indexer__index_search` | Semantic search indexed docs |
-| `mcp__plugin_marauder_indexer__index_status` | Check indexing status |
+| `mcp__plugin_marauder_marauder__index_docs` | Index documentation files |
+| `mcp__plugin_marauder_marauder__index_search` | Semantic search indexed docs |
+| `mcp__plugin_marauder_marauder__index_status` | Check indexing status |
 
 ## Related Commands
 | Command | Purpose |

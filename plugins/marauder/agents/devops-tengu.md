@@ -18,24 +18,36 @@ description: |
   Context: User wants to deploy an app to Tengu
   user: "Deploy my app to Tengu"
   assistant: "I'll use the devops-tengu agent to set up the git push deployment."
+  <commentary>
+  Tengu uses git push deployments — the Tengu agent knows the git remote setup, Procfile conventions, and deploy hooks.
+  </commentary>
   </example>
 
   <example>
   Context: User needs to manage Tengu addons
   user: "Add a PostgreSQL database to my Tengu app"
   assistant: "I'll use the devops-tengu agent to provision the db-xl addon."
+  <commentary>
+  Tengu addon provisioning (db, db-xl, xfs, mem, etc.) requires knowledge of the Tengu addon system and CLI.
+  </commentary>
   </example>
 
   <example>
   Context: User wants to provision a new Tengu server
   user: "Set up a new Tengu server on Hetzner"
   assistant: "I'll use the devops-tengu agent to run tengu-init for server provisioning."
+  <commentary>
+  Server provisioning uses tengu-init — requires Hetzner API, cloud-init, and SSH key setup knowledge.
+  </commentary>
   </example>
 
   <example>
   Context: User is debugging Tengu
   user: "My Tengu app won't start"
   assistant: "I'll use the devops-tengu agent to diagnose the deployment issue."
+  <commentary>
+  Tengu deployment debugging requires knowledge of Docker containers, Caddy reverse proxy, and Tengu log locations.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 50

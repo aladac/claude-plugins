@@ -1,5 +1,17 @@
 ---
-description: 'Use when creating Ruby gems, building reusable Ruby libraries, or publishing to RubyGems.org.'
+name: code:ruby-gem
+description: |
+  Create and publish Ruby gems. Gemspec, config pattern, custom exceptions, client classes, release workflow.
+
+  <example>
+  Context: User is creating a new gem
+  user: "scaffold a new ruby gem for API integration"
+  </example>
+
+  <example>
+  Context: User needs gem patterns
+  user: "add a configuration block to my gem"
+  </example>
 ---
 
 # Ruby Gem Development

@@ -1,7 +1,7 @@
 ---
 name: Cargo
 description: |
-  Cross-machine Cargo (Rust) operations. Runs cargo on fuji (macOS) or junkpile (Linux) transparently, routing via SSH when needed. Use for building, testing, installing crates, and managing Rust projects.
+  Cross-machine Cargo operations (NOT coding practices). Runs cargo on fuji (macOS) or junkpile (Linux) transparently via SSH. Build, test, install crates on either machine.
 
   <example>
   Context: User wants to install a Rust tool

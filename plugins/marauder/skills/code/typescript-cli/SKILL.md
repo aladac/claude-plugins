@@ -1,5 +1,17 @@
 ---
-description: 'Use when building TypeScript/Node.js command-line applications, creating CLI tools with Commander, or implementing terminal interfaces in TypeScript.'
+name: code:typescript-cli
+description: |
+  Build TypeScript CLI apps with Commander.js. Subcommands, chalk output, spinners, prompts, and config.
+
+  <example>
+  Context: User is creating a Node.js CLI
+  user: "create a CLI tool for database migrations"
+  </example>
+
+  <example>
+  Context: User needs CLI features
+  user: "add a spinner while fetching data"
+  </example>
 ---
 
 # TypeScript CLI Development

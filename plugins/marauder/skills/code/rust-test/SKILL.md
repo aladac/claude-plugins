@@ -1,5 +1,17 @@
 ---
-description: 'Use when writing Rust tests, setting up test modules, creating mocks, or implementing test patterns in Rust.'
+name: code:rust-test
+description: |
+  Write Rust tests. Unit tests, integration tests, mockall, proptest, async tests, and coverage.
+
+  <example>
+  Context: User needs to add tests
+  user: "write tests for this module"
+  </example>
+
+  <example>
+  Context: User needs test patterns
+  user: "how do I mock a trait in rust"
+  </example>
 ---
 
 # Rust Testing

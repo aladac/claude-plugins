@@ -1,5 +1,17 @@
 ---
-description: 'Use when building Rust command-line applications, creating CLI tools with Clap, or implementing terminal interfaces in Rust.'
+name: code:rust-cli
+description: |
+  Build Rust CLI apps with Clap derive. Subcommands, colorized output, progress bars, config, error handling.
+
+  <example>
+  Context: User is creating a Rust CLI
+  user: "create a CLI tool for file processing"
+  </example>
+
+  <example>
+  Context: User needs CLI patterns
+  user: "add subcommands to this clap app"
+  </example>
 ---
 
 # Rust CLI Development

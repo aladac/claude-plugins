@@ -1,5 +1,17 @@
 ---
-description: 'Use for Ruby linting, formatting, type checking, test coverage, and project validation. Covers standardrb, rubocop, sorbet, and simplecov.'
+name: code:ruby-tooling
+description: |
+  Ruby linting (standardrb/rubocop), type checking (sorbet), coverage (simplecov), and CI validation.
+
+  <example>
+  Context: User wants to set up linting
+  user: "configure standardrb for this project"
+  </example>
+
+  <example>
+  Context: User needs to validate their project
+  user: "run all checks on this ruby project"
+  </example>
 ---
 
 # Ruby Tooling
@@ -249,6 +261,14 @@ jobs:
 | Format | (included in lint) | (included in lint) |
 | Coverage | `rspec` + simplecov | `rspec` + simplecov |
 | All checks | `rake check` | `rake check` |
+
+## Quick Validation
+
+One-liner to validate a Ruby project is CI-ready:
+
+```bash
+bundle exec standardrb && bundle exec srb tc && bundle exec rspec
+```
 
 ## Recommended Stack
 

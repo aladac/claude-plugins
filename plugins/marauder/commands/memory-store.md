@@ -4,7 +4,7 @@ description: Store information in persistent memory
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_marauder_core__memory_store
+  - mcp__plugin_marauder_marauder__memory_store
 argument-hint: "<subject> <content>"
 ---
 

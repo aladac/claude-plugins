@@ -1,5 +1,8 @@
 ---
-allowed-tools: Bash, Read
+description: Snapshot the MARAUDER VISOR and describe what's on screen
+allowed-tools:
+  - Bash
+  - Read
 ---
 
 Snapshot the MARAUDER VISOR TUI and describe what's on screen.

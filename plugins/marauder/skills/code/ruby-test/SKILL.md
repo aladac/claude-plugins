@@ -1,5 +1,17 @@
 ---
-description: 'Use when writing Ruby tests, setting up RSpec, creating test doubles, or implementing test patterns in Ruby.'
+name: code:ruby-test
+description: |
+  Write Ruby tests with RSpec. Factories, shared examples, test doubles, request specs, and coverage.
+
+  <example>
+  Context: User needs to add tests
+  user: "write rspec tests for this service"
+  </example>
+
+  <example>
+  Context: User needs test patterns
+  user: "how do I stub an API call in rspec"
+  </example>
 ---
 
 # Ruby Testing

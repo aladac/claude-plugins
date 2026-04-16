@@ -1,5 +1,17 @@
 ---
-description: 'Use for Rust linting, formatting, type checking, test coverage, and project validation. Covers clippy, rustfmt, cargo check, and tarpaulin.'
+name: code:rust-tooling
+description: |
+  Rust linting (clippy), formatting (rustfmt), type checking (cargo check), coverage (tarpaulin), and CI validation.
+
+  <example>
+  Context: User wants to set up linting
+  user: "configure clippy pedantic for this project"
+  </example>
+
+  <example>
+  Context: User needs to validate their project
+  user: "run all checks on this rust project"
+  </example>
 ---
 
 # Rust Tooling
@@ -235,6 +247,14 @@ cargo test || exit 1
 | Coverage | `cargo tarpaulin --out Html` |
 | All checks | `cargo fmt -- --check && cargo clippy -- -D warnings && cargo test` |
 | All fixes | `cargo fmt && cargo clippy --fix --allow-dirty` |
+
+## Quick Validation
+
+One-liner to validate a Rust project is CI-ready:
+
+```bash
+cargo fmt -- --check && cargo clippy --all-targets --all-features -- -D warnings && cargo test --all-features
+```
 
 ## Documentation
 

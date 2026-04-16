@@ -231,7 +231,7 @@ After component creation or changes:
 
 ## Key Paths
 
-- **Plugin Source**: `~/Projects/personality-plugin` - PSN plugin source (registered as `local-dev` marketplace)
+- **Plugin Source**: `~/Projects/marauder-plugin` - PSN plugin source (registered as `local-dev` marketplace)
 - **Claude Config**: `~/.claude` → `~/Projects/claude` - Symlinked Claude Code configuration
 
 ## Installing Plugins

@@ -1,5 +1,17 @@
 ---
-description: 'Use when writing Python tests, setting up pytest, creating fixtures, or implementing test patterns in Python.'
+name: code:python-test
+description: |
+  Write Python tests with pytest. Fixtures, parametrize, mocking, async tests, coverage, and CI setup.
+
+  <example>
+  Context: User needs to add tests
+  user: "write tests for this service class"
+  </example>
+
+  <example>
+  Context: User needs test patterns
+  user: "how do I mock an API call in pytest"
+  </example>
 ---
 
 # Python Testing

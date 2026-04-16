@@ -1,23 +1,14 @@
 ---
 name: Pretty Output Pattern
 description: |
-  This skill should be used when implementing commands with visual feedback. All commands should use TaskCreate/TaskUpdate to show spinners during operations, hiding verbose output until completion.
-
-  <example>
-  Context: Command needs a loading spinner
-  user: "Add a spinner while indexing"
-  </example>
-
-  <example>
-  Context: Command output needs formatting
-  user: "Show a clean summary after the operation"
-  </example>
+  Developer reference for implementing commands with TaskCreate/TaskUpdate spinners. Not user-facing — used when building marauder commands.
+disable-model-invocation: true
 version: 1.0.0
 ---
 
 # Pretty Output Pattern
 
-All psn commands should provide clean visual feedback using Claude Code's native Task system.
+All marauder commands should provide clean visual feedback using Claude Code's native Task system.
 
 ## Why Pretty Output
 

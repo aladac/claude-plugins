@@ -1,3 +1,6 @@
+---
+description: Execute PLAN.md phase by phase with commit gates between phases
+---
 Execute the implementation plan phase by phase. Read PLAN.md and TODO.md from the current project, implement each phase, stop for review and commit approval between phases.
 
 ## Instructions

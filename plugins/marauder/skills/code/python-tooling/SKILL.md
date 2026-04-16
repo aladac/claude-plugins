@@ -1,5 +1,17 @@
 ---
-description: 'Use for Python linting, formatting, type checking, test coverage, and project validation. Covers ruff, mypy, pytest-cov.'
+name: code:python-tooling
+description: |
+  Python linting (ruff), formatting, type checking (mypy), coverage (pytest-cov), and CI validation.
+
+  <example>
+  Context: User wants to set up linting
+  user: "configure ruff for this python project"
+  </example>
+
+  <example>
+  Context: User needs to validate their project
+  user: "run all checks on this python project"
+  </example>
 ---
 
 # Python Tooling
@@ -263,6 +275,14 @@ jobs:
 | Coverage | `pytest --cov=src` |
 | All checks | `ruff check && ruff format --check && mypy src/ && pytest` |
 | All fixes | `ruff check --fix && ruff format` |
+
+## Quick Validation
+
+One-liner to validate a Python project is CI-ready:
+
+```bash
+ruff check src/ && ruff format --check src/ && mypy src/ && pytest
+```
 
 ## Recommended Stack
 

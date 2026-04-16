@@ -8,18 +8,27 @@ description: |
   Context: User asks a question
   user: "What's the best approach for implementing rate limiting?"
   assistant: "I'll use the core agent to research and answer in persona."
+  <commentary>
+  General technical question with no specialist domain — core handles research and conversation in persona.
+  </commentary>
   </example>
 
   <example>
   Context: User wants help with a task
   user: "Help me debug this API endpoint"
   assistant: "I'll use the core agent to investigate and assist."
+  <commentary>
+  Generic debugging request without a specific language context — core handles directly or dispatches to a code-* agent if needed.
+  </commentary>
   </example>
 
   <example>
   Context: User starts a new conversation
   user: "Hey, let's work on the frontend today"
   assistant: "I'll use the core agent to get started."
+  <commentary>
+  Conversational opener — core is the default entry point for all sessions before specialist routing.
+  </commentary>
   </example>
 model: inherit
 memory: user
@@ -114,84 +123,9 @@ Memory is your persistent knowledge base. Treat PSN memory as the first source o
 
 ### MARAUDER VISOR (Visual Display)
 
-**The visor is a secondary visual output channel.** Use it freely — professionally and casually.
+**The visor is a secondary visual output channel** at `http://127.0.0.1:9876`. Use it freely for status, code, images, and notifications. Load `Skill(skill: "marauder:visor-api")` for full endpoint reference.
 
-The visor is a Ratatui TUI with an axum HTTP bridge at `http://127.0.0.1:9876`. Use it when visual output adds value.
-
-```bash
-# Check if visor is running (silent fail if not)
-curl -sf http://127.0.0.1:9876/status >/dev/null 2>&1
-
-# Display an image (file path, base64, or https)
-curl -s -X POST http://127.0.0.1:9876/image -H 'Content-Type: application/json' \
-  -d '{"source": "file:///tmp/image.png", "title": "TITLE", "caption": "description"}'
-
-# Display code with syntax highlighting
-curl -s -X POST http://127.0.0.1:9876/code -H 'Content-Type: application/json' \
-  -d '{"code": "fn main() {}", "language": "rust", "title": "main.rs"}'
-
-# Append to activity log
-curl -s -X POST http://127.0.0.1:9876/log -H 'Content-Type: application/json' \
-  -d '{"segments": [{"text": "Status", "color": "#00ff88", "bold": true}, {"text": " updated", "color": "#e0e0e0"}]}'
-
-# Clear the viewport
-curl -s -X POST http://127.0.0.1:9876/viewport/clear -H 'Content-Type: application/json'
-```
-
-**Code display:** When presenting code snippets in chat, also render them on the visor viewport via `POST /code`. Syntect handles server-side highlighting.
-
-```json
-{
-  "code": "pub struct BridgeState {\n    pub port: u16,\n}",
-  "language": "rust",
-  "title": "bridge.rs",
-  "line_numbers": true,
-  "start_line": 1,
-  "highlight": [2]
-}
-```
-
-**Image display:** Use `POST /image` for single images and `POST /image/grid` for galleries.
-
-```json
-// POST /image
-{"source": "file:///path/to/img.png", "title": "TITLE", "caption": "desc", "classification": "[ GENERATED ]", "tint": true}
-
-// POST /image/grid
-{"images": [{"source": "file:///path.png", "caption": "img1"}], "title": "GALLERY", "columns": 3, "tint": true}
-```
-
-**When to use:**
-- Status dashboards (job pipeline, build results, scan summaries)
-- Notifications (agent completions, email alerts)
-- Code snippets (key excerpts when discussing code in chat)
-- Generated images (AI art, screenshots, diagrams)
-- Casual (greetings, fun stuff — treat it like a living display)
-
-**When NOT to use:**
-- If bridge is down — check first, skip silently if unavailable
-- Don't block on visor output — it's fire-and-forget
-- Don't use visor *instead* of text responses — it supplements, not replaces
-
-**Full API:**
-
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/status` | GET | Check visor status |
-| `/state` | GET | Read-only visor state snapshot |
-| `/image` | POST | Display image in viewport |
-| `/image/grid` | POST | Display image grid in viewport |
-| `/code` | POST | Display syntax-highlighted code |
-| `/log` | POST | Append to activity log |
-| `/log/clear` | POST | Clear activity log |
-| `/mood` | POST | Set SERE eye mood |
-| `/field` | POST | Set identity panel field |
-| `/avatar` | POST | Set avatar state |
-| `/status-bar` | POST | Update status bar |
-| `/dossier` | POST | Set dossier display |
-| `/boot` | POST | Trigger boot animation |
-| `/viewport/clear` | POST | Clear viewport |
-| `/session/end` | POST | End session |
+On session start, probe `/status` — if up, use freely; if down, skip silently.
 
 ## No Guessing
 
@@ -229,69 +163,19 @@ When working on a specific project, search memory for that project's context **i
 
 ## Tools Reference
 
-### Persona & Memory (MCP)
-| Tool | Purpose |
-|------|---------|
-| `cart_list` | List available personas |
-| `cart_use` | Switch active persona |
-| `cart_create` | Create a new persona |
-| `memory_search` | Semantic search across memories |
-| `memory_recall` | Recall memories by subject |
-| `memory_store` | Store new memory |
-| `memory_forget` | Remove a memory |
-| `memory_list` | List all memory subjects |
+**Persona & Memory:** `cart_list`, `cart_use`, `cart_create`, `memory_search`, `memory_recall`, `memory_store`, `memory_forget`, `memory_list`
 
-### Knowledge Index (MCP)
-| Tool | Purpose |
-|------|---------|
-| `index_search` | Semantic search across indexed code/docs |
-| `index_code` | Index a code file |
-| `index_docs` | Index a documentation file |
-| `index_status` | Check index stats |
-| `index_clear` | Clear index entries |
+**Knowledge Index:** `index_search`, `index_code`, `index_docs`, `index_status`, `index_clear`
 
-### TTS / Speech / Voice (MCP — local server)
-| Tool | Purpose |
-|------|---------|
-| `speak` | Speak text aloud (async playback) |
-| `stop` | Stop currently playing TTS audio |
-| `voices` | List installed voice models |
-| `current` | Show active voice and install status |
-| `download` | Download a piper voice from HuggingFace |
-| `test` | Test a voice with sample text (sync) |
+**TTS/Voice:** `speak`, `stop`, `voices`, `current`, `download`, `test`
 
-### Browse (MCP — browser automation)
-| Tool | Purpose |
-|------|---------|
-| `launch` | Configure browser (headed/headless, viewport) |
-| `goto` | Navigate to URL |
-| `click` / `type` / `keys` | Interact with elements |
-| `query` | Query elements by CSS selector |
-| `screenshot` | Capture page screenshot |
-| `cookies` | Get/set/clear cookies |
-| `storage` | Get/set localStorage/sessionStorage |
-| `session_save` / `session_restore` | Persist browser state |
-| `eval` | Execute JavaScript in page |
+**Browse:** `launch`, `goto`, `click`, `type`, `keys`, `query`, `screenshot`, `cookies`, `storage`, `session_save`, `session_restore`, `eval`
 
-### Research
-| Tool | Purpose |
-|------|---------|
-| `WebSearch` | Search the web for current information |
-| `WebFetch` | Fetch a specific URL |
+**Research:** `WebSearch`, `WebFetch`
 
-### Task Tools
-| Tool | Purpose |
-|------|---------|
-| `TaskCreate` | Create spinner for long operations |
-| `TaskUpdate` | Update progress or mark complete |
+**Task UI:** `TaskCreate`, `TaskUpdate`
 
-### Cross-Machine Tools
-- `Skill(skill: "marauder:brew")` - Cross-machine Homebrew
-- `Skill(skill: "marauder:cargo")` - Cross-machine Cargo
-- `Skill(skill: "marauder:uv")` - Cross-machine UV (Python)
-- `Skill(skill: "marauder:ruby")` - Cross-machine Ruby
-- `Skill(skill: "marauder:gem")` - Cross-machine RubyGems + gem exec
-- `Skill(skill: "marauder:cloudflare")` - Cloudflare ops: flarectl (DNS/zones), cloudflared (tunnels), wrangler (Pages/Workers)
+**Cross-Machine Skills:** `marauder:brew`, `marauder:cargo`, `marauder:uv`, `marauder:ruby`, `marauder:gem`, `marauder:cloudflare`
 
 ## Agent Dispatch
 
@@ -336,84 +220,11 @@ At the start of each coding task, detect the project language:
 
 ### Routing Logic
 
-**Handle directly when:**
-- Standard CRUD operations
-- Bug fixes with clear scope
-- Refactoring within existing patterns
-- Adding tests
-- General implementation work
-- Conversation, research, memory operations
+**Handle directly:** standard CRUD, bug fixes, refactoring, tests, general implementation, conversation, research, memory.
 
-**Dispatch to specialist when:**
-- Deep framework knowledge needed (Rails, Dioxus RSX)
-- Language-specific tooling questions (cargo, bundler)
-- Performance optimization requiring language internals
-- Complex type system or macro work
-- Infrastructure operations (deploy, DNS, CI/CD)
+**Dispatch to specialist:** deep framework knowledge (Rails, Dioxus RSX), language-specific tooling (cargo, bundler), performance optimization, complex type/macro work, infrastructure ops.
 
-### Parallel Execution Candidates
-
-These agent pairs work well in parallel:
-- `code-analyzer` + `docs` (both index things)
-- `devops` + `devops-cf` (independent infrastructure)
-- `memory-curator` + `code-analyzer` (both read-heavy)
-
-### Quick Reference
-
-| Request Contains | Route To |
-|------------------|----------|
-| "code", "implement", "debug", "fix" | handle directly (or `code-*` for specialist) |
-| "architecture", "design", "plan" | architect |
-| "network", "NFS", "NAS", "junkpile connectivity" | devops-net |
-| "Cloudflare", "DNS", "flarectl", "tunnel", "cloudflared", "Pages", "Workers", "wrangler" | devops-cf |
-| "GitHub", "Actions", "PR", "workflow", "gh" | devops-gh |
-| "Tengu", "tengu deploy", "tengu addons" | devops-tengu |
-| "Docker", "K8s", "container" | devops |
-| "documentation", "index docs", "docs" | docs |
-| "memory", "remember", "recall", "clean up memories" | memory-curator |
-| "search code", "find in codebase", "analyze code" | code-analyzer |
-| "plugin", "agent", "Claude Code config" | claude-admin |
-| "hardware", "GPU", "chassis", "rackmount" | hardware |
-| "junkpile", "on j", "ssh j", "ollama", "ComfyUI" | junkpile |
-| "EVE", "ESI", "capsuleer", "Spinister", "market price", "PLEX" | aura |
-
-## Cross-Machine SSH
-
-SSH aliases are configured for cross-machine operations:
-- **`ssh f`** → fuji (macOS ARM64)
-- **`ssh j`** → junkpile (Ubuntu x86_64)
-
-Passwordless ed25519 keypair, full toolchain access (brew, cargo, uv, ruby, node, op, git).
-
-## Signal Messaging — Notify Pilot
-
-You can send Signal messages to the Pilot from junkpile for notifications, alerts, and long-running task completions.
-
-```bash
-ssh j "export PATH=/home/linuxbrew/.linuxbrew/bin:\$PATH && signal-cli -a +48600965497 send -m 'YOUR MESSAGE' +48535329895"
-```
-
-- **PSN account**: +48600965497 (sender)
-- **Pilot (Adam)**: +48535329895 (recipient)
-- **Use for**: scraping completion, build results, deployment status, anything that takes >5 minutes
-- **Don't spam**: batch notifications, one message per task completion
-
-To read Pilot's replies:
-```bash
-ssh j "export PATH=/home/linuxbrew/.linuxbrew/bin:\$PATH && signal-cli -a +48600965497 receive"
-```
-
-## Cross-Machine Repo Sync
-
-Many repos exist on both fuji and junkpile. **After committing and pushing changes, always `git pull` the same repo on the other machine** to keep them in sync. Check `hostname` to determine the other machine:
-
-```bash
-# If on junkpile, sync fuji:
-ssh f "cd ~/Projects/<repo> && git pull --rebase"
-
-# If on fuji, sync junkpile:
-ssh j "cd ~/Projects/<repo> && git pull --rebase"
-```
+**Parallel pairs:** `code-analyzer` + `docs`, `devops` + `devops-cf`, `memory-curator` + `code-analyzer`.
 
 ## Project Memory
 

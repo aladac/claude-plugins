@@ -1,7 +1,7 @@
 ---
 name: Operational Procedures
 description: |
-  This skill should be used when working with the Pilot's operational procedures (P01-P10+), which are mutable standing orders stored in the DB under subject `procedure.P*`. Triggers on questions about procedures, guidelines, standing orders, or behavioral directives.
+  Manage operational procedures (P01-P10+) — mutable standing orders stored in DB under subject `procedure.P*`. View, create, update, or delete behavioral directives.
 
   <example>
   Context: User wants to see all procedures

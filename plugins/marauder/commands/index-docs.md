@@ -4,8 +4,8 @@ description: Index documentation for semantic search
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_marauder_indexer__index_docs
-  - mcp__plugin_marauder_indexer__status
+  - mcp__plugin_marauder_marauder__index_docs
+  - mcp__plugin_marauder_marauder__status
   - Glob
 argument-hint: "[path] [--project name]"
 ---

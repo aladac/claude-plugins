@@ -1,3 +1,6 @@
+---
+description: Create PLAN.md and TODO.md from design analysis and agent validation
+---
 Plan implementation for a project. Analyze all design suggestions, validate with architect and code agents, then create PLAN.md and TODO.md in the project repo.
 
 ## Instructions
@@ -17,7 +20,7 @@ Do NOT start implementing. Plan only. Present the plan and wait for explicit "go
 
 Before writing any estimate:
 
-1. **Recall calibration data** — search memory for `psn-core.eta_calibration` to get the latest actual-vs-estimated ratios
+1. **Recall calibration data** — search memory for `marauder.eta_calibration` to get the latest actual-vs-estimated ratios
 2. **Apply the calibration ratio** — our historical data shows we consistently overestimate by 2-3x. Divide naive estimates accordingly
 3. **Use these heuristics:**
    - Agent phase: 5-10 min each (not 15-20)
@@ -27,7 +30,7 @@ Before writing any estimate:
    - Decision gates (Pilot approval, soak testing): count as session boundaries, not hours
 4. **Present both columns** — show the naive estimate AND the cooperative estimate so the Pilot can see the adjustment
 5. **Count sessions, not just hours** — calendar time depends on session boundaries (soak tests, restarts, approval gates). State how many sessions each phase needs
-6. **Update calibration data** — after implementation, record the actual time in `psn-core.eta_calibration` memory to improve future estimates
+6. **Update calibration data** — after implementation, record the actual time in `marauder.eta_calibration` memory to improve future estimates
 
 ### Example Format
 

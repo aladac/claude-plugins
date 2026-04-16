@@ -219,7 +219,7 @@ Pages and workers use wrangler locally (fuji only).
 **junkpile cloudflared note:** The cert at `/home/chi/.cloudflared/cert.pem` is locked to the `tengu.to` zone. For tunnel DNS routing to other zones, the DNS CNAME must be created separately via flarectl.
 
 ## Related Agents
-- `psn:devops-cf` -- Cloudflare infrastructure agent (loads this skill)
+- `marauder:devops-cf` -- Cloudflare infrastructure agent (loads this skill)
 
 ## Prerequisites
 - `flarectl` -- fuji (`/opt/homebrew/bin`) + junkpile (`/home/linuxbrew/.linuxbrew/bin`) -- DNS and zone management

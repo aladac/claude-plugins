@@ -1,3 +1,6 @@
+---
+description: Quick session save — save current work context to memory
+---
 Save the current session to memory with an auto-generated or user-specified name.
 
 ## Arguments

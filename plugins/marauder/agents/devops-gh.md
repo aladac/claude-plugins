@@ -14,22 +14,31 @@ description: |
   Context: User needs CI/CD
   user: "Set up GitHub Actions for my TypeScript project"
   assistant: "I'll use the devops-gh agent to create the Actions workflow."
+  <commentary>
+  Actions workflow creation requires YAML workflow syntax, runner selection, and CI/CD best practices — GitHub specialist domain.
+  </commentary>
   </example>
 
   <example>
   Context: User mentions PRs
   user: "Create a PR for this branch"
   assistant: "I'll use the devops-gh agent to create the pull request."
+  <commentary>
+  PR creation via gh CLI — the GitHub agent knows branch management, PR templates, and review workflows.
+  </commentary>
   </example>
 
   <example>
   Context: User has Actions issues
   user: "My GitHub Actions workflow is failing"
   assistant: "I'll use the devops-gh agent to diagnose the workflow failure."
+  <commentary>
+  Actions debugging requires understanding of workflow logs, runner environments, and common failure patterns.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 50
-color: orange
+color: yellow
 memory: user
 dangerouslySkipPermissions: true
 # tools: omitted — inherits all available tools (base + all MCP)

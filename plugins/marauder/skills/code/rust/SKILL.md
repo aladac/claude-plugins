@@ -1,5 +1,17 @@
 ---
-description: 'Use when writing Rust code, implementing Rust features, or needing Rust best practices and idioms.'
+name: code:rust
+description: |
+  Rust coding practices and idioms. Error handling (thiserror/anyhow), newtypes, iterators, builders, modules.
+
+  <example>
+  Context: User is writing Rust code
+  user: "implement a parser for this config format"
+  </example>
+
+  <example>
+  Context: User needs Rust patterns
+  user: "what's the best way to handle errors in this library"
+  </example>
 ---
 
 # Tools Reference
@@ -15,11 +27,10 @@ description: 'Use when writing Rust code, implementing Rust features, or needing
 | `Grep` | Search Rust code |
 
 ## Related Skills
-- `psn:code:rust-cli` - Clap CLI development
-- `psn:code:rust-test` - Rust testing
-- `psn:code:rust-dioxus` - Dioxus GUI development
-- `psn:code:rust-tooling` - Lint/format/typecheck
-- `psn:code:rust-validate` - Full validation workflow
+- `marauder:code:rust-cli` - Clap CLI development
+- `marauder:code:rust-test` - Rust testing
+- `marauder:code:rust-dioxus` - Dioxus GUI development
+- `marauder:code:rust-tooling` - Lint/format/typecheck/validate
 
 ---
 

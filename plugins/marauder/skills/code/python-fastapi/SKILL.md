@@ -1,5 +1,17 @@
 ---
-description: 'Use when building FastAPI applications, creating Python APIs, or implementing async web services in Python.'
+name: code:python-fastapi
+description: |
+  Build FastAPI apps with Pydantic models, dependency injection, async routes, and testing patterns.
+
+  <example>
+  Context: User is building an API
+  user: "create a REST API for user management"
+  </example>
+
+  <example>
+  Context: User needs API patterns
+  user: "add authentication to this FastAPI app"
+  </example>
 ---
 
 # Python FastAPI Development

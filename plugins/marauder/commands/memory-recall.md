@@ -4,7 +4,7 @@ description: Recall information from persistent memory
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_marauder_core__memory_recall
+  - mcp__plugin_marauder_marauder__memory_recall
 argument-hint: "<query> [--subject filter]"
 ---
 

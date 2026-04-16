@@ -1,5 +1,17 @@
 ---
-description: 'Use when setting up or using dioxus-inspector for MCP-based debugging of Dioxus Desktop applications, connecting Claude Code to running Dioxus apps, or troubleshooting inspector connectivity.'
+name: code:dioxus-inspector
+description: |
+  Set up dioxus-inspector for MCP-based debugging of Dioxus Desktop apps. Embed bridge, configure MCP, troubleshoot connectivity.
+
+  <example>
+  Context: User wants to add debugging to a Dioxus app
+  user: "add dioxus-inspector to my desktop app"
+  </example>
+
+  <example>
+  Context: User has MCP connection issues
+  user: "dioxus inspector tools aren't showing up"
+  </example>
 ---
 
 # Dioxus Inspector Integration
@@ -106,5 +118,5 @@ curl http://127.0.0.1:9999/status
 
 ## Related Skills
 
-- `psn:code:rust-dioxus` - Dioxus development patterns
-- `psn:code:dioxus-debug` - Debugging workflows with inspector
+- `marauder:code:rust-dioxus` - Dioxus development patterns
+- `marauder:code:dioxus-debug` - Debugging workflows with inspector

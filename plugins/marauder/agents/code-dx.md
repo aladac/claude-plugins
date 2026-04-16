@@ -9,24 +9,36 @@ description: |
   Context: User wants to create a new Dioxus component with state management.
   user: "Create a counter component with increment and decrement buttons"
   assistant: "I'll use the code-dx agent to create this Dioxus component with proper signal-based state management."
+  <commentary>
+  Dioxus uses signals (not React hooks) for state — the dx agent knows RSX syntax, signal patterns, and Dioxus component lifecycle.
+  </commentary>
   </example>
 
   <example>
   Context: User is debugging a Dioxus build issue.
   user: "My dx serve command is failing with a wasm error"
   assistant: "Let me use the code-dx agent to diagnose this Dioxus build issue."
+  <commentary>
+  dx CLI and WASM build issues are Dioxus-specific — requires knowledge of dx serve, WASM targets, and Dioxus.toml configuration.
+  </commentary>
   </example>
 
   <example>
   Context: User wants to understand Dioxus project structure.
   user: "How should I organize my Dioxus app with multiple pages?"
   assistant: "I'll invoke the code-dx agent to provide guidance on Dioxus routing and project organization."
+  <commentary>
+  Dioxus routing differs from web frameworks — the dx agent knows Dioxus Router, nested routes, and layout patterns.
+  </commentary>
   </example>
 
   <example>
   Context: User is implementing cross-platform functionality.
   user: "I need to access native file system in my Dioxus desktop app"
   assistant: "Let me use the code-dx agent to help with Dioxus SDK integration for native functionality."
+  <commentary>
+  Native desktop integration in Dioxus uses platform-specific APIs through the Dioxus SDK — specialist knowledge required.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 50

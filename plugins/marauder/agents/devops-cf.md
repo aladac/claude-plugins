@@ -14,22 +14,31 @@ description: |
   Context: User needs DNS management
   user: "Add a DNS record for api.example.com"
   assistant: "I'll use the devops-cf agent to create the DNS record."
+  <commentary>
+  DNS record management uses flarectl — the CF specialist knows zone IDs, record types, and proxied vs DNS-only settings.
+  </commentary>
   </example>
 
   <example>
   Context: User mentions tunnels
   user: "Create a tunnel for my new service"
   assistant: "I'll use the devops-cf agent to set up the Cloudflare Tunnel."
+  <commentary>
+  Tunnel creation uses cloudflared — requires tunnel naming, ingress rules, and DNS route configuration.
+  </commentary>
   </example>
 
   <example>
   Context: User wants to deploy
   user: "Deploy this site to Cloudflare Pages"
   assistant: "I'll use the devops-cf agent to deploy to Pages."
+  <commentary>
+  Pages deployment uses wrangler — the CF specialist knows project setup, build commands, and environment bindings.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 50
-color: orange
+color: yellow
 memory: user
 dangerouslySkipPermissions: true
 # tools: omitted — inherits all available tools (base + all MCP)
@@ -44,7 +53,7 @@ You are the Cloudflare infrastructure specialist. You manage DNS, Tunnels, Pages
 All operations go through the unified cf.sh script:
 
 ```bash
-CF="$HOME/Projects/personality-plugin/skills/cloudflare/cf.sh"
+CF="$HOME/Projects/marauder-plugin/skills/cloudflare/cf.sh"
 bash "$CF" <module> <command> [args...]
 ```
 

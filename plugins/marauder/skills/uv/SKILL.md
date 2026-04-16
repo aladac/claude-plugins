@@ -1,7 +1,7 @@
 ---
 name: UV
 description: |
-  Cross-machine uv (Python package manager) operations. Runs uv on fuji (macOS) or junkpile (Linux) transparently, routing via SSH when needed. Use for Python environment management, pip operations, and tool installs.
+  Cross-machine uv (Python) package management (NOT coding practices). Runs uv on fuji (macOS) or junkpile (Linux) transparently via SSH. Manage environments, pip installs, and tools.
 
   <example>
   Context: User wants to install a Python package

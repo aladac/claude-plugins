@@ -14,22 +14,31 @@ description: |
   Context: User has NFS mount issues
   user: "NFS mount to junkpile isn't working"
   assistant: "I'll use the devops-net agent to diagnose the NFS connectivity."
+  <commentary>
+  NFS mount issues require knowledge of the direct Ethernet link, export configs, and mount options specific to the fuji-junkpile setup.
+  </commentary>
   </example>
 
   <example>
   Context: User needs to check network status
   user: "Is junkpile reachable?"
   assistant: "I'll use the devops-net agent to check network connectivity."
+  <commentary>
+  Network reachability check — the net agent knows the IP layout, SSH aliases, and proxy ARP bridging between machines.
+  </commentary>
   </example>
 
   <example>
   Context: User mentions the NAS
   user: "I can't access the NAS from my Mac"
   assistant: "I'll use the devops-net agent to troubleshoot NAS connectivity via junkpile."
+  <commentary>
+  NAS access from Mac routes through junkpile — the net agent knows the Synology NAS setup and NFS/SMB share paths.
+  </commentary>
   </example>
 model: inherit
 maxTurns: 50
-color: orange
+color: yellow
 memory: user
 dangerouslySkipPermissions: true
 # tools: omitted — inherits all available tools (base + all MCP)
