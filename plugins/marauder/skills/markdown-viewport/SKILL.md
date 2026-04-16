@@ -14,16 +14,17 @@ description: |
   </example>
 ---
 
-## Usage
+# Markdown Viewport
 
-```bash
-# From file
-bash ${CLAUDE_PLUGIN_ROOT}/skills/markdown-viewport/render.sh /path/to/file.md
+Use the `visor_markdown` MCP tool directly:
 
-# From stdin
-echo '# Hello\n\nSome **bold** text' | bash ${CLAUDE_PLUGIN_ROOT}/skills/markdown-viewport/render.sh
+```
+visor_markdown(content: "# Title\n\nSome **bold** text", title: "NOTES")
 ```
 
-### Scrolling
-- Vertical: mousewheel
-- Horizontal: shift+scroll or trackpad swipe
+## Parameters
+
+| Param | Description |
+|-------|-------------|
+| `content` | Markdown content to render |
+| `title` | Title shown above the block |

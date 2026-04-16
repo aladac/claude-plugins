@@ -115,7 +115,7 @@ case "$cmd" in
     [ -z "$neg" ] && neg="$DEFAULT_NEG"
 
     echo "Generating: $prompt"
-    $TSR generate "$prompt" --remote junkpile -o "$output" -n "$neg" "${extra_args[@]}" 2>&1
+    $TSR generate "$prompt" --remote junkpile -o "$output" -n "$neg" ${extra_args[@]+"${extra_args[@]}"} 2>&1
 
     if [ -f "$output" ]; then
       echo "Saved: $output"
@@ -162,7 +162,7 @@ case "$cmd" in
     pids=()
     for i in $(seq 1 "$count"); do
       output="/tmp/tsr-batch-$$-${i}.png"
-      $TSR generate "$prompt" --remote junkpile -o "$output" -n "$neg" "${extra_args[@]}" &
+      $TSR generate "$prompt" --remote junkpile -o "$output" -n "$neg" ${extra_args[@]+"${extra_args[@]}"} &
       pids+=($!)
       files+=("$output")
       sleep 0.2  # stagger slightly

@@ -20,50 +20,28 @@ description: |
 version: 1.0.0
 ---
 
-# EVE Screen Capture Skill
+# EVE Screen Capture
 
-Capture the EVE Online game window for visual analysis.
+Use the `eve_screen` MCP tool directly:
 
-## Quick Reference
-
-```bash
-SKILL="${CLAUDE_PLUGIN_ROOT}/skills/eve-screen/eve-screen.rb"
-
-# Capture game window (timestamped, returns path)
-ruby $SKILL capture
-
-# Capture to specific file
-ruby $SKILL capture /tmp/eve.png
-
-# Capture and return path only (for piping)
-ruby $SKILL snap
+```
+eve_screen(title: "EVE Online")
 ```
 
-## Commands
+## Parameters
 
-| Command | Args | Description |
-|---------|------|-------------|
-| `capture` | `[path]` | Capture game window, print path for Read tool |
-| `snap` | `[path]` | Same as capture (alias) |
-
-## Visual Analysis Pattern
-
-```bash
-# Step 1: Capture
-path=$(ruby $SKILL snap)
-
-# Step 2: Read the image with Claude's vision
-# Use the Read tool on the returned path
-```
+| Param | Description |
+|-------|-------------|
+| `output` | Output path (default: `/tmp/eve-screen.png`) |
+| `title` | Set to post image on visor. Omit to skip. |
+| `caption` | Caption for visor display. |
 
 ## How It Works
 
-1. Uses Swift + `CGWindowListCopyWindowInfo` to find the EVE game window (title starts with "EVE - ")
-2. Gets the window ID (WID)
-3. Runs `screencapture -x -o -l <WID> <path>` to capture just that window
-4. Returns the file path for visual analysis via the Read tool
+1. Finds the EVE game window via Swift + `CGWindowListCopyWindowInfo`
+2. Captures with `screencapture -x -o -l <WID>`
+3. Returns path for visual analysis via `Read` tool
 
 ## Prerequisites
 
-- macOS (uses screencapture + CoreGraphics)
-- EVE Online client running with a character logged in
+- macOS, EVE Online client running with a character logged in

@@ -14,24 +14,21 @@ description: |
   </example>
 ---
 
-## Usage
+# Code Viewport
 
-```bash
-bash ${CLAUDE_PLUGIN_ROOT}/skills/code-viewport/render.sh <language> <file_or_stdin>
+Use the `visor_code` MCP tool directly:
+
+```
+visor_code(code: "fn main() {}", language: "rust", title: "main.rs")
 ```
 
-Or pipe code directly:
-```bash
-echo 'def hello; puts "world"; end' | bash ${CLAUDE_PLUGIN_ROOT}/skills/code-viewport/render.sh ruby
-```
+## Parameters
 
-### Supported Languages
-ruby, python, javascript, rust, bash, shell, typescript
-
-### From a file
-```bash
-bash ${CLAUDE_PLUGIN_ROOT}/skills/code-viewport/render.sh ruby /path/to/file.rb
-```
-
-### Integration
-The script sends code to the visor via POST /code on port 9876. Syntect handles syntax highlighting server-side in the visor.
+| Param | Description |
+|-------|-------------|
+| `code` | Code content to display |
+| `language` | Language for syntax highlighting (e.g. `rust`, `python`, `ruby`) |
+| `title` | Title shown above the code block |
+| `line_numbers` | Show line numbers (default: true) |
+| `start_line` | Starting line number |
+| `highlight` | Line numbers to highlight |

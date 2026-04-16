@@ -19,46 +19,27 @@ description: |
   </example>
 ---
 
-# Visor Snapshot Skill
+# Visor Snapshot
 
-Captures the MARAUDER VISOR TUI pane content via Kitty remote control (`kitten @`).
+Use the `visor_snap` MCP tool directly:
 
-## Usage
-
-```bash
-bash ${CLAUDE_PLUGIN_ROOT}/skills/visor/visor.sh [command]
+```
+visor_snap()
 ```
 
-### Commands
+Returns the full TUI text content including identity panel, SERE eye, activity log, and viewport.
 
-| Command | Description |
-|---------|-------------|
-| `snap` | Capture visor pane text (default) |
-| `status` | Check if visor HTTP bridge is running |
-| `find` | Find the visor pane ID in Kitty |
+## Also available
 
-### Workflow
+- `visor_code(code, language, title)` — display syntax-highlighted code
+- `visor_image(source, title, caption)` — display an image
+- `visor_markdown(content, title)` — display rendered markdown
 
-1. Run `bash visor.sh snap` to capture the visor pane content
-2. Read the output — it's the full TUI text including box-drawing characters
-3. Describe what you see (panels, eye state, activity log entries, viewport content)
+## HTTP Bridge
 
-### Examples
-
-```bash
-# Snapshot the visor
-bash ${CLAUDE_PLUGIN_ROOT}/skills/visor/visor.sh snap
-
-# Check if visor is running
-bash ${CLAUDE_PLUGIN_ROOT}/skills/visor/visor.sh status
-
-# Find which Kitty pane has the visor
-bash ${CLAUDE_PLUGIN_ROOT}/skills/visor/visor.sh find
-```
+The visor REST API is also available at `http://127.0.0.1:9876/status` for direct queries.
 
 ## Notes
 
-- Requires Kitty with remote control enabled (`allow_remote_control yes`)
-- Finds the visor pane by matching the `just dev` title or the process name
-- Falls back to checking all panes if title matching fails
-- The visor HTTP bridge on :9876 is checked via `status` subcommand
+- Requires Kitty with remote control enabled
+- Finds the visor pane by matching process name or title

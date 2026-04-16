@@ -19,48 +19,25 @@ description: |
   </example>
 ---
 
-# Screenshot Skill
+# Screenshot
 
-Captures macOS displays using `screencapture`. Auto-detects display count.
+Use the `screenshot` MCP tool directly:
 
-## Usage
-
-```bash
-bash ${CLAUDE_PLUGIN_ROOT}/skills/screenshot/screenshot.sh [command]
+```
+screenshot(display: 1, title: "Display 1")
 ```
 
-### Commands
+## Parameters
 
-| Command | Description |
-|---------|-------------|
-| `all` | Capture all displays (default) |
-| `<N>` | Capture display N only (1-indexed) |
-| `list` | Show connected displays and resolutions |
-| `clean` | Remove captured screenshots |
-
-### Workflow
-
-1. Run `bash screenshot.sh all` to capture every display
-2. Read output to find file paths
-3. Use the `Read` tool on each file to view them
-4. Pick the relevant display and describe what you see
-
-### Examples
-
-```bash
-# Capture all displays
-bash ${CLAUDE_PLUGIN_ROOT}/skills/screenshot/screenshot.sh all
-
-# Capture only display 3 (where Kitty usually is)
-bash ${CLAUDE_PLUGIN_ROOT}/skills/screenshot/screenshot.sh 3
-
-# Check what displays are connected
-bash ${CLAUDE_PLUGIN_ROOT}/skills/screenshot/screenshot.sh list
-```
+| Param | Description |
+|-------|-------------|
+| `display` | Display number (1-indexed). Omit for main display. |
+| `output` | Output path (default: `/tmp/screenshot.png`) |
+| `title` | Set to post image on visor. Omit to skip. |
+| `caption` | Caption for visor display. |
 
 ## Notes
 
-- Files written to `/tmp/psn-screenshots/` with timestamps
-- Always uses `-x` flag (no shutter sound)
-- After capturing, use `Read` tool to view — Claude Code is multimodal
-- Run `clean` to purge old screenshots
+- Uses macOS `screencapture -x` (no shutter sound)
+- After capture, use `Read` tool to view — Claude Code is multimodal
+- Set `title` to automatically display on the visor
