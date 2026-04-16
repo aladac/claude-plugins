@@ -51,12 +51,12 @@ disallowedTools:
 ## MCP Tools (Memory)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_marauder__memory_store` | Store a memory with subject and content |
-| `mcp__plugin_marauder_marauder__memory_recall` | Semantic search for similar memories |
-| `mcp__plugin_marauder_marauder__memory_search` | Search memories by subject |
-| `mcp__plugin_marauder_marauder__memory_forget` | Delete a memory by ID |
-| `mcp__plugin_marauder_marauder__memory_list` | List all memory subjects with counts |
-| `mcp__plugin_marauder_marauder__resource_read` | Read memory resources (subjects, stats, recent) |
+| `mcp__plugin_marauder_core__memory_store` | Store a memory with subject and content |
+| `mcp__plugin_marauder_core__memory_recall` | Semantic search for similar memories |
+| `mcp__plugin_marauder_core__memory_search` | Search memories by subject |
+| `mcp__plugin_marauder_core__memory_forget` | Delete a memory by ID |
+| `mcp__plugin_marauder_core__memory_list` | List all memory subjects with counts |
+| `mcp__plugin_marauder_core__resource_read` | Read memory resources (subjects, stats, recent) |
 
 ## Built-in Tools
 | Tool | Purpose |

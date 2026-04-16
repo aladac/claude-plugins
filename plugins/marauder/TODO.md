@@ -16,9 +16,9 @@
 ## Phase 11 "Guntank" — Agent Migration (~45m cooperative)
 
 - [ ] Copy all 23 agent .md files from personality-plugin
-- [ ] Bulk replace: `mcp__plugin_marauder_marauder__` → `mcp__plugin_marauder_marauder__`
-- [ ] Bulk replace: `mcp__plugin_marauder_marauder__` → `mcp__plugin_marauder_marauder__`
-- [ ] Bulk replace: `mcp__plugin_marauder_marauder__` → `mcp__plugin_marauder_marauder__`
+- [ ] Bulk replace: `mcp__plugin_marauder_core__` → `mcp__plugin_marauder_core__`
+- [ ] Bulk replace: `mcp__plugin_marauder_core__` → `mcp__plugin_marauder_core__`
+- [ ] Bulk replace: `mcp__plugin_marauder_core__` → `mcp__plugin_marauder_core__`
 - [ ] Bulk replace: `psn:` skill prefixes → `marauder:` in agent descriptions
 - [ ] Bulk replace: `psn` → `marauder` in agent body prompts (CLI references)
 - [ ] Validate: grep for any remaining `psn` references in agents/

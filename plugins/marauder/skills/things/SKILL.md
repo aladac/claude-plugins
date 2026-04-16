@@ -17,7 +17,17 @@ description: |
   Context: User wants to search tasks
   user: "Find all psn tagged todos"
   </example>
-version: 2.0.0
+
+  <example>
+  Context: User wants to create a project
+  user: "Create a project for the website redesign"
+  </example>
+
+  <example>
+  Context: User wants to move a task
+  user: "Move that task to the MARAUDER project"
+  </example>
+version: 3.0.0
 ---
 
 # Things 3 Skill
@@ -54,7 +64,24 @@ python3 $SKILL update <id> --when today --reminder "2026-04-15@12:00" # Set date
 python3 $SKILL update <id> --append-notes "Extra info"               # Append to notes
 python3 $SKILL update <id> --deadline 2026-04-20                     # Set deadline
 python3 $SKILL update <id> --title "New title" --tags work           # Update title/tags
+python3 $SKILL update <id> --project "Project Name"                  # Move to project
+
+# Move (shortcut)
+python3 $SKILL move <id> "Project Name"  # Move a todo to a project
 
 # Complete
 python3 $SKILL complete <id>            # Mark complete
+
+# Projects — Create & Update
+python3 $SKILL add-project "Project Name"                            # Create empty project
+python3 $SKILL add-project "Project Name" --notes "Description"      # With notes
+python3 $SKILL add-project "Project Name" --deadline 2026-05-01      # With deadline
+python3 $SKILL add-project "Project Name" --area "Work"              # In an area
+python3 $SKILL add-project "Project Name" --todos "Task 1,Task 2"   # With initial todos
+python3 $SKILL add-project "Project Name" --tags "tag1,tag2"         # With tags
+python3 $SKILL update-project <id> --title "New Name"                # Rename project
+python3 $SKILL update-project <id> --deadline 2026-06-01             # Set deadline
+python3 $SKILL update-project <id> --append-notes "Update"           # Append to notes
+python3 $SKILL update-project <id> --add-tags "newtag"               # Add tags
+python3 $SKILL update-project <id> --completed                       # Complete project
 ```

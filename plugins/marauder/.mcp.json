@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "marauder": {
+    "core": {
       "command": "marauder",
-      "args": ["mcp", "--mode", "local"],
+      "args": ["mcp"],
       "env": {
         "OLLAMA_URL": "${OLLAMA_URL:-http://localhost:11434}",
         "PERSONALITY_VOICE": "bt7274"

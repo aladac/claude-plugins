@@ -4,8 +4,8 @@ description: Index a codebase for semantic search
 allowed-tools:
   - TaskCreate
   - TaskUpdate
-  - mcp__plugin_marauder_marauder__index_code
-  - mcp__plugin_marauder_marauder__status
+  - mcp__plugin_marauder_core__index_code
+  - mcp__plugin_marauder_core__status
   - Glob
 argument-hint: "[path] [--project name]"
 ---

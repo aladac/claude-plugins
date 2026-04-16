@@ -20,11 +20,11 @@ version: 1.0.0
 ## MCP Tools (marauder server)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_marauder__memory_store` | Store a memory with subject and content |
-| `mcp__plugin_marauder_marauder__memory_recall` | Semantic search for memories |
-| `mcp__plugin_marauder_marauder__memory_search` | Search by subject pattern |
-| `mcp__plugin_marauder_marauder__memory_forget` | Delete a memory by ID |
-| `mcp__plugin_marauder_marauder__memory_list` | List all memory subjects |
+| `mcp__plugin_marauder_core__memory_store` | Store a memory with subject and content |
+| `mcp__plugin_marauder_core__memory_recall` | Semantic search for memories |
+| `mcp__plugin_marauder_core__memory_search` | Search by subject pattern |
+| `mcp__plugin_marauder_core__memory_forget` | Delete a memory by ID |
+| `mcp__plugin_marauder_core__memory_list` | List all memory subjects |
 
 ## Related Commands
 | Command | Purpose |

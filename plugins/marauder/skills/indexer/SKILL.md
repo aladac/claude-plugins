@@ -20,11 +20,11 @@ version: 1.0.0
 ## MCP Tools (marauder server)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_marauder__index_code` | Index source code files |
-| `mcp__plugin_marauder_marauder__index_docs` | Index documentation |
-| `mcp__plugin_marauder_marauder__index_search` | Semantic search indexed content |
-| `mcp__plugin_marauder_marauder__index_status` | Check indexing status |
-| `mcp__plugin_marauder_marauder__index_clear` | Clear index for project |
+| `mcp__plugin_marauder_core__index_code` | Index source code files |
+| `mcp__plugin_marauder_core__index_docs` | Index documentation |
+| `mcp__plugin_marauder_core__index_search` | Semantic search indexed content |
+| `mcp__plugin_marauder_core__index_status` | Check indexing status |
+| `mcp__plugin_marauder_core__index_clear` | Clear index for project |
 
 ## Related Commands
 | Command | Purpose |

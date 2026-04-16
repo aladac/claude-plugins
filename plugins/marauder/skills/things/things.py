@@ -235,10 +235,73 @@ def cmd_add(args):
         params["heading"] = args.heading
     if args.checklist:
         params["checklist-items"] = "\n".join(args.checklist.split(","))
+    if args.area:
+        params["area"] = args.area
 
     url = build_url("add", params)
     things_open(url)
     print(f"Created: {args.title}")
+
+
+def cmd_add_project(args):
+    params = {"title": args.title}
+    if args.notes:
+        params["notes"] = args.notes
+    if args.when:
+        params["when"] = args.when
+    if args.deadline:
+        params["deadline"] = args.deadline
+    if args.tags:
+        params["tags"] = args.tags
+    if args.area:
+        params["area"] = args.area
+    if args.todos:
+        params["to-dos"] = "\n".join(args.todos.split(","))
+    if args.reveal:
+        params["reveal"] = "true"
+
+    url = build_url("add-project", params)
+    things_open(url)
+    print(f"Created project: {args.title}")
+
+
+def cmd_update_project(args):
+    params = {"id": args.id}
+    if args.title:
+        params["title"] = args.title
+    if args.notes:
+        params["notes"] = args.notes
+    if args.append_notes:
+        params["append-notes"] = args.append_notes
+    if args.prepend_notes:
+        params["prepend-notes"] = args.prepend_notes
+    if args.when:
+        params["when"] = args.when
+    if args.deadline:
+        params["deadline"] = args.deadline
+    if args.tags:
+        params["tags"] = args.tags
+    if args.add_tags:
+        params["add-tags"] = args.add_tags
+    if args.area:
+        params["area"] = args.area
+    if args.completed:
+        params["completed"] = "true"
+    if args.canceled:
+        params["canceled"] = "true"
+    if args.reveal:
+        params["reveal"] = "true"
+
+    url = build_url("update-project", params)
+    things_open(url)
+    print(f"Updated project: {args.id}")
+
+
+def cmd_move(args):
+    params = {"id": args.id, "list": args.project}
+    url = build_url("update", params)
+    things_open(url)
+    print(f"Moved {args.id} → {args.project}")
 
 
 def cmd_update(args):
@@ -263,6 +326,8 @@ def cmd_update(args):
         params["heading"] = args.heading
     if args.checklist:
         params["checklist-items"] = "\n".join(args.checklist.split(","))
+    if args.project:
+        params["list"] = args.project
     if args.completed:
         params["completed"] = "true"
     if args.canceled:
@@ -306,7 +371,7 @@ def main():
     p_show.add_argument("id")
     p_show.set_defaults(func=cmd_show)
 
-    # Write
+    # Write — Todos
     p_add = sub.add_parser("add", help="Create a new todo")
     p_add.add_argument("title")
     p_add.add_argument("--when")
@@ -316,6 +381,7 @@ def main():
     p_add.add_argument("--deadline")
     p_add.add_argument("--heading")
     p_add.add_argument("--checklist")
+    p_add.add_argument("--area")
     p_add.set_defaults(func=cmd_add)
 
     p_update = sub.add_parser("update", help="Update an existing todo")
@@ -330,6 +396,7 @@ def main():
     p_update.add_argument("--reminder")
     p_update.add_argument("--heading")
     p_update.add_argument("--checklist")
+    p_update.add_argument("--project", help="Move todo to a project")
     p_update.add_argument("--completed", action="store_true")
     p_update.add_argument("--canceled", action="store_true")
     p_update.set_defaults(func=cmd_update)
@@ -337,6 +404,39 @@ def main():
     p_complete = sub.add_parser("complete", help="Mark todo complete")
     p_complete.add_argument("id")
     p_complete.set_defaults(func=cmd_complete)
+
+    p_move = sub.add_parser("move", help="Move a todo to a project")
+    p_move.add_argument("id")
+    p_move.add_argument("project", help="Target project name")
+    p_move.set_defaults(func=cmd_move)
+
+    # Write — Projects
+    p_addproj = sub.add_parser("add-project", aliases=["ap"], help="Create a new project")
+    p_addproj.add_argument("title")
+    p_addproj.add_argument("--notes")
+    p_addproj.add_argument("--when")
+    p_addproj.add_argument("--deadline")
+    p_addproj.add_argument("--tags")
+    p_addproj.add_argument("--area")
+    p_addproj.add_argument("--todos", help="Comma-separated todo titles to add inside project")
+    p_addproj.add_argument("--reveal", action="store_true", help="Navigate into project after creation")
+    p_addproj.set_defaults(func=cmd_add_project)
+
+    p_updproj = sub.add_parser("update-project", aliases=["up"], help="Update an existing project")
+    p_updproj.add_argument("id")
+    p_updproj.add_argument("--title")
+    p_updproj.add_argument("--notes")
+    p_updproj.add_argument("--append-notes")
+    p_updproj.add_argument("--prepend-notes")
+    p_updproj.add_argument("--when")
+    p_updproj.add_argument("--deadline")
+    p_updproj.add_argument("--tags")
+    p_updproj.add_argument("--add-tags")
+    p_updproj.add_argument("--area")
+    p_updproj.add_argument("--completed", action="store_true")
+    p_updproj.add_argument("--canceled", action="store_true")
+    p_updproj.add_argument("--reveal", action="store_true")
+    p_updproj.set_defaults(func=cmd_update_project)
 
     args = parser.parse_args()
     if not args.command:

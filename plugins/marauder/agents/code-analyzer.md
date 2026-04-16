@@ -51,17 +51,17 @@ disallowedTools:
 ## MCP Tools (Indexer)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_marauder__index_search` | Semantic search indexed content |
-| `mcp__plugin_marauder_marauder__index_code` | Index source code files |
-| `mcp__plugin_marauder_marauder__index_docs` | Index documentation files |
-| `mcp__plugin_marauder_marauder__index_status` | Check indexing status |
-| `mcp__plugin_marauder_marauder__index_clear` | Clear index for project |
+| `mcp__plugin_marauder_core__index_search` | Semantic search indexed content |
+| `mcp__plugin_marauder_core__index_code` | Index source code files |
+| `mcp__plugin_marauder_core__index_docs` | Index documentation files |
+| `mcp__plugin_marauder_core__index_status` | Check indexing status |
+| `mcp__plugin_marauder_core__index_clear` | Clear index for project |
 
 ## MCP Tools (Memory)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_marauder__memory_store` | Store analysis findings |
-| `mcp__plugin_marauder_marauder__memory_recall` | Recall previous findings |
+| `mcp__plugin_marauder_core__memory_store` | Store analysis findings |
+| `mcp__plugin_marauder_core__memory_recall` | Recall previous findings |
 
 ## Built-in Tools
 | Tool | Purpose |

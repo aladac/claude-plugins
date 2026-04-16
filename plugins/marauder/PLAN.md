@@ -37,10 +37,10 @@ marauder-os/              ← Compiled binary
 Plugin name: `marauder`. Server keys: `core`, `indexer`, `local`.
 
 ```
-mcp__plugin_marauder_marauder__memory_store
-mcp__plugin_marauder_marauder__memory_recall
-mcp__plugin_marauder_marauder__index_code
-mcp__plugin_marauder_marauder__speak
+mcp__plugin_marauder_core__memory_store
+mcp__plugin_marauder_core__memory_recall
+mcp__plugin_marauder_core__index_code
+mcp__plugin_marauder_core__speak
 ```
 
 ## Hook Strategy

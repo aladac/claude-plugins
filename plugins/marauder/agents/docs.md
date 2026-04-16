@@ -68,9 +68,9 @@ dangerouslySkipPermissions: true
 ## MCP Tools (Indexer)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_marauder__index_docs` | Index documentation files |
-| `mcp__plugin_marauder_marauder__index_search` | Semantic search indexed docs |
-| `mcp__plugin_marauder_marauder__index_status` | Check indexing status |
+| `mcp__plugin_marauder_core__index_docs` | Index documentation files |
+| `mcp__plugin_marauder_core__index_search` | Semantic search indexed docs |
+| `mcp__plugin_marauder_core__index_status` | Check indexing status |
 
 ## Related Commands
 | Command | Purpose |
