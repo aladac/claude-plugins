@@ -11,6 +11,7 @@ require "json"
 require "net/http"
 require "uri"
 require "base64"
+require "time"
 
 # SDE for offline static data lookups
 SDE_AVAILABLE = begin
@@ -1458,6 +1459,91 @@ def race_name(id)
   end
 end
 
+# --- Dashboard (all characters at a glance) ---
+
+def cmd_dashboard
+  chars = %w[spinister amy]
+  rows = []
+
+  chars.each do |name|
+    char = CHARACTERS[name]
+    next unless char
+    cid = char[:id]
+
+    # Public info (corp)
+    pub = esi_get("/characters/#{cid}/")
+    corp_id = pub.is_a?(Hash) ? pub["corporation_id"] : nil
+    corp = corp_id ? esi_get("/corporations/#{corp_id}/") : {}
+    corp_name = corp.is_a?(Hash) ? (corp["name"] || "?") : "?"
+
+    # Location (auth)
+    loc = esi_get_auth("/characters/#{cid}/location/", char_name: name)
+    sys_id = loc.is_a?(Hash) ? loc["solar_system_id"] : nil
+    sys_name = sys_id ? (sde_system_name(sys_id) || esi_get("/universe/systems/#{sys_id}/").then { |s| s.is_a?(Hash) ? s["name"] : "?" }) : "?"
+    station_id = loc.is_a?(Hash) ? (loc["station_id"] || loc["structure_id"]) : nil
+    docked = station_id ? true : false
+
+    # Ship (auth)
+    ship = esi_get_auth("/characters/#{cid}/ship/", char_name: name)
+    ship_name = ship.is_a?(Hash) ? (ship["ship_name"] || "?") : "?"
+    ship_type_id = ship.is_a?(Hash) ? ship["ship_type_id"] : nil
+    ship_type = ship_type_id ? (sde_type_name(ship_type_id) || esi_get("/universe/types/#{ship_type_id}/").then { |t| t.is_a?(Hash) ? t["name"] : "?" }) : "?"
+
+    # Skills (auth)
+    skills = esi_get_auth("/characters/#{cid}/skills/", char_name: name)
+    total_sp = skills.is_a?(Hash) ? (skills["total_sp"] || 0) : 0
+
+    # Skill queue (auth)
+    queue = esi_get_auth("/characters/#{cid}/skillqueue/", char_name: name)
+    training = "None"
+    if queue.is_a?(Array) && !queue.empty?
+      active = queue.find { |q| q["finish_date"] && Time.parse(q["finish_date"]) > Time.now rescue true }
+      if active
+        skill_id = active["skill_id"]
+        level = active["finished_level"]
+        skill_name = sde_type_name(skill_id) || esi_get("/universe/types/#{skill_id}/").then { |t| t.is_a?(Hash) ? t["name"] : "?" }
+        training = "#{skill_name} #{roman(level)}"
+      end
+    end
+
+    display_name = pub.is_a?(Hash) ? (pub["name"] || name.capitalize) : name.capitalize
+    sp_formatted = total_sp.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+
+    rows << {
+      name: display_name,
+      corp: corp_name,
+      location: docked ? "#{sys_name} (docked)" : sys_name,
+      ship: "#{ship_name} (#{ship_type})",
+      training: training,
+      sp: sp_formatted,
+    }
+  end
+
+  # Pretty table
+  headers = %w[Character Corporation Location Ship Training SP]
+  cols = [
+    rows.map { |r| r[:name] },
+    rows.map { |r| r[:corp] },
+    rows.map { |r| r[:location] },
+    rows.map { |r| r[:ship] },
+    rows.map { |r| r[:training] },
+    rows.map { |r| r[:sp] },
+  ]
+
+  widths = headers.each_with_index.map { |h, i|
+    ([h.length] + (cols[i] || []).map(&:length)).max
+  }
+
+  sep = "+-" + widths.map { |w| "-" * w }.join("-+-") + "-+"
+  fmt = "| " + widths.map { |w| "%-#{w}s" }.join(" | ") + " |"
+
+  puts sep
+  puts fmt % headers
+  puts sep
+  rows.each { |r| puts fmt % [r[:name], r[:corp], r[:location], r[:ship], r[:training], r[:sp]] }
+  puts sep
+end
+
 # --- Main ---
 
 # Parse --char flag
@@ -1517,6 +1603,8 @@ when "kills"
 when "jumps"
   cmd_jumps(ARGV.shift)
 # Authenticated
+when "dashboard", "dash", "d"
+  cmd_dashboard
 when "location", "loc", "where"
   cmd_location(ARGV.shift)
 when "ship"

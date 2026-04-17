@@ -148,6 +148,15 @@
             "timeout": 500
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Always use the marauder:kitty-bash skill to route shell commands to the Kitty preview pane so the Pilot can see the output live."
+          }
+        ]
       }
     ],
     "PostToolUse": [
