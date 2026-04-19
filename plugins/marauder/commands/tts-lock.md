@@ -2,7 +2,7 @@
 allowed-tools: Bash
 ---
 
-Lock the MARAUDER VISOR to the current Claude Code session. Other sessions' hook notifications will be silently dropped until unlocked.
+Lock TTS and output to the current Claude Code session. Other sessions' TTS and hook notifications will be silently dropped until unlocked.
 
 ```bash
 marauder hud lock

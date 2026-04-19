@@ -2,7 +2,7 @@
 allowed-tools: Bash
 ---
 
-Unlock the MARAUDER VISOR, allowing all sessions to write to it again.
+Unlock TTS and output, allowing all sessions to speak again.
 
 ```bash
 marauder hud unlock
