@@ -1,102 +1,60 @@
-# marauder-plugin Implementation Plan
+# PLAN: Forced Output Style for MARAUDER Plugin
 
-Claude Code plugin replacing `personality-plugin`. Uses the `marauder` Rust binary for MCP servers, hooks, and compiled skills.
+**Date:** 2026-04-19
+**Branch:** `feature/output-style`
+**Goal:** Enforce BT-7274 persona voice at the Claude Code harness level via `forceForPlugin` output style
 
-## Architecture
+## Context
 
-**Separate repo** from `marauder-os`. The plugin is the Claude Code integration layer (markdown, JSON, scripts). The binary is a runtime dependency on PATH, not a build dependency.
+Claude Code plugins can ship `output-styles/*.md` files. When frontmatter includes `force-for-plugin: true`, the style auto-applies as a system prompt layer whenever the plugin is active. This is a **third prompt layer** — independent of CLAUDE.md and agent frontmatter — that operates at the harness level on every response.
 
-```
-marauder-plugin/          ← Claude Code reads this
-  .claude-plugin/plugin.json
-  .mcp.json               → marauder mcp --mode {core,indexer,local}
-  hooks/hooks.json        → marauder hooks <event>, marauder tts <cmd>
-  agents/*.md             → 23 agents, tool refs: mcp__plugin_marauder_*
-  skills/*/SKILL.md       → 60+ skills (config-only + scripts + compiled refs)
-  commands/*.md           → 50+ slash commands
+Currently, persona voice depends on the core agent prompt loading. If Claude responds before agent dispatch, or in contexts where the agent prompt isn't injected, persona consistency breaks. A forced output style fixes this structurally.
 
-marauder-os/              ← Compiled binary
-  marauder mcp            → MCP server (rmcp, stdio)
-  marauder hooks          → Hook handlers (JSONL, stdin JSON)
-  marauder skill          → Compiled skills (brew, cargo, uv, gem, ruby, screenshot, music)
-  marauder tts            → TTS (piper process management)
-  marauder memory/cart/index → Core operations
-```
+## Discovery
 
-## Skill Tiers
-
-| Tier | Count | Where | Example |
-|------|-------|-------|---------|
-| **Config-only** (SKILL.md, no code) | ~38 | Plugin `skills/*/SKILL.md` | code/rust, memory, persona, browse |
-| **Script-based** (SKILL.md + .sh/.rb/.py) | ~19 | Plugin `skills/*/` | cloudflare, eve-esi, cam, job-scout, gmail |
-| **Compiled** (SKILL.md → `marauder skill`) | 8 | marauder-os binary | brew, cargo, uv, gem, ruby, screenshot, junkpile modes |
-| **Already in marauder** | 6 | marauder-os existing CLI | memory, persona/cart, speech/tts, indexer |
-
-## MCP Tool Naming
-
-Plugin name: `marauder`. Server keys: `core`, `indexer`, `local`.
-
-```
-mcp__plugin_marauder_core__memory_store
-mcp__plugin_marauder_core__memory_recall
-mcp__plugin_marauder_core__index_code
-mcp__plugin_marauder_core__speak
-```
-
-## Hook Strategy
-
-- **Shell hooks** → find-replace `psn` → `marauder` in hooks.json
-- **JS hooks** (hud-layout.js, hud-avatar.js, hud-bootup.js) → **stay as JS** — they run in Claude Code's Node.js runtime with canvas/DOM APIs that can't move to Rust
-- **hud-tool.sh** (Ruby JSON parsing) → **compile** into `marauder hooks hud-tool` with serde_json
-
-## Migration Strategy
-
-Incremental. Both plugins coexist during transition:
-- Different plugin names (`psn` vs `marauder`) = different tool namespaces
-- Same config.toml, same database (WAL concurrent access)
-- Rollback: just re-enable personality-plugin
+Source analysis of Claude Code (`src/utils/plugins/loadPluginOutputStyles.ts`):
+- Plugin loader auto-discovers `output-styles/` directory
+- Each `.md` file becomes a style, namespaced as `marauder:<styleName>`
+- Frontmatter key is `force-for-plugin: true` (not camelCase)
+- `keepCodingInstructions` flag preserves default coding behaviour
+- Style prompt replaces the default system prompt unless `keepCodingInstructions` is set
 
 ## Phases
 
-### Phase 10 "Guncannon" — Plugin Scaffold
-Create repo structure, manifest, MCP config. Copy config-only skills and script-based skills.
+### Phase 1: Create Output Style (15 min)
 
-### Phase 11 "Guntank" — Agent Migration
-Copy 23 agents, bulk find-replace tool prefixes `psn` → `marauder`.
+Create `output-styles/marauder.md` with:
+- Frontmatter: name, description, `force-for-plugin: true`
+- Persona voice rules (terse, military comms, no trailing summaries)
+- TTS integration reminders (speak key responses)
+- Memory-first workflow reminder
+- Must NOT duplicate agent-level detail — keep it light, behavioural only
 
-### Phase 12 "Ball" — Hook Migration
-Rewrite hooks.json, copy JS hooks unchanged, compile hud-tool into marauder.
+The output style complements the core agent prompt:
+- **Output style** = voice, tone, formatting rules (always active)
+- **Core agent prompt** = full dispatch logic, tool reference, procedures (loaded per agent)
 
-### Phase 13 "GM" — Compiled Skills
-Implement `marauder skill` subcommand in marauder-os: cross_machine module + brew/cargo/uv/gem/ruby/screenshot.
+### Phase 2: Update Plugin Manifest (5 min)
 
-### Phase 14 "Nemo" — Command Migration
-Copy 50+ commands, update paths and CLI references.
+Check if `plugin.json` needs `outputStyles` or `outputStylesPaths` entries. Based on source analysis, the plugin loader auto-discovers `output-styles/` directory — no manifest change needed. Verify.
 
-### Phase 15 "Rick Dias" — Cutover
-Disable personality-plugin, enable marauder-plugin as sole plugin. Full integration test.
+### Phase 3: Test (10 min)
 
-## Estimated Effort
+- Reinstall plugin via `/plugin-reinstall`
+- Restart session
+- Verify output style appears in `/output-style` list as `marauder:marauder`
+- Verify it auto-applies (check style name in status line)
+- Test persona voice consistency in direct conversation (no agent dispatch)
+- Test that coding instructions are preserved
 
-| Phase | Naive | Coop | Sessions | Notes |
-|-------|-------|------|----------|-------|
-| 10 "Guncannon" — Scaffold | 3h | ~1.5h | 1 | Mechanical copy + path fixup |
-| 11 "Guntank" — Agents | 2h | ~45m | 1 | Bulk sed, verify tool refs |
-| 12 "Ball" — Hooks | 3h | ~1.5h | 1 | hooks.json rewrite + hud-tool compile |
-| 13 "GM" — Compiled Skills | 4h | ~2h | 1 | cross_machine module in marauder-os |
-| 14 "Nemo" — Commands | 2h | ~45m | 1 | Mechanical copy + path fixup |
-| 15 "Rick Dias" — Cutover | 2h | ~1h | 1 | Integration test, soak |
-| **Total** | **16h** | **~7.5h** | **4-6** | |
+## Risks
 
-Phases 10-11 and 13 can overlap (plugin scaffold while compiling skills in marauder-os).
+- **Prompt conflict:** Output style prompt could conflict with core agent prompt. Mitigate by keeping the style lightweight — voice/tone only, no tool instructions.
+- **Token overhead:** Extra system prompt layer costs tokens. Keep under 500 words.
+- **Override issues:** If user manually switches output style, the forced style may not re-apply until session restart. Acceptable.
 
-## Risk Register
+## Non-Goals
 
-| Risk | Severity | Mitigation |
-|------|----------|------------|
-| Agent tool refs missed in find-replace | Medium | Grep validator: every `mcp__plugin_` in agents/ must match .mcp.json server |
-| JS hooks depend on window.PSN namespace | Low | Namespace set by HUD, not plugin — no change needed |
-| hud-bootup.js is huge (~130K tokens) | Medium | Audit for base64 images, extract static assets |
-| Script paths break | Medium | Use `${CLAUDE_PLUGIN_ROOT}` everywhere, never hardcode |
-| marauder binary not on PATH | Medium | Use absolute path in .mcp.json initially |
-| Ruby skills require Ruby runtime | Low | Eve scripts stay as Ruby — Ruby stays required on host |
+- Dynamic persona switching via output styles (future — would need style-per-cart)
+- Proactive mode integration (separate feature)
+- System-reminder enhancement (separate feature)

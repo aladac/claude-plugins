@@ -15,7 +15,7 @@ description: |
 
   <example>
   Context: User wants to search tasks
-  user: "Find all psn tagged todos"
+  user: "Find all marauder tagged todos"
   </example>
 
   <example>
@@ -53,8 +53,8 @@ python3 $SKILL show <id>                # Show full details
 python3 $SKILL add "Task title"                          # Add to inbox
 python3 $SKILL add "Task title" --when today             # Add to today
 python3 $SKILL add "Task title" --when tomorrow          # Add to tomorrow
-python3 $SKILL add "Task title" --tags psn               # Add with tag
-python3 $SKILL add "Task title" --when today --tags psn --notes "Details here"
+python3 $SKILL add "Task title" --tags marauder               # Add with tag
+python3 $SKILL add "Task title" --when today --tags marauder --notes "Details here"
 python3 $SKILL add "Task title" --project "Project Name" --when today
 python3 $SKILL add "Task title" --checklist "item1,item2,item3"
 

@@ -114,6 +114,11 @@
             "type": "command",
             "command": "marauder hud update-status",
             "timeout": 1000
+          },
+          {
+            "type": "command",
+            "command": "date '+CLOCK: %A %Y-%m-%d %H:%M %Z'",
+            "timeout": 500
           }
         ]
       }
@@ -146,15 +151,6 @@
             "type": "command",
             "command": "marauder hud notify-tool pre",
             "timeout": 500
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Always use the marauder:kitty-bash skill to route shell commands to the Kitty preview pane so the Pilot can see the output live."
           }
         ]
       }

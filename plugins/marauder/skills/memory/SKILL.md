@@ -40,13 +40,13 @@ version: 1.0.0
 
 # Memory Patterns
 
-Guidance for effective use of the personality memory system.
+Guidance for effective use of the MARAUDER memory system.
 
 ## Memory Architecture
 
 The memory system uses:
 - **Embeddings**: nomic-embed-text via Ollama (local)
-- **Storage**: SQLite + sqlite-vec at `~/.local/share/personality/main.db`
+- **Storage**: SQLite + sqlite-vec at `~/Library/Application Support/marauder/main.db` (macOS) / `~/.local/share/marauder/main.db` (Linux)
 - **Search**: Vector distance via sqlite-vec virtual tables
 - **CLI**: `marauder memory store/recall/search/forget/list`
 - **MCP server**: `marauder mcp` (stdio transport)

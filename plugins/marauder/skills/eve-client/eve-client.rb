@@ -16,7 +16,7 @@ def eve_windows
   swift_file = "/tmp/eve-find-windows.swift"
   File.write(swift_file, <<~'SWIFT')
     import Cocoa
-    if let list = CGWindowListCopyWindowInfo(.optionOnScreenOnly, kCGNullWindowID) as? [[String: Any]] {
+    if let list = CGWindowListCopyWindowInfo([.optionAll, .excludeDesktopElements], kCGNullWindowID) as? [[String: Any]] {
       for w in list {
         let owner = w[kCGWindowOwnerName as String] as? String ?? ""
         if owner.uppercased().contains("EVE") {
@@ -78,17 +78,26 @@ def process_info(pid)
   }
 end
 
-def game_window
-  # The main game window is the largest EVE window with a character name in title
+def game_windows
+  # All EVE windows with a character name in title (multi-client support)
   wins = eve_windows
-  game_wins = wins.select { |w| w[:name]&.start_with?("EVE - ") }
-  game_wins.max_by { |w| w[:width] * w[:height] }
+  wins.select { |w| w[:name]&.start_with?("EVE - ") }
+      .sort_by { |w| w[:name] }
+end
+
+def game_window(char_name = nil)
+  gws = game_windows
+  if char_name
+    gws.find { |w| w[:name].downcase.include?(char_name.downcase) }
+  else
+    gws.first
+  end
 end
 
 def cmd_status
   procs = eve_processes
   wins = eve_windows
-  gw = game_window
+  gws = game_windows
 
   if procs[:game].empty? && procs[:launcher].empty?
     puts "EVE Online: NOT RUNNING"
@@ -96,28 +105,30 @@ def cmd_status
   end
 
   puts "EVE Online: RUNNING"
+  puts "Clients: #{gws.length}"
+  puts ""
 
-  if gw
+  gws.each_with_index do |gw, i|
     char_name = gw[:name].sub("EVE - ", "")
-    puts "Character: #{char_name}"
-    puts "Window: #{gw[:width]}x#{gw[:height]} (WID #{gw[:id]})"
+    display = gw[:x] < 0 || gw[:x] >= 2560 ? "Display 2" : "Display 1"
+    puts "  #{i + 1}. #{char_name} — #{gw[:width]}x#{gw[:height]} @ (#{gw[:x]},#{gw[:y]}) [#{display}] WID #{gw[:id]}"
   end
 
   puts ""
   puts "Game PIDs: #{procs[:game].join(", ")}" if procs[:game].any?
   puts "Launcher PIDs: #{procs[:launcher].join(", ")}" if procs[:launcher].any?
 
-  # Main game process info
-  main_pid = procs[:game].first
-  if main_pid
-    info = process_info(main_pid)
-    if info
-      puts "CPU: #{info[:cpu]}%  MEM: #{info[:mem]}%  Uptime: #{info[:elapsed]}"
-    end
+  # Aggregate process info
+  procs[:game].each do |pid|
+    info = process_info(pid)
+    next unless info
+    # Extract character from command line settingsprofile
+    char = info[:command]&.match(/settingsprofile=(\S+)/)&.[](1) || "unknown"
+    puts "  PID #{pid} (#{char}): CPU #{info[:cpu]}%  MEM #{info[:mem]}%  Uptime: #{info[:elapsed]}"
   end
 
   puts ""
-  puts "Windows: #{wins.length}"
+  puts "Total windows: #{wins.length}"
   wins.each do |w|
     puts "  [#{w[:id]}] #{w[:owner]} — \"#{w[:name]}\" #{w[:width]}x#{w[:height]} @ (#{w[:x]},#{w[:y]})"
   end
@@ -177,22 +188,32 @@ def cmd_focus
   end
 end
 
-def cmd_window_id
-  gw = game_window
-  if gw
-    puts gw[:id]
+def cmd_window_id(char_name = nil)
+  if char_name
+    gw = game_window(char_name)
+    if gw
+      puts gw[:id]
+    else
+      $stderr.puts "No EVE window found for '#{char_name}'."
+      exit 1
+    end
   else
-    $stderr.puts "No EVE game window found."
-    exit 1
+    gws = game_windows
+    if gws.any?
+      gws.each { |w| puts "#{w[:name].sub("EVE - ", "")}: #{w[:id]}" }
+    else
+      $stderr.puts "No EVE game windows found."
+      exit 1
+    end
   end
 end
 
 def cmd_character
-  gw = game_window
-  if gw
-    puts gw[:name].sub("EVE - ", "")
+  gws = game_windows
+  if gws.any?
+    gws.each { |w| puts w[:name].sub("EVE - ", "") }
   else
-    $stderr.puts "No EVE game window found."
+    $stderr.puts "No EVE game windows found."
     exit 1
   end
 end
@@ -210,7 +231,7 @@ when "windows", "wins"
 when "focus"
   cmd_focus
 when "window-id", "wid"
-  cmd_window_id
+  cmd_window_id(ARGV.shift)
 when "character", "char"
   cmd_character
 else

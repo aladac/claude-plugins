@@ -11,7 +11,7 @@ Load and activate a persona, apply communication preferences, and report system 
 Run a **single Bash call** that collects all data at once:
 
 ```bash
-TAG="${ARGUMENTS:-$(grep -A1 '^\[tts\]' ~/.config/psn/config.toml 2>/dev/null | grep voice | cut -d'"' -f2)}"
+TAG="${ARGUMENTS:-$(marauder tts current 2>/dev/null | grep -o '"voice":"[^"]*"' | cut -d'"' -f4)}"
 echo "===HOST==="; hostname; uname -s
 echo "===CARTS==="; marauder cart list 2>/dev/null
 echo "===SHOW==="; marauder cart show "${TAG:-bt7274}" 2>/dev/null

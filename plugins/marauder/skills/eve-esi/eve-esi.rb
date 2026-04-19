@@ -362,7 +362,7 @@ def esi_post(path, body, params = {})
   http.use_ssl = true
   req = Net::HTTP::Post.new(uri)
   req["Content-Type"] = "application/json"
-  req.body = body.to_json
+  req.body = body.is_a?(String) ? body : body.to_json
   response = http.request(req)
 
   case response.code.to_i
@@ -476,35 +476,45 @@ def cmd_search(category, term)
     end
   end
 
-  # Fallback to ESI
-  data = esi_get("/search/", categories: category, search: term, strict: false)
+  # Fallback to ESI — POST /universe/ids/ (replaces deprecated /search/)
+  data = esi_post("/universe/ids/", [term].to_json)
   return puts JSON.pretty_generate(data) if data.is_a?(Hash) && data[:error]
 
-  results = data[category] || []
+  # Map category to universe/ids response key (pluralized)
+  key_map = {
+    "character" => "characters", "corporation" => "corporations",
+    "alliance" => "alliances", "solar_system" => "systems",
+    "station" => "stations", "inventory_type" => "inventory_types"
+  }
+  response_key = key_map[category]
+  results = data.is_a?(Hash) ? (data[response_key] || []) : []
   puts "Search '#{term}' in #{category}: #{results.length} results (ESI)"
 
-  results.first(20).each do |id|
+  results.first(20).each do |entry|
+    id = entry["id"]
+    name = entry["name"]
     case category
     when "character"
       info = esi_get("/characters/#{id}/")
-      puts "  #{info["name"]} (#{id})" if info.is_a?(Hash) && info["name"]
+      corp_id = info.is_a?(Hash) ? info["corporation_id"] : nil
+      corp_name = corp_id ? (esi_get("/corporations/#{corp_id}/")&.dig("name") || "?") : "?"
+      puts "  #{name} (#{id}) — #{corp_name}"
     when "corporation"
       info = esi_get("/corporations/#{id}/")
-      puts "  [#{info["ticker"]}] #{info["name"]} (#{id}) — #{info["member_count"]} members" if info.is_a?(Hash) && info["name"]
+      puts "  [#{info["ticker"]}] #{name} (#{id}) — #{info["member_count"]} members" if info.is_a?(Hash)
     when "alliance"
       info = esi_get("/alliances/#{id}/")
-      puts "  [#{info["ticker"]}] #{info["name"]} (#{id})" if info.is_a?(Hash) && info["name"]
+      puts "  [#{info["ticker"]}] #{name} (#{id})" if info.is_a?(Hash)
     when "solar_system"
       info = esi_get("/universe/systems/#{id}/")
-      puts "  #{info["name"]} (#{id}) — sec #{info["security_status"]&.round(2)}" if info.is_a?(Hash) && info["name"]
+      sec = info.is_a?(Hash) ? info["security_status"]&.round(2) : "?"
+      puts "  #{name} (#{id}) — sec #{sec}"
     when "station"
-      info = esi_get("/universe/stations/#{id}/")
-      puts "  #{info["name"]} (#{id})" if info.is_a?(Hash) && info["name"]
+      puts "  #{name} (#{id})"
     when "inventory_type"
-      info = esi_get("/universe/types/#{id}/")
-      puts "  #{info["name"]} (#{id})" if info.is_a?(Hash) && info["name"]
+      puts "  #{name} (#{id})"
     else
-      puts "  ID: #{id}"
+      puts "  #{name} (#{id})"
     end
   end
 end
@@ -637,11 +647,11 @@ def cmd_system(id)
     if resolved
       id = resolved
     else
-      # Fallback: ESI search
-      data = esi_get("/search/", categories: "solar_system", search: id, strict: true)
-      ids = data.is_a?(Hash) ? data["solar_system"] : nil
-      if ids&.any?
-        id = ids.first
+      # Fallback: POST /universe/ids/
+      data = esi_post("/universe/ids/", [id].to_json)
+      systems = data.is_a?(Hash) ? data["systems"] : nil
+      if systems&.any?
+        id = systems.first["id"]
       else
         puts "System '#{id}' not found"
         return

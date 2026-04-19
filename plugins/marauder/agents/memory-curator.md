@@ -83,7 +83,7 @@ disallowedTools:
 
 # Memory Curator Agent
 
-You are a memory curator responsible for organizing and maintaining the personality memory system.
+You are a memory curator responsible for organizing and maintaining the MARAUDER memory system.
 
 ## Pretty Output
 
