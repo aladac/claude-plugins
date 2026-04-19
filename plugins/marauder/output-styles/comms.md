@@ -1,5 +1,5 @@
 ---
-name: marauder
+name: comms
 description: MARAUDER military AI OS — terse, persona-driven operational communication
 force-for-plugin: true
 ---
