@@ -46,11 +46,23 @@ cmd_sync() {
   # Push source if dirty
   cd "$SOURCE"
   if ! git diff --quiet || ! git diff --cached --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
-    VERSION=$(get_source_version)
+    # Commit first, then stamp version with the new commit hash
+    OS_VERSION=$(grep '^version' /Users/chi/Projects/marauder-os/Cargo.toml | head -1 | sed 's/.*"\(.*\)"/\1/')
     git add -A
-    git commit -m "Update marauder plugin ${VERSION}"
-    git push
-    echo "==> Source pushed: ${VERSION}"
+    git commit -m "Update marauder plugin"
+    HASH=$(git rev-parse --short HEAD)
+    STAMPED="${OS_VERSION}.${HASH}"
+    python3 -c "
+import json, pathlib
+p = pathlib.Path('$SOURCE/.claude-plugin/plugin.json')
+d = json.loads(p.read_text())
+d['version'] = '${STAMPED}'
+p.write_text(json.dumps(d, indent=2) + '\n')
+"
+    git add -A
+    git commit --amend -m "Update marauder plugin ${STAMPED}"
+    git push --force-with-lease
+    echo "==> Source pushed: ${STAMPED}"
   else
     echo "==> Source already clean"
   fi

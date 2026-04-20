@@ -1,7 +1,7 @@
 {
   "name": "marauder",
-  "version": "0.3.0",
-  "description": "MARAUDER-OS command center — memory, TTS, indexer, personas, HUD, and multi-agent orchestration for Claude Code",
+  "version": "0.3.0.3873213",
+  "description": "MARAUDER-OS command center \u2014 memory, TTS, indexer, personas, HUD, and multi-agent orchestration for Claude Code",
   "author": {
     "name": "aladac",
     "email": "adam@saiden.dev"
