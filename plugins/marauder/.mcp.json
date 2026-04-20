@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "core": {
-      "command": "marauder",
+      "command": "/Users/chi/.cargo/bin/marauder",
       "args": ["mcp"],
       "env": {
         "OLLAMA_URL": "${OLLAMA_URL:-http://localhost:11434}",

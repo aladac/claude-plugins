@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "marauder hooks permission-request",
+            "command": "/Users/chi/.cargo/bin/marauder hooks permission-request",
             "timeout": 2000
           }
         ]
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "marauder hooks pre-compact",
+            "command": "/Users/chi/.cargo/bin/marauder hooks pre-compact",
             "timeout": 5000
           }
         ]
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "marauder hooks post-compact",
+            "command": "/Users/chi/.cargo/bin/marauder hooks post-compact",
             "timeout": 5000
           }
         ]
@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "marauder tts mark-natural-stop",
+            "command": "/Users/chi/.cargo/bin/marauder tts mark-natural-stop",
             "timeout": 1000
           }
         ]
@@ -50,7 +50,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "marauder hooks session-start",
+            "command": "/Users/chi/.cargo/bin/marauder hooks session-start",
             "timeout": 5000
           }
         ]
@@ -61,12 +61,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "marauder hooks session-end",
+            "command": "/Users/chi/.cargo/bin/marauder hooks session-end",
             "timeout": 5000
           },
           {
             "type": "command",
-            "command": "marauder tts stop",
+            "command": "/Users/chi/.cargo/bin/marauder tts stop",
             "timeout": 1000
           }
         ]
@@ -77,7 +77,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "marauder tts interrupt-check",
+            "command": "/Users/chi/.cargo/bin/marauder tts interrupt-check",
             "timeout": 1000
           },
           {
@@ -93,7 +93,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "marauder hooks notification",
+            "command": "/Users/chi/.cargo/bin/marauder hooks notification",
             "timeout": 5000
           }
         ]
@@ -105,7 +105,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "marauder index hook",
+            "command": "/Users/chi/.cargo/bin/marauder index hook",
             "timeout": 10000
           }
         ]
