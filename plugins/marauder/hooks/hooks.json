@@ -1,5 +1,5 @@
 {
-  "description": "MARAUDER hooks — TTS, HUD notifications, context tracking, permissions",
+  "description": "MARAUDER hooks — TTS, context tracking, permissions, indexing",
   "hooks": {
     "PermissionRequest": [
       {
@@ -41,11 +41,6 @@
             "type": "command",
             "command": "marauder tts mark-natural-stop",
             "timeout": 1000
-          },
-          {
-            "type": "command",
-            "command": "marauder hud notify Stop",
-            "timeout": 500
           }
         ]
       }
@@ -57,11 +52,6 @@
             "type": "command",
             "command": "marauder hooks session-start",
             "timeout": 5000
-          },
-          {
-            "type": "command",
-            "command": "marauder hud notify SessionStart",
-            "timeout": 500
           }
         ]
       }
@@ -78,16 +68,6 @@
             "type": "command",
             "command": "marauder tts stop",
             "timeout": 1000
-          },
-          {
-            "type": "command",
-            "command": "marauder hud notify SessionEnd",
-            "timeout": 500
-          },
-          {
-            "type": "command",
-            "command": "marauder hud session-end",
-            "timeout": 500
           }
         ]
       }
@@ -99,11 +79,6 @@
             "type": "command",
             "command": "marauder tts interrupt-check",
             "timeout": 1000
-          },
-          {
-            "type": "command",
-            "command": "marauder hud notify UserPromptSubmit",
-            "timeout": 500
           },
           {
             "type": "command",
@@ -120,44 +95,14 @@
             "type": "command",
             "command": "marauder hooks notification",
             "timeout": 5000
-          },
-          {
-            "type": "command",
-            "command": "marauder hud notify Notification",
-            "timeout": 500
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "marauder hud notify-tool pre",
-            "timeout": 500
           }
         ]
       }
     ],
     "PostToolUse": [
       {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "marauder hud notify-tool post",
-            "timeout": 500
-          }
-        ]
-      },
-      {
         "matcher": "Write|Edit",
         "hooks": [
-          {
-            "type": "command",
-            "command": "marauder hud code-display",
-            "timeout": 2000
-          },
           {
             "type": "command",
             "command": "marauder index hook",
