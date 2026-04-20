@@ -62,11 +62,6 @@
             "type": "command",
             "command": "marauder hud notify SessionStart",
             "timeout": 500
-          },
-          {
-            "type": "command",
-            "command": "marauder hud update-status",
-            "timeout": 1000
           }
         ]
       }
@@ -130,11 +125,6 @@
             "type": "command",
             "command": "marauder hud notify Notification",
             "timeout": 500
-          },
-          {
-            "type": "command",
-            "command": "marauder hud update-status",
-            "timeout": 1000
           }
         ]
       }
