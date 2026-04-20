@@ -264,7 +264,7 @@ Use these instead of manual path sourcing — they handle paths and SSH routing 
 
 ## Signal Messaging — Notify Pilot
 
-signal-cli is installed on junkpile with the PSN account registered. Use it to notify the Pilot about long-running task completions, alerts, and background job results.
+signal-cli is installed on junkpile with the MARAUDER account registered. Use it to notify the Pilot about long-running task completions, alerts, and background job results.
 
 ```bash
 # Send (local on junkpile):
@@ -278,7 +278,7 @@ ssh j "export PATH=/home/linuxbrew/.linuxbrew/bin:\$PATH && signal-cli -a +48600
 signal-cli -a +48600965497 receive
 ```
 
-- **PSN account**: +48600965497 (sender, registered on junkpile)
+- **MARAUDER account**: +48600965497 (sender, registered on junkpile)
 - **Pilot (Adam)**: +48535329895 (recipient)
 - **signal-cli**: 0.14.1 via Linuxbrew, data at ~/.local/share/signal-cli/
 

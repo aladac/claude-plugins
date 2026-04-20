@@ -30,7 +30,7 @@ Examples:
    - What's deferred or unfinished
    - Any tags created
 
-3. **Store to PSN memory:**
+3. **Store to MARAUDER memory:**
    - Subject: `session.YYYY-MM-DD.<name>`
    - Content: The session summary in markdown
    - Metadata: `{"session_name": "<name>", "date": "YYYY-MM-DD"}`

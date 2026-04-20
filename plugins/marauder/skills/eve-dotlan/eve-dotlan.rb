@@ -17,7 +17,7 @@ def fetch_html(url)
   http.open_timeout = 10
   http.read_timeout = 10
   req = Net::HTTP::Get.new(uri)
-  req["User-Agent"] = "PSN-AURA/1.0 (EVE Capsuleer Assistant)"
+  req["User-Agent"] = "MARAUDER-AURA/1.0 (EVE Capsuleer Assistant)"
   response = http.request(req)
   response.code.to_i == 200 ? response.body : nil
 rescue => e

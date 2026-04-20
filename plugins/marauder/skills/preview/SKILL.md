@@ -1,7 +1,7 @@
 ---
 name: Preview
 description: |
-  Render an HTML file or live URL as a screenshot on the PSN HUD visor viewport.
+  Render an HTML file or live URL as a screenshot on the MARAUDER visor viewport.
   Use for component mockups, website snapshots, and visual previews.
 
   <example>

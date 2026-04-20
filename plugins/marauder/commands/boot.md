@@ -1,12 +1,12 @@
 ---
-description: Play the PSN HUD bootup animation sequence
+description: Play the MARAUDER visor bootup animation sequence
 allowed-tools:
   - Bash
 ---
 
 # HUD Boot
 
-Run the PSN HUD bootup animation with audio.
+Run the MARAUDER visor bootup animation with audio.
 
 ## Execution
 

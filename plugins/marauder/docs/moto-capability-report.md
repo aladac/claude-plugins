@@ -1,7 +1,7 @@
 # Moto G52 Capability Analysis Report
 
 **Date**: 2026-04-08
-**Purpose**: SERE project -- standalone PSN edge node capability assessment
+**Purpose**: SERE project -- standalone MARAUDER edge node capability assessment
 **Serial**: ZY22HTMMQG
 **Connection**: USB via junkpile (ADB), WiFi ADB 192.168.88.155:5555
 **Orientation**: Landscape (rotation 3), mounted on monitor, front camera facing pilot

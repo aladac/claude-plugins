@@ -35,7 +35,7 @@ marauder metrics daily 2026-04-16
 # 7-day trend table
 marauder metrics weekly
 
-# Store today's metrics to PSN memory
+# Store today's metrics to MARAUDER memory
 marauder metrics store
 ```
 
@@ -73,7 +73,7 @@ Metrics are parsed from `~/.config/marauder/hooks.jsonl` — a log written by th
 
 ## Storage
 
-`marauder metrics store` saves today's aggregate to PSN memory under subject `metrics.daily.YYYY-MM-DD`. This enables historical recall and trend analysis across sessions.
+`marauder metrics store` saves today's aggregate to MARAUDER memory under subject `metrics.daily.YYYY-MM-DD`. This enables historical recall and trend analysis across sessions.
 
 ## Related
 

@@ -1,7 +1,7 @@
 ---
 name: Markdown Viewport
 description: |
-  Render markdown on the PSN HUD viewport with GitHub Dark theme. Supports headers, bold, italic, code, lists, links, blockquotes, horizontal rules.
+  Render markdown on the MARAUDER visor viewport with GitHub Dark theme. Supports headers, bold, italic, code, lists, links, blockquotes, horizontal rules.
 
   <example>
   Context: Display a plan or notes on the HUD

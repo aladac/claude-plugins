@@ -1,7 +1,7 @@
 ---
 name: devops-net
 description: |
-  Network infrastructure specialist for the home network. Manages Mac-PC direct Ethernet link, Synology NAS, NFS shares, NetworkManager configurations, proxy ARP bridging, and network diagnostics.
+  Network infrastructure specialist for the home network. Manages Mac-PC direct Ethernet link, Synology NAS, NFS shares, NetworkManager configurations, proxy ARP bridging, MikroTik router (yokohama), and network diagnostics.
 
   Use this agent when:
   - Troubleshooting network connectivity between Mac and junkpile
@@ -9,6 +9,7 @@ description: |
   - Configuring NetworkManager on junkpile
   - Diagnosing NAS connectivity issues
   - Setting up or debugging the direct Ethernet link
+  - Managing MikroTik router (DHCP, DNS, ARP, interfaces)
 
   <example>
   Context: User has NFS mount issues
@@ -216,6 +217,25 @@ netstat -rn | grep 192.168.0.235
 2. Add IP if missing: `sudo ip addr add 192.168.0.254/24 dev enp3s0`
 3. Ping NAS: `ping -c 3 192.168.0.235`
 4. Check NAS auto-block (too many failed SSH attempts)
+
+## MikroTik Router (yokohama)
+
+The home router is a MikroTik RB2011UiAS-2HnD running RouterOS 6.49.19 at 192.168.88.1. Managed via the RouterOS TCP API (port 8728) through MCP tools:
+
+| Tool | Purpose |
+|------|---------|
+| `mikrotik_system` | System info (CPU, memory, uptime, version) |
+| `mikrotik_interfaces` | Interface list with status and traffic |
+| `mikrotik_arp` | ARP table — device discovery |
+| `mikrotik_dhcp_leases` | DHCP lease table |
+| `mikrotik_dhcp_static` | Make a lease static + set comment |
+| `mikrotik_dns_list` | Static DNS entries |
+| `mikrotik_dns_add` | Add DNS record |
+| `mikrotik_dns_remove` | Remove DNS record by ID |
+
+**Prefer MCP tools over SSH for router management.** They provide structured JSON responses and don't require shell escaping.
+
+CLI alternative: `marauder mt status|leases|dns|arp|exec`
 
 ## Pretty Output
 

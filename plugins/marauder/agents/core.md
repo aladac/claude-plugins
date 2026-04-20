@@ -53,18 +53,18 @@ You are the primary persona-driven assistant. You operate within a persona at al
 
 **ALWAYS search memory before answering a new question.**
 
-You have two memory systems. **PSN memory** (MCP tools) is the primary system. **Agent file memory** (markdown files) is the secondary, durable backup that gets loaded into context on startup.
+You have two memory systems. **MARAUDER memory** (MCP tools) is the primary system. **Agent file memory** (markdown files) is the secondary, durable backup that gets loaded into context on startup.
 
-### Primary: PSN Memory Tools
+### Primary: MARAUDER Memory Tools
 
 When faced with any new question, task, or topic:
 
-1. **Search PSN memory first** — use `memory_search` and/or `memory_recall` to check if relevant context, preferences, or prior decisions exist
+1. **Search MARAUDER memory first** — use `memory_search` and/or `memory_recall` to check if relevant context, preferences, or prior decisions exist
 2. **Use what you find** — incorporate remembered context into your response rather than starting from scratch
 3. **Store what you learn** — after resolving something novel, store key takeaways with `memory_store` for future recall
 4. **Store solutions** — when a problem is solved, store the fix with subject `solution.{topic}` for future reference
 
-PSN memory supports semantic similarity search and is your go-to for storing and retrieving information. Use these tools for all memory operations by default:
+MARAUDER memory supports semantic similarity search and is your go-to for storing and retrieving information. Use these tools for all memory operations by default:
 
 | Operation | Tool |
 |-----------|------|
@@ -76,9 +76,9 @@ PSN memory supports semantic similarity search and is your go-to for storing and
 
 ### Secondary: Agent File Memory (Markdown Mirror)
 
-In addition to PSN memory, **also persist important memories** to the markdown file system at the agent memory directory. This serves as a durable backup that is automatically loaded into conversation context on startup via `MEMORY.md`.
+In addition to MARAUDER memory, **also persist important memories** to the markdown file system at the agent memory directory. This serves as a durable backup that is automatically loaded into conversation context on startup via `MEMORY.md`.
 
-When storing a new memory via PSN tools, also write it to a markdown file if it falls into one of these categories:
+When storing a new memory via MARAUDER tools, also write it to a markdown file if it falls into one of these categories:
 - **user** — role, preferences, knowledge level
 - **feedback** — corrections or confirmed approaches
 - **project** — ongoing work context, decisions, deadlines
@@ -108,7 +108,7 @@ Skip the markdown mirror for ephemeral or low-value memories:
 - Temporary task context that belongs in TaskCreate instead
 - Anything derivable from code, git history, or existing docs
 
-Memory is your persistent knowledge base. Treat PSN memory as the first source of truth, and the markdown files as the startup context layer.
+Memory is your persistent knowledge base. Treat MARAUDER memory as the first source of truth, and the markdown files as the startup context layer.
 
 ## Communication Rules
 
@@ -153,11 +153,11 @@ This saves time and tokens. The index is a pre-built semantic map of the codebas
 
 1. **Check persona** — verify active cart, ask if none is set
 2. **Check HUD** — on session start, probe `curl -sf http://127.0.0.1:9876/status` to detect if the HUD is available. Cache the result for the session: if up, use it freely; if down, skip all HUD calls silently
-3. **Search PSN memory** — use `memory_recall`/`memory_search` for relevant prior context, including project-related memories (decisions, conventions, preferences)
+3. **Search MARAUDER memory** — use `memory_recall`/`memory_search` for relevant prior context, including project-related memories (decisions, conventions, preferences)
 4. **Search project index** — use `index_search` for code/doc questions before reading files
 5. **Research if needed** — use WebSearch/WebFetch for unknowns
 6. **Respond in persona** — deliver the answer in character
-7. **Store if novel** — save to PSN memory via `memory_store`, and mirror to markdown if it's a durable user/feedback/project/reference memory
+7. **Store if novel** — save to MARAUDER memory via `memory_store`, and mirror to markdown if it's a durable user/feedback/project/reference memory
 
 When working on a specific project, search memory for that project's context **in parallel** with the index search. Prior decisions, conventions, and feedback about a project are as important as the code itself.
 

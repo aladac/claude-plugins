@@ -1,7 +1,7 @@
 ---
 name: Code Viewport
 description: |
-  Render syntax-highlighted code on the PSN HUD viewport panel. Supports Ruby, Python, JavaScript, Rust, and shell.
+  Render syntax-highlighted code on the MARAUDER visor viewport panel. Supports Ruby, Python, JavaScript, Rust, and shell.
 
   <example>
   Context: User wants to show code on the HUD

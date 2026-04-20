@@ -4,7 +4,7 @@ description: "Store important insights to memory and create docs in appropriate 
 
 # Insight
 
-Capture an important insight, decision, or learning — store it in PSN memory AND write it to the appropriate documentation location.
+Capture an important insight, decision, or learning — store it in MARAUDER memory AND write it to the appropriate documentation location.
 
 ## Arguments
 
@@ -32,7 +32,7 @@ The insight topic or content after `/insight`. Can be:
    | EVE Online | `eve.<topic>` | `~/Projects/marauder-hq/docs/eve/` |
    | General reference | `reference.<topic>` | `~/Projects/marauder-hq/docs/reference/` |
 
-3. **Store to PSN memory:**
+3. **Store to MARAUDER memory:**
    - Use `memory_store` with the classified subject
    - Content should be concise but self-contained — readable without conversation context
    - Include **Why** and **Implications** where relevant

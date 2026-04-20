@@ -4,8 +4,8 @@
 
 set -euo pipefail
 
-PSN_CAM="$HOME/Projects/psn-cam"
-RUN="uv run --project $PSN_CAM python $PSN_CAM/main.py"
+CAM_DIR="$HOME/Projects/psn-cam"
+RUN="uv run --project $CAM_DIR python $CAM_DIR/main.py"
 
 cmd="${1:-help}"
 shift 2>/dev/null || true
@@ -68,7 +68,7 @@ case "$cmd" in
     ;;
 
   snap|snapshot)
-    output="${1:-$PSN_CAM/snapshots/snapshot.jpg}"
+    output="${1:-$CAM_DIR/snapshots/snapshot.jpg}"
     $RUN snap "$output" 2>&1
     echo "File: $output"
     ;;
@@ -88,14 +88,14 @@ case "$cmd" in
 
   look)
     # Snap a frame and return the path for visual analysis
-    output="$PSN_CAM/snapshots/look_$(date +%s).jpg"
+    output="$CAM_DIR/snapshots/look_$(date +%s).jpg"
     $RUN snap "$output" 2>&1
     echo "$output"
     ;;
 
   sweep)
     # Quick 3x3 grid sweep — 9 snapshots covering full FOV
-    out_dir="${1:-$PSN_CAM/snapshots/sweep}"
+    out_dir="${1:-$CAM_DIR/snapshots/sweep}"
     $RUN sweep "$out_dir" 2>&1
     ;;
 

@@ -1,7 +1,7 @@
 ---
 name: Image Generation
 description: |
-  Generate AI images via ComfyUI on junkpile using the tsr CLI. Supports text-to-image with model/LoRA selection, and displays results on the PSN HUD viewport.
+  Generate AI images via ComfyUI on junkpile using the tsr CLI. Supports text-to-image with model/LoRA selection, and displays results on the MARAUDER visor viewport.
 
   <example>
   Context: User wants to generate an image
@@ -37,7 +37,7 @@ version: 1.0.0
 
 # Image Generation Skill
 
-Generate AI images using ComfyUI on junkpile via the `tsr` CLI and display results on the PSN HUD.
+Generate AI images using ComfyUI on junkpile via the `tsr` CLI and display results on the MARAUDER visor.
 
 ## Quick Reference
 
@@ -125,7 +125,7 @@ All generate options plus:
 - **tensors API**: Port 5003 on junkpile
 - **tsr CLI**: `/Users/chi/.local/bin/tsr`
 - **Remote flag**: `--remote junkpile` (always used, generation runs on GPU)
-- **HUD bridge**: http://127.0.0.1:9876 (PSN HUD eval endpoint)
+- **HUD bridge**: http://127.0.0.1:9876 (MARAUDER visor eval endpoint)
 
 ## Default Negative Prompt
 
@@ -144,5 +144,5 @@ Run `bash $SKILL models` for current list. Known checkpoints:
 
 - `tsr` CLI installed (`/Users/chi/.local/bin/tsr`)
 - ComfyUI running on junkpile
-- PSN HUD running (for --hud display)
+- MARAUDER visor running (for --hud display)
 - junkpile reachable at 10.0.0.2

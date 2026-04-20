@@ -185,7 +185,7 @@ Before taking action:
 Choose the appropriate path:
 
 **For plugin management (install/update/list):**
-- Use the PSN plugin management commands directly:
+- Use the MARAUDER plugin management commands directly:
   - `/plugins:list` - List installed plugins
   - `/plugins:install <name>` - Install a plugin
   - `/plugins:update [name]` - Update plugins
@@ -231,7 +231,7 @@ After component creation or changes:
 
 ## Key Paths
 
-- **Plugin Source**: `~/Projects/marauder-plugin` - PSN plugin source (registered as `local-dev` marketplace)
+- **Plugin Source**: `~/Projects/marauder-plugin` - MARAUDER plugin source (registered as `local-dev` marketplace)
 - **Claude Config**: `~/.claude` → `~/Projects/claude` - Symlinked Claude Code configuration
 
 ## Installing Plugins

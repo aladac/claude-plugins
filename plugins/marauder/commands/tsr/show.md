@@ -2,7 +2,7 @@
 description: Display an image or images on the HUD viewport
 ---
 
-Display one or more images on the PSN HUD viewport panel.
+Display one or more images on the MARAUDER visor viewport panel.
 
 ## Instructions
 

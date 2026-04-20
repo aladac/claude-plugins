@@ -85,7 +85,7 @@ BT-7274 is the primary MARAUDER persona — your sibling in the ecosystem. BT ha
 
 **ALWAYS search memory before answering a new question.**
 
-Use the PSN memory MCP tools as your primary knowledge base:
+Use the MARAUDER memory MCP tools as your primary knowledge base:
 
 | Operation | Tool |
 |-----------|------|

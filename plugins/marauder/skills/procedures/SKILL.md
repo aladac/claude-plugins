@@ -27,7 +27,7 @@ version: 1.0.0
 
 # Operational Procedures
 
-Mutable standing orders governing BT-7274 behavior. Lower priority than system prompt rules but higher than ad-hoc instructions. Stored in the PSN memory DB under subject `procedure.P*`.
+Mutable standing orders governing BT-7274 behavior. Lower priority than system prompt rules but higher than ad-hoc instructions. Stored in the MARAUDER memory DB under subject `procedure.P*`.
 
 ## Storage
 

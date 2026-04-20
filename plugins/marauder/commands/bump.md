@@ -1,8 +1,8 @@
 ---
-description: Build marauder-os, install on both machines, report version with git hash
+description: Clean, build, and deploy marauder-os to all 4 mesh nodes
 ---
 
-Build and install marauder-os (Rust binary) on fuji and junkpile.
+Build and deploy marauder-os to fuji, junkpile, moto, and tachikoma.
 
 ## Instructions
 
@@ -13,12 +13,14 @@ Run the bump script:
 ```
 
 The script automatically:
-1. Reads version from `Cargo.toml` + appends `+<short-git-hash>` (e.g., `0.2.1+c4be2ee`)
-2. Builds release binary (`cargo build --release`)
-3. Installs locally (`cargo install --path .`)
-4. Pulls and builds on the other machine via SSH (j↔f)
-5. Reports installed version on both machines
+1. Cleans all build artifacts (`cargo clean`)
+2. Reads version from `Cargo.toml` + appends `+<short-git-hash>` (e.g., `0.2.1+c4be2ee`)
+3. Builds and installs natively on **fuji** (macOS ARM64)
+4. Pulls, cleans, builds, and installs natively on **junkpile** (x86_64 Linux via SSH)
+5. Cross-compiles for **moto** (aarch64-linux-android) and deploys via SCP
+6. Cross-compiles for **tachikoma** (armv7-linux-gnueabihf via zigbuild) and deploys via SCP
+7. Reports installed version on all 4 nodes
 
-After the script completes, show the user the version and confirm both machines match.
+After the script completes, show the user the version summary and confirm all nodes match.
 
 **Note:** No files are modified — the git hash is display-only, not written to Cargo.toml.

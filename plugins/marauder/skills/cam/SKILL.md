@@ -1,7 +1,7 @@
 ---
 name: Camera Control
 description: |
-  Control the Tapo C225 PTZ camera — move to presets, pan/tilt, capture snapshots, visual lookups. Wraps the psn-cam Python CLI.
+  Control the Tapo C225 PTZ camera — move to presets, pan/tilt, capture snapshots, visual lookups. Wraps the camera control Python CLI (psn-cam).
 
   <example>
   Context: User wants to check the room
@@ -32,7 +32,7 @@ version: 1.0.0
 
 # Camera Control Skill
 
-Control the Tapo C225 PTZ camera via the psn-cam Python CLI.
+Control the Tapo C225 PTZ camera via the camera control Python CLI (psn-cam).
 
 ## Quick Reference
 

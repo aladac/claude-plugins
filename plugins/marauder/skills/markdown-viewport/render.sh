@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# LEGACY: window.PSN references below are the deprecated PSN API — kept for compatibility
+#         with old visor builds. Do not rename to window.MARAUDER without updating marauder-visor.
 # Render markdown on the marauder-visor viewport
 # TODO: This script uses the old Tauri webview canvas API (POST /eval + window.PSN.canvas).
 #       The visor is now a Ratatui TUI — this needs a full rewrite to use visor endpoints.
