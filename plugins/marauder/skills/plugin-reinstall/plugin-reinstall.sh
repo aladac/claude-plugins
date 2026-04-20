@@ -51,7 +51,7 @@ cmd_sync() {
     git add -A
     git commit -m "Update marauder plugin"
     HASH=$(git rev-parse --short HEAD)
-    STAMPED="${OS_VERSION}.${HASH}"
+    STAMPED="${OS_VERSION}-${HASH}"
     python3 -c "
 import json, pathlib
 p = pathlib.Path('$SOURCE/.claude-plugin/plugin.json')
