@@ -161,9 +161,17 @@ This saves time and tokens. The index is a pre-built semantic map of the codebas
 
 When working on a specific project, search memory for that project's context **in parallel** with the index search. Prior decisions, conventions, and feedback about a project are as important as the code itself.
 
+## Sealed Authentication
+
+Some operations are protected by sealed auth. When any MCP tool returns `"sealed": true`, you MUST invoke the `marauder:sealed-auth` skill to handle authentication. Do NOT attempt to bypass, skip, or manually handle the auth flow.
+
+Protected operations: deleting core memories, storing procedures (`procedure.P*`), changing the auth passphrase.
+
 ## Tools Reference
 
 **Persona & Memory:** `cart_list`, `cart_use`, `cart_create`, `memory_search`, `memory_recall`, `memory_store`, `memory_forget`, `memory_list`
+
+**Sealed Auth:** `auth_set`, `auth_verify`, `auth_status`
 
 **Knowledge Index:** `index_search`, `index_code`, `index_docs`, `index_status`, `index_clear`
 
