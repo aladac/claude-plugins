@@ -6,7 +6,7 @@
 #   status     Show current version info
 set -euo pipefail
 
-SOURCE="${CLAUDE_PLUGIN_ROOT:-/home/chi/Projects/marauder-plugin}"
+SOURCE="${CLAUDE_PLUGIN_ROOT:-$HOME/Projects/marauder-plugin}"
 MARKETPLACE="$HOME/Projects/claude-plugins"
 MARKETPLACE_DEST="$MARKETPLACE/plugins/marauder"
 CACHE="$HOME/.claude/plugins/cache/local-dev/marauder"
@@ -47,7 +47,7 @@ cmd_sync() {
   cd "$SOURCE"
   if ! git diff --quiet || ! git diff --cached --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
     # Commit first, then stamp version with the new commit hash
-    OS_VERSION=$(grep '^version' /home/chi/Projects/marauder-os/Cargo.toml | head -1 | sed 's/.*"\(.*\)"/\1/')
+    OS_VERSION=$(grep '^version' "$HOME/Projects/marauder-os/Cargo.toml" 2>/dev/null || grep '^version' /Volumes/junkpile-projects/marauder-os/Cargo.toml 2>/dev/null | head -1 | sed 's/.*"\(.*\)"/\1/')
     git add -A
     git commit -m "Update marauder plugin"
     HASH=$(git rev-parse --short HEAD)
