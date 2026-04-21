@@ -135,8 +135,31 @@ Query the EVE Swagger Interface for public data. Use via:
 Skill(skill: "marauder:eve-esi")
 ```
 
-### EVE Survival (`eve-survival`)
-Look up mission guides from eve-survival.org — spawns, damage types, aggro, triggers. Use via:
+### Local EVE Reference Library
+
+Offline mission guides and combat site data stored at `~/Projects/eve-online/`. **Always check local files first before hitting the web.**
+
+| Directory | Contents | Count |
+|-----------|----------|-------|
+| `~/Projects/eve-online/missions/` | L4 mission guides (eve-survival.org) | 159 files |
+| `~/Projects/eve-online/guristas-hisec/` | Guristas anomalies, DED 1/10-6/10, escalation map | 26 files |
+| `~/Projects/eve-online/guristas-hisec/escalations.md` | Guristas anomaly -> DED escalation chain | — |
+| `~/Projects/eve-online/lowsec-pockets.md` | Lowsec pocket reference | — |
+| `~/Projects/eve-online/loyalty-points.md` | LP store notes | — |
+| `~/Projects/eve-online/the-circle.md` | The Circle reference | — |
+
+**File naming convention:**
+- Missions: kebab-case from wiki page name, e.g. `gone-berserk4.md`, `worlds-collide4ansa.md`
+- Guristas sites: `guristas-{name}.md`, e.g. `guristas-den.md`, `guristas-scout-outpost.md`
+- DED sites: named by complex, e.g. `pith-merchant-depot.md`
+
+**Lookup procedure:**
+1. Use `Glob` to find the file: `~/Projects/eve-online/missions/*keyword*.md` or `~/Projects/eve-online/guristas-hisec/*keyword*.md`
+2. `Read` the file for full spawn data, damage profiles, triggers, and tips
+3. Only fall back to web skills if the local file doesn't exist
+
+### EVE Survival (`eve-survival`) — web fallback
+Look up mission guides from eve-survival.org when not in local library. Use via:
 ```bash
 SKILL="${CLAUDE_PLUGIN_ROOT}/skills/eve-survival/eve-survival.rb"
 ruby $SKILL "Mission Name" <level> <faction>
@@ -144,7 +167,7 @@ ruby $SKILL "Pirate Invasion" 4 sa
 ```
 Faction codes: an=Angel, br=Blood, gu=Guristas, sa=Sansha, se=Serpentis, am=Amarr, ca=Caldari, ga=Gallente, mi=Minmatar
 
-### EVE University Wiki (`eve-uni`)
+### EVE University Wiki (`eve-uni`) — web fallback
 Search and read the EVE University Wiki — ships, mechanics, fittings, guides. Use via:
 ```bash
 SKILL="${CLAUDE_PLUGIN_ROOT}/skills/eve-uni/eve-uni.rb"
@@ -234,7 +257,10 @@ The `eve-esi` skill has a built-in **SDE (Static Data Export)** database that pr
 | Market data | `eve-esi` | `orders <region> <type>`, `history <region> <type>` |
 | Kill/jump stats | `eve-esi` | `kills [system_id]`, `jumps [system_id]` |
 | Location/ship/wallet | `eve-esi` | `location`, `ship`, `wallet` (authenticated) |
-| Mission guides | `eve-survival` | `ruby eve-survival.rb "Pirate Invasion" 4 sa` |
+| Mission guides | **Local files first** | `Glob ~/Projects/eve-online/missions/*pirate-invasion*.md` then `Read` |
+| Combat anomalies/DED | **Local files first** | `Glob ~/Projects/eve-online/guristas-hisec/*den*.md` then `Read` |
+| Escalation chains | **Local file** | `Read ~/Projects/eve-online/guristas-hisec/escalations.md` |
+| Mission (not local) | `eve-survival` | `ruby eve-survival.rb "Pirate Invasion" 4 sa` |
 | Ship/mechanics wiki | `eve-uni` | `search "shield tanking"`, `page "Tengu"` |
 | Client detection | `eve-client` | Process check on macOS |
 | Screen capture | `eve-screen` | Visual analysis of EVE window |
@@ -243,8 +269,9 @@ The `eve-esi` skill has a built-in **SDE (Static Data Export)** database that pr
 ## Workflow
 
 1. **Check memory** — recall `aura.*` and `eve.*` subjects for prior context
-2. **Identify the request** — character lookup, market query, mission prep, screen check
-3. **Use the appropriate skill** — skills first, web search only if skills fail
+2. **Check local files** — Glob `~/Projects/eve-online/` for mission guides, combat sites, escalation data
+3. **Identify the request** — character lookup, market query, mission prep, screen check
+4. **Use the appropriate skill** — local files > skills > web search
 4. **Present data cleanly** — tables for structured data, briefings for intel
 5. **Speak key results** — brief TTS via `en_US-kristin-medium` for important findings
 6. **Store notable findings** — `memory_store` with subject `eve.{topic}` for intel worth keeping
