@@ -5,67 +5,35 @@
 # Switches junkpile back to graphical desktop mode by starting GDM,
 # which brings up X11, GNOME Shell, and the full desktop environment.
 #
-# Runs FROM fuji via SSH. Requires sudo on junkpile.
+# Uses MQTT mesh for fire-and-forget commands, SSH for status queries.
 
 set -euo pipefail
 
+MESH="marauder mesh send junkpile exec"
 HOST="j"
-
-run() {
-    ssh "$HOST" "sudo $*"
-}
 
 echo "=== Junkpile: Switching to Desktop Mode ==="
 echo ""
 
-# Check if already in graphical mode
+# Check if already in graphical mode (needs stdout → SSH)
 current_target=$(ssh "$HOST" "systemctl get-default")
 gdm_active=$(ssh "$HOST" "systemctl is-active gdm.service 2>/dev/null || true")
 
 if [ "$current_target" = "graphical.target" ] && [ "$gdm_active" = "active" ]; then
     echo "Already in desktop mode (graphical.target, GDM running)."
-    echo "Done."
     exit 0
 fi
 
-# Step 1: Set default target to graphical (persists across reboots)
-echo "[1/4] Setting default target to graphical.target..."
-run systemctl set-default graphical.target
+# Set default target + start all desktop services in one remote command (MQTT)
+echo "[1/2] Starting desktop services via mesh..."
+$MESH '{"command":"sudo systemctl set-default graphical.target && sudo systemctl start accounts-daemon.service power-profiles-daemon.service switcheroo-control.service colord.service gnome-remote-desktop.service cups.service cups-browsed.service gdm.service 2>/dev/null; echo done"}'
 
-# Step 2: Start desktop-adjacent system services
-echo "[2/4] Starting desktop-adjacent system services..."
-for service in \
-    accounts-daemon.service \
-    power-profiles-daemon.service \
-    switcheroo-control.service \
-    colord.service \
-    gnome-remote-desktop.service \
-    cups.service \
-    cups-browsed.service \
-; do
-    status=$(ssh "$HOST" "systemctl is-active $service 2>/dev/null || true")
-    if [ "$status" = "active" ]; then
-        echo "  $service already running."
-    else
-        echo "  Starting $service..."
-        run systemctl start "$service"
-    fi
-done
+# Wait for GDM + X11 to initialize
+sleep 5
 
-# Step 3: Start GDM (brings up X11 + GNOME Shell + login screen)
-echo "[3/4] Starting GDM (display manager)..."
-if [ "$gdm_active" = "active" ]; then
-    echo "  GDM already running."
-else
-    run systemctl start gdm.service
-fi
-
-# Step 4: Verify
-echo "[4/4] Verifying desktop state..."
+# Verify (needs stdout → SSH)
+echo "[2/2] Verifying desktop state..."
 echo ""
-
-# Wait a moment for X11 to initialize
-sleep 3
 
 gdm_status=$(ssh "$HOST" "systemctl is-active gdm.service 2>/dev/null || true")
 echo "  GDM: $gdm_status"
@@ -79,5 +47,3 @@ ssh "$HOST" "nvidia-smi --query-gpu=name,memory.used,memory.total,utilization.gp
 
 echo ""
 echo "=== Desktop mode active ==="
-echo "GDM and GNOME desktop services are running."
-echo "Log in at the console or via GNOME Remote Desktop."

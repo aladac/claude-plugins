@@ -41,12 +41,17 @@ ssh j "export PATH=\$PATH:/home/linuxbrew/.linuxbrew/bin && adb <command>"
 
 ### Screenshot
 
-```bash
-# Capture and retrieve (WiFi)
-adb -s 192.168.88.155:5555 exec-out screencap -p > /tmp/moto_screen.png
+Use the script — single command, handles ADB connect + screencap + validation:
 
+```bash
+bash ${CLAUDE_PLUGIN_ROOT}/skills/android/moto-screenshot.sh /tmp/moto_screen.png
+```
+
+Then read the image with the Read tool to view it. Do NOT dispatch an agent for this.
+
+```bash
 # With timestamp
-adb -s 192.168.88.155:5555 exec-out screencap -p > "/tmp/moto_$(date +%Y%m%d_%H%M%S).png"
+bash ${CLAUDE_PLUGIN_ROOT}/skills/android/moto-screenshot.sh "/tmp/moto_$(date +%Y%m%d_%H%M%S).png"
 ```
 
 ### Screen Recording

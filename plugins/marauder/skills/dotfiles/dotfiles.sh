@@ -175,16 +175,16 @@ case "$CMD" in
       echo "Synced to GitHub"
     fi
     echo ""
-    echo "Pulling on junkpile..."
-    ssh j "cd ~/Projects/dotfiles && git pull --rebase" 2>&1 || echo "  (junkpile sync failed)"
+    echo "Pulling on junkpile via mesh..."
+    marauder mesh send junkpile exec '{"command":"cd ~/Projects/dotfiles && git pull --rebase"}' 2>/dev/null || echo "  (junkpile mesh sync failed)"
     ;;
 
   pull)
     cd "$DOTFILES"
     git pull --rebase
     echo ""
-    echo "Pulling on junkpile..."
-    ssh j "cd ~/Projects/dotfiles && git pull --rebase" 2>&1 || echo "  (junkpile sync failed)"
+    echo "Pulling on junkpile via mesh..."
+    marauder mesh send junkpile exec '{"command":"cd ~/Projects/dotfiles && git pull --rebase"}' 2>/dev/null || echo "  (junkpile mesh sync failed)"
     ;;
 
   diff)

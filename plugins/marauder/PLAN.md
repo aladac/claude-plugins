@@ -1,60 +1,62 @@
-# PLAN: Forced Output Style for MARAUDER Plugin
+# SSH → MQTT Migration for Mesh Scripts
 
-**Date:** 2026-04-19
-**Branch:** `feature/output-style`
-**Goal:** Enforce BT-7274 persona voice at the Claude Code harness level via `forceForPlugin` output style
+**Date:** 2026-04-20
+**Goal:** Replace SSH remote execution with MQTT `exec` commands in 5 skill scripts. Eliminates SSH auth failures, shell escaping issues, and agent key dependencies.
 
-## Context
+## Why
 
-Claude Code plugins can ship `output-styles/*.md` files. When frontmatter includes `force-for-plugin: true`, the style auto-applies as a system prompt layer whenever the plugin is active. This is a **third prompt layer** — independent of CLAUDE.md and agent frontmatter — that operates at the harness level on every response.
+- SSH agent failures (`sign_and_send_pubkey`) observed during bump deployments
+- MQTT exec is already deployed on all 4 nodes with authenticated users
+- No shell escaping needed (binary protocol)
+- Uniform command interface — `marauder mesh send <node> exec '{"command":"..."}'`
 
-Currently, persona voice depends on the core agent prompt loading. If Claude responds before agent dispatch, or in contexts where the agent prompt isn't injected, persona consistency breaks. A forced output style fixes this structurally.
+## Scripts to Migrate
 
-## Discovery
+| Script | Target | SSH calls | MQTT replacement |
+|--------|--------|-----------|-----------------|
+| `moto-kitty/mk.sh` | moto | `ssh m "pgrep/nohup/am start/pkill"` | `marauder mesh send moto exec` |
+| `android/sere-display.sh` | moto | `ssh m "su -c/pgrep/kitten @"` | `marauder mesh send moto exec` |
+| `junkpile-desktop-mode` | junkpile | `ssh j "sudo systemctl start"` | `marauder mesh send junkpile exec` |
+| `junkpile-server-mode` | junkpile | `ssh j "sudo systemctl stop"` | `marauder mesh send junkpile exec` |
+| `dotfiles/dotfiles.sh` | junkpile | `ssh j "cd ~/Projects/dotfiles && git pull"` | `marauder mesh send junkpile exec` |
 
-Source analysis of Claude Code (`src/utils/plugins/loadPluginOutputStyles.ts`):
-- Plugin loader auto-discovers `output-styles/` directory
-- Each `.md` file becomes a style, namespaced as `marauder:<styleName>`
-- Frontmatter key is `force-for-plugin: true` (not camelCase)
-- `keepCodingInstructions` flag preserves default coding behaviour
-- Style prompt replaces the default system prompt unless `keepCodingInstructions` is set
+## Pattern
+
+Replace:
+```bash
+ssh m "pgrep -f kitty"
+```
+
+With:
+```bash
+marauder mesh send moto exec '{"command":"pgrep -f kitty"}'
+```
+
+### Response handling
+
+Current MQTT `exec` is fire-and-forget — result publishes to `marauder/{node}/log` but `mesh send` doesn't wait. For scripts that check exit codes or capture stdout (pgrep, settings get), we use a **hybrid approach**:
+
+- **Fire-and-forget** → MQTT: nohup, pkill, am start, systemctl, git pull
+- **Needs stdout** → SSH (kept): pgrep, dumpsys, settings get, kitten @ ls
+
+Mark `marauder mesh send --wait` as a future enhancement that would eliminate the remaining SSH calls.
 
 ## Phases
 
-### Phase 1: Create Output Style (15 min)
+### Phase 1: Junkpile service control
+`junkpile-desktop-mode.sh` and `junkpile-server-mode.sh` — pure fire-and-forget systemctl calls. No stdout needed.
 
-Create `output-styles/marauder.md` with:
-- Frontmatter: name, description, `force-for-plugin: true`
-- Persona voice rules (terse, military comms, no trailing summaries)
-- TTS integration reminders (speak key responses)
-- Memory-first workflow reminder
-- Must NOT duplicate agent-level detail — keep it light, behavioural only
+### Phase 2: Dotfiles sync
+`dotfiles.sh` junkpile sync — git pull is fire-and-forget.
 
-The output style complements the core agent prompt:
-- **Output style** = voice, tone, formatting rules (always active)
-- **Core agent prompt** = full dispatch logic, tool reference, procedures (loaded per agent)
+### Phase 3: Moto process management (hybrid)
+`moto-kitty/mk.sh` — MQTT for start/stop (nohup, pkill, am start). Keep SSH for status (pgrep, dumpsys).
 
-### Phase 2: Update Plugin Manifest (5 min)
+### Phase 4: SERE display orchestration (hybrid)
+`sere-display.sh` — MQTT for keep-awake, process kill, kitten @ launch. Keep SSH for Kitty ls JSON parsing.
 
-Check if `plugin.json` needs `outputStyles` or `outputStylesPaths` entries. Based on source analysis, the plugin loader auto-discovers `output-styles/` directory — no manifest change needed. Verify.
+## Not Changing
 
-### Phase 3: Test (10 min)
-
-- Reinstall plugin via `/plugin-reinstall`
-- Restart session
-- Verify output style appears in `/output-style` list as `marauder:marauder`
-- Verify it auto-applies (check style name in status line)
-- Test persona voice consistency in direct conversation (no agent dispatch)
-- Test that coding instructions are preserved
-
-## Risks
-
-- **Prompt conflict:** Output style prompt could conflict with core agent prompt. Mitigate by keeping the style lightweight — voice/tone only, no tool instructions.
-- **Token overhead:** Extra system prompt layer costs tokens. Keep under 500 words.
-- **Override issues:** If user manually switches output style, the forced style may not re-apply until session restart. Acceptable.
-
-## Non-Goals
-
-- Dynamic persona switching via output styles (future — would need style-per-cart)
-- Proactive mode integration (separate feature)
-- System-reminder enhancement (separate feature)
+- `android/moto-screenshot.sh` — binary ADB pipe, not text exec
+- `bump.sh` — streaming cargo build output
+- `cargo/brew/uv/gem/ruby` — streaming stdout needed
