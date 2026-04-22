@@ -66,13 +66,17 @@ Show full content of the matched procedure.
 
 1. Find the existing procedure by number: `marauder memory search --subject "procedure.P03"`
 2. Note the memory ID from the result
-3. Forget the old version: `marauder memory forget <ID>`
-4. Store the updated version: `marauder memory store "procedure.P03" "New content"`
+3. Present old vs new text to the Pilot via AskUserQuestion
+4. **Wait for explicit approval** — never modify without sign-off
+5. Forget the old version: `marauder memory forget <ID>`
+6. Store the approved version: `marauder memory store "procedure.P03" "New content"`
 
 ### Add
 
 1. Determine the next available number by listing existing procedures
-2. Store: `marauder memory store "procedure.P{N}" "Title — Description"`
+2. Draft the procedure text and present it to the Pilot via AskUserQuestion
+3. **Wait for explicit approval** — never store without sign-off
+4. Store: `marauder memory store "procedure.P{N}" "Title — Description"`
 
 ### Remove
 
@@ -97,7 +101,7 @@ Optionally push to the visor via `POST /code` with language "markdown" for HUD d
 
 - Procedures are **mutable** — the Pilot can add, remove, reorder, or reword at any time
 - Reference by number: "update P3", "drop P7", "swap P3 and P5"
-- Always confirm destructive operations (drop, renumber) before executing
+- **All mutations require Pilot approval** — add, update, and delete must be presented and confirmed before execution. Procedures are standing orders that govern behavior permanently
 - When adding, suggest the next sequential number unless the Pilot specifies one
 
 ## Related

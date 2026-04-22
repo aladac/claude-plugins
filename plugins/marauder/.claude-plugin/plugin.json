@@ -1,6 +1,6 @@
 {
   "name": "marauder",
-  "version": "version = \"0.3.0\"-1d216d9",
+  "version": "version = \"0.3.0\"-d8c7aba",
   "description": "MARAUDER-OS command center \u2014 memory, TTS, indexer, personas, HUD, and multi-agent orchestration for Claude Code",
   "author": {
     "name": "aladac",

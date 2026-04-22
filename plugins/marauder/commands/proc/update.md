@@ -3,6 +3,7 @@ name: proc:update
 description: "Update an existing operational procedure"
 allowed-tools:
   - Bash
+  - AskUserQuestion
   - TaskCreate
   - TaskUpdate
 argument-hint: "<P number> <new content>"
@@ -29,17 +30,21 @@ Modify the content of an existing operational procedure. Uses forget + re-store 
    marauder memory search --subject "procedure.P03" --limit 1 --json
    ```
 
-3. **Delete the old version**:
+3. **Present old vs new for approval** (MANDATORY — never skip):
+   Use AskUserQuestion to show the current text and proposed new text side by side.
+   Wait for explicit approval. Do NOT delete or store until the Pilot confirms.
+
+4. **Delete the old version**:
    ```bash
    marauder memory forget <ID>
    ```
 
-4. **Store the new version**:
+5. **Store the approved version**:
    ```bash
    marauder memory store "procedure.P03" "New Title — New description content"
    ```
 
-5. **Complete and confirm**:
+6. **Complete and confirm**:
    ```
    TaskUpdate(taskId: "...", status: "completed")
    ```

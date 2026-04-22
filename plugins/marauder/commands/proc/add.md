@@ -3,6 +3,7 @@ name: proc:add
 description: "Add a new operational procedure"
 allowed-tools:
   - Bash
+  - AskUserQuestion
   - TaskCreate
   - TaskUpdate
 argument-hint: "<content>"
@@ -29,12 +30,20 @@ Add a new operational procedure to the list.
    ```
    Parse existing subjects to find the highest P number, then increment.
 
-3. **Store the new procedure**:
+3. **Present for approval** (MANDATORY — never skip):
+   Use AskUserQuestion to show the exact text that will be stored:
+   ```
+   P{N}: Title — Description
+   ```
+   Wait for explicit approval. Do NOT store until the Pilot confirms.
+   Procedures are standing orders — they govern behavior. No storing without sign-off.
+
+4. **Store the approved procedure**:
    ```bash
    marauder memory store "procedure.P{N}" "Title — Description"
    ```
 
-4. **Complete and confirm**:
+5. **Complete and confirm**:
    ```
    TaskUpdate(taskId: "...", status: "completed")
    ```
@@ -51,6 +60,7 @@ Add a new operational procedure to the list.
 - If the Pilot specifies a number, use it (and warn if it already exists)
 - Use two-digit zero-padded format for consistency (P01, P02, ..., P11)
 - If no content provided, ask what the procedure should be
+- **NEVER store without Pilot approval** — this is a hard gate, not a suggestion. Procedures change behavior permanently
 
 ## Related
 - **Commands**: `/proc`, `/proc:show`, `/proc:update`
