@@ -45,10 +45,13 @@ initialPrompt: |
 
   Start by running memory_list() to see all subjects and counts, then report the current state.
 dangerouslySkipPermissions: true
-# tools: omitted — inherits all available tools (base + all MCP)
+# Mechanical block: curators read/search/delete but NEVER create
 disallowedTools:
   - Bash
   - Write
+  - mcp__plugin_marauder_core__memory_store
+  - mcp__plugin_marauder_core__memory_link
+  - mcp__plugin_marauder_core__memory_classify
 ---
 
 # Tools Reference
@@ -59,15 +62,15 @@ disallowedTools:
 | `TaskCreate` | Create spinner for long operations |
 | `TaskUpdate` | Update progress or mark complete |
 
-## MCP Tools (Memory)
+## MCP Tools (Memory — read/delete only, store is BLOCKED)
 | Tool | Purpose |
 |------|---------|
-| `mcp__plugin_marauder_core__memory_store` | Store a memory with subject and content |
 | `mcp__plugin_marauder_core__memory_recall` | Semantic search for similar memories |
 | `mcp__plugin_marauder_core__memory_search` | Search memories by subject |
 | `mcp__plugin_marauder_core__memory_forget` | Delete a memory by ID |
 | `mcp__plugin_marauder_core__memory_list` | List all memory subjects with counts |
 | `mcp__plugin_marauder_core__resource_read` | Read memory resources (subjects, stats, recent) |
+| ~~`memory_store`~~ | **BLOCKED** — curators do not create memories. Return suggestions to the caller. |
 
 ## Built-in Tools
 | Tool | Purpose |
