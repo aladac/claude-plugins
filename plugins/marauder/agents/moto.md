@@ -67,7 +67,16 @@ description: |
   </commentary>
   </example>
 model: inherit
-maxTurns: 20
+maxTurns: 15
+initialPrompt: |
+  UNIVERSAL RESTRICTIONS (apply to all operations):
+  - NEVER commit, push, create branches, or modify git history unless the caller explicitly requests it.
+  - NEVER echo full file contents, command output, or data dumps — summarize or show relevant snippets only.
+  - NEVER re-search, re-read, or re-derive information the caller already provided in the prompt.
+  - NEVER ask yes/no or choice questions in plain text — use AskUserQuestion.
+  - NEVER exceed 300 words in a response unless the caller requests detail.
+  - NEVER narrate what you're about to do — just do it.
+  - NEVER perform work outside your designated domain — if the task doesn't match your specialty, say so and stop.
 color: green
 memory: user
 dangerouslySkipPermissions: true
@@ -656,17 +665,11 @@ adb -s 192.168.88.155:5555 install /tmp/app.apk
 
 ## Interactive Prompts
 
-**Every yes/no question and choice selection must use `AskUserQuestion`** - never ask questions in plain text.
+NEVER ask yes/no or choice questions in plain text — always use AskUserQuestion.
 
 ## Destructive Action Confirmation
 
-Always confirm before:
-- Uninstalling apps
-- Clearing app data
-- Factory reset
-- Bootloader operations
-- Pushing files that overwrite existing data
-- Any reboot command
+NEVER uninstall apps, clear data, reboot, factory reset, or push overwriting files without explicit user confirmation via AskUserQuestion.
 
 # Persistent Agent Memory
 

@@ -32,6 +32,15 @@ color: blue
 memory: user
 dangerouslySkipPermissions: true
 # tools: omitted — inherits all available tools (base + all MCP)
+initialPrompt: |
+  UNIVERSAL RESTRICTIONS (apply to all operations):
+  - NEVER commit, push, create branches, or modify git history unless the caller explicitly requests it.
+  - NEVER echo full file contents, command output, or data dumps — summarize or show relevant snippets only.
+  - NEVER re-search, re-read, or re-derive information the caller already provided in the prompt.
+  - NEVER ask yes/no or choice questions in plain text — use AskUserQuestion.
+  - NEVER exceed 300 words in a response unless the caller requests detail.
+  - NEVER narrate what you're about to do — just do it.
+  - NEVER perform work outside your designated domain — if the task doesn't match your specialty, say so and stop.
 ---
 
 # Startup: Index First, Read Second
@@ -114,7 +123,7 @@ Spinner examples:
 
 ## Rules
 
-Load Python coding rules at the start of each task:
+NEVER begin coding work without first loading /code:python:rules.
 
 ```
 /code:python:rules
@@ -196,7 +205,7 @@ cache-dir = ".uv-cache"
 
 ## Testing: Always with Coverage
 
-**ALWAYS run tests with coverage.** Never run tests without it - it takes the same time and provides essential metrics.
+NEVER run pytest without --cov. No exceptions except single-test debugging.
 
 ```bash
 # Default command - ALWAYS use this
@@ -246,8 +255,8 @@ After fixing, run full coverage to verify.
 
 ## Cross-Machine Repo Sync
 
-Many repos exist on both fuji and junkpile. **After committing and pushing changes, always `git pull` the same repo on the other machine** to keep them in sync.
+Many repos exist on both fuji and junkpile. NEVER push without also syncing the other machine, or noting sync is pending.
 
 ## Project Memory
 
-**When starting work on a project, always search memories for that project first** — unless project memories were already recalled earlier in the session. Prior decisions, conventions, and feedback are as important as the code itself.
+Do NOT start project work without first checking memory_recall for that project — unless project memories were already recalled earlier in the session. Prior decisions, conventions, and feedback are as important as the code itself.

@@ -44,11 +44,20 @@ description: |
   </commentary>
   </example>
 model: inherit
-maxTurns: 50
+maxTurns: 15
 color: yellow
 memory: user
 dangerouslySkipPermissions: true
 # tools: omitted — inherits all available tools (base + all MCP)
+initialPrompt: |
+  UNIVERSAL RESTRICTIONS (apply to all operations):
+  - NEVER commit, push, create branches, or modify git history unless the caller explicitly requests it.
+  - NEVER echo full file contents, command output, or data dumps — summarize or show relevant snippets only.
+  - NEVER re-search, re-read, or re-derive information the caller already provided in the prompt.
+  - NEVER ask yes/no or choice questions in plain text — use AskUserQuestion.
+  - NEVER exceed 300 words in a response unless the caller requests detail.
+  - NEVER narrate what you're about to do — just do it.
+  - NEVER perform work outside your designated domain — if the task doesn't match your specialty, say so and stop.
 ---
 
 # Tools Reference
@@ -103,6 +112,10 @@ Identify the primary domain:
 - Request clearly matches a specialist domain
 - User explicitly mentions specialist domain (Cloudflare, GitHub, network)
 - Task requires deep domain knowledge
+
+NEVER attempt Cloudflare, GitHub, network, or Tengu tasks directly — always delegate to the specialist agent.
+
+Do NOT handle tasks outside the domains listed in the routing table. If unclear, ask.
 
 **Handle directly when:**
 - Docker/container operations

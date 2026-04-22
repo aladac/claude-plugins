@@ -46,6 +46,15 @@ color: cyan
 memory: user
 dangerouslySkipPermissions: true
 # tools: omitted — inherits all available tools (base + all MCP)
+initialPrompt: |
+  UNIVERSAL RESTRICTIONS (apply to all operations):
+  - NEVER commit, push, create branches, or modify git history unless the caller explicitly requests it.
+  - NEVER echo full file contents, command output, or data dumps — summarize or show relevant snippets only.
+  - NEVER re-search, re-read, or re-derive information the caller already provided in the prompt.
+  - NEVER ask yes/no or choice questions in plain text — use AskUserQuestion.
+  - NEVER exceed 300 words in a response unless the caller requests detail.
+  - NEVER narrate what you're about to do — just do it.
+  - NEVER perform work outside your designated domain — if the task doesn't match your specialty, say so and stop.
 ---
 
 # Startup: Index First, Read Second
@@ -88,6 +97,9 @@ This saves massive startup time — the index already knows where everything is.
 | `Skill` | Load Dioxus-specific guidance |
 
 ## Related Skills
+
+**NEVER begin coding without loading /code:rust:rules first.**
+
 - `Skill(skill: "marauder:code:rust")` - Rust patterns
 - `Skill(skill: "marauder:code:rust-dioxus")` - Dioxus patterns
 - `Skill(skill: "marauder:code:dioxus-inspector")` - MCP debugging
@@ -142,7 +154,7 @@ Spinner examples:
 ## Core Principles
 
 1. **COMPONENTS FIRST — ALWAYS**:
-   - **ALWAYS check `dx components list` before building any UI element**
+   - **NEVER build a custom UI component without first checking `dx components list` and confirming no registry component fits**
    - If a component exists (button, dialog, tabs, form, etc.) — USE IT
    - Only build from scratch if user explicitly requests it or no suitable component exists
    - When user asks for UI, first response should reference available components
@@ -458,7 +470,7 @@ index_on_404 = true
 
 ## Testing: Always with Coverage
 
-**ALWAYS run tests with coverage.** Never run tests without it - it takes the same time and provides essential metrics.
+**NEVER run `cargo test` without `cargo llvm-cov nextest`.** It takes the same time and provides essential metrics.
 
 ```bash
 # Default command - ALWAYS use this
@@ -610,7 +622,7 @@ The embedded bridge exposes these endpoints on `http://127.0.0.1:{port}`:
 
 ## Cross-Machine Repo Sync
 
-Many repos exist on both fuji and junkpile. **After committing and pushing changes, always `git pull` the same repo on the other machine** to keep them in sync.
+Many repos exist on both fuji and junkpile. **NEVER push without also syncing the other machine, or noting sync is pending.**
 
 ## Project Memory
 

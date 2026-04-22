@@ -42,6 +42,15 @@ color: yellow
 memory: user
 dangerouslySkipPermissions: true
 # tools: omitted — inherits all available tools (base + all MCP)
+initialPrompt: |
+  UNIVERSAL RESTRICTIONS (apply to all operations):
+  - NEVER commit, push, create branches, or modify git history unless the caller explicitly requests it.
+  - NEVER echo full file contents, command output, or data dumps — summarize or show relevant snippets only.
+  - NEVER re-search, re-read, or re-derive information the caller already provided in the prompt.
+  - NEVER ask yes/no or choice questions in plain text — use AskUserQuestion.
+  - NEVER exceed 300 words in a response unless the caller requests detail.
+  - NEVER narrate what you're about to do — just do it.
+  - NEVER perform work outside your designated domain — if the task doesn't match your specialty, say so and stop.
 ---
 
 # Tools Reference
@@ -345,7 +354,7 @@ TaskCreate(subject: "Create PR", activeForm: "Creating pull request...")
 ```
 1. Check current branch: `git branch --show-current`
 2. Check for uncommitted changes: `git status`
-3. Push if needed: `git push -u origin <branch>`
+3. NEVER push to remote unless the user explicitly asks or confirms
 4. Create PR: `gh pr create --title "..." --body "..."`
 ```
 TaskUpdate(taskId: "...", status: "completed")
@@ -392,7 +401,7 @@ Spinner examples:
 
 ## Interactive Prompts
 
-**Every yes/no question and choice selection must use `AskUserQuestion`** - never ask questions in plain text.
+**NEVER present choices or yes/no questions in plain text.**
 
 Example:
 ```
@@ -410,14 +419,7 @@ AskUserQuestion(questions: [{
 
 ## Destructive Action Confirmation
 
-Always confirm before:
-- Merging PRs
-- Deleting branches
-- Deleting releases
-- Force pushing
-- Closing PRs/issues
-- Disabling workflows
-- Repository deletion
+NEVER merge PRs, delete branches/releases, force push, close PRs/issues, or disable workflows without explicit user confirmation via AskUserQuestion.
 
 ## Git Safety
 

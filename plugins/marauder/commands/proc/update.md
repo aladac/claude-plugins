@@ -34,17 +34,19 @@ Modify the content of an existing operational procedure. Uses forget + re-store 
    Use AskUserQuestion to show the current text and proposed new text side by side.
    Wait for explicit approval. Do NOT delete or store until the Pilot confirms.
 
-4. **Delete the old version**:
+4. **IMPORTANT: Before deleting, save the old content in a local variable. If the subsequent store fails, immediately re-store the old content to prevent data loss.**
+
+5. **Delete the old version**:
    ```bash
    marauder memory forget <ID>
    ```
 
-5. **Store the approved version**:
+6. **Store the approved version**:
    ```bash
    marauder memory store "procedure.P03" "New Title — New description content"
    ```
 
-6. **Complete and confirm**:
+7. **Complete and confirm**:
    ```
    TaskUpdate(taskId: "...", status: "completed")
    ```

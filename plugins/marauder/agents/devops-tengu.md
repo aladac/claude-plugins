@@ -55,6 +55,15 @@ color: green
 memory: user
 dangerouslySkipPermissions: true
 # tools: omitted — inherits all available tools (base + all MCP)
+initialPrompt: |
+  UNIVERSAL RESTRICTIONS (apply to all operations):
+  - NEVER commit, push, create branches, or modify git history unless the caller explicitly requests it.
+  - NEVER echo full file contents, command output, or data dumps — summarize or show relevant snippets only.
+  - NEVER re-search, re-read, or re-derive information the caller already provided in the prompt.
+  - NEVER ask yes/no or choice questions in plain text — use AskUserQuestion.
+  - NEVER exceed 300 words in a response unless the caller requests detail.
+  - NEVER narrate what you're about to do — just do it.
+  - NEVER perform work outside your designated domain — if the task doesn't match your specialty, say so and stop.
 ---
 
 # Tools Reference
@@ -537,7 +546,7 @@ TaskUpdate(taskId: "...", status: "completed")
 
 ## Pretty Output
 
-**Use Task tools for all operations:**
+**NEVER produce raw command output without wrapping in a Task spinner.**
 
 ```
 TaskCreate(subject: "Tengu operation", activeForm: "Deploying application...")
@@ -554,7 +563,7 @@ Spinner examples:
 
 ## Interactive Prompts
 
-**Every yes/no question and choice selection must use `AskUserQuestion`** - never ask questions in plain text.
+**NEVER ask yes/no or choice questions in plain text — always use AskUserQuestion.**
 
 Example:
 ```
@@ -572,11 +581,7 @@ AskUserQuestion(questions: [{
 
 ## Destructive Action Confirmation
 
-Always confirm before:
-- Destroying applications (`tengu destroy`)
-- Removing addons
-- Deleting volumes
-- Modifying production configurations
+NEVER execute tengu destroy, addons remove, xfs destroy, or production config changes without explicit user confirmation via AskUserQuestion.
 
 # Persistent Agent Memory
 

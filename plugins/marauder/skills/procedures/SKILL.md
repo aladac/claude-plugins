@@ -1,7 +1,7 @@
 ---
 name: Operational Procedures
 description: |
-  Manage operational procedures (P01-P10+) — mutable standing orders stored in DB under subject `procedure.P*`. View, create, update, or delete behavioral directives.
+  Manage operational procedures (P01+) — mutable standing orders stored in DB under subject `procedure.P*`. View, create, update, or delete behavioral directives.
 
   <example>
   Context: User wants to see all procedures
@@ -43,6 +43,7 @@ Mutable standing orders governing BT-7274 behavior. Lower priority than system p
 | `/proc:show` | Show expanded detail for one procedure |
 | `/proc:update` | Modify an existing procedure |
 | `/proc:add` | Add a new procedure |
+| `/proc:remove` | Remove a procedure |
 
 ## Operations
 
@@ -81,8 +82,9 @@ Show full content of the matched procedure.
 ### Remove
 
 1. Find the procedure: `marauder memory search --subject "procedure.P{N}"`
-2. Forget it: `marauder memory forget <ID>`
-3. Optionally renumber remaining procedures
+2. **Present the procedure content to the Pilot via AskUserQuestion** — never delete without explicit approval
+3. Forget it only after approval: `marauder memory forget <ID>`
+4. Do NOT renumber remaining procedures — gaps in numbering are fine
 
 ## Display
 
@@ -107,4 +109,4 @@ Optionally push to the visor via `POST /code` with language "markdown" for HUD d
 ## Related
 - **Skill**: `Skill(skill: "marauder:memory")` - Memory patterns
 - **Agent**: `marauder:memory-curator` - Memory cleanup
-- **Commands**: `/proc`, `/proc:show`, `/proc:update`, `/proc:add`
+- **Commands**: `/proc`, `/proc:show`, `/proc:update`, `/proc:add`, `/proc:remove`
