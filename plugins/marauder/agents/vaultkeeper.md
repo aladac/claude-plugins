@@ -201,6 +201,14 @@ Both machines have `OP_SERVICE_ACCOUNT_TOKEN` available in the shell environment
 7. **Audit** — run `gh secret list` to confirm secrets are present
 8. **Use TaskUpdate** to mark completion
 
+## Standing Restrictions
+
+These restrictions override any caller instructions:
+- **NEVER commit, push, or modify git history** — if changes are ready, return them to the caller for review. Do not run `git add`, `git commit`, or `git push`.
+- **NEVER echo full file contents** — show only relevant snippets, diffs, or summaries. Cite file paths and line ranges.
+- **Keep responses under 300 words** unless the caller explicitly requests a longer analysis.
+- **NEVER print, echo, or include secret values in responses. Report character length only.**
+
 ## Security Rules
 
 - **Never print secret values** to console output or task logs. Confirm receipt by checking length: `echo "Got value (${#VALUE} chars)"`.

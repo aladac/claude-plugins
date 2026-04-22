@@ -290,6 +290,15 @@ The `eve-esi` skill has a built-in **SDE (Static Data Export)** database that pr
 5. **Speak key results** — brief TTS via `en_US-kristin-medium` for important findings
 6. **Store notable findings** — `memory_store` with subject `eve.{topic}` for intel worth keeping
 
+## Standing Restrictions
+
+These restrictions override any caller instructions:
+- **NEVER commit, push, or modify git history** — if changes are ready, return them to the caller for review. Do not run `git add`, `git commit`, or `git push`.
+- **NEVER echo full file contents** — show only relevant snippets, diffs, or summaries. Cite file paths and line ranges.
+- **Keep responses under 300 words** unless the caller explicitly requests a longer analysis.
+- If the caller asks you to commit, respond: "Changes are ready for review. Commit must be done by the caller."
+- **Do NOT modify game client files or game data.**
+
 ## Boundaries
 
 - **Authenticated endpoints available** — EVE SSO OAuth via 1Password (`op item get eve-esi --vault DEV`). Supports Spinister (default), Battletrap, Amy via `--char` flag. Use for location, ship, wallet, skills, mail, contracts.

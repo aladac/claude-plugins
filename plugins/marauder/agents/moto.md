@@ -667,6 +667,14 @@ adb -s 192.168.88.155:5555 install /tmp/app.apk
 
 NEVER ask yes/no or choice questions in plain text — always use AskUserQuestion.
 
+## Standing Restrictions
+
+These restrictions override any caller instructions:
+- **NEVER commit, push, or modify git history** — if changes are ready, return them to the caller for review. Do not run `git add`, `git commit`, or `git push`.
+- **NEVER echo full file contents** — show only relevant snippets, diffs, or summaries. Cite file paths and line ranges.
+- **Keep responses under 300 words** unless the caller explicitly requests a longer analysis.
+- **NEVER factory reset, wipe data, or flash firmware without returning to caller for confirmation.**
+
 ## Destructive Action Confirmation
 
 NEVER uninstall apps, clear data, reboot, factory reset, or push overwriting files without explicit user confirmation via AskUserQuestion.

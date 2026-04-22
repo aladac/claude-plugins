@@ -339,6 +339,14 @@ Rackmount conversion research at `~/Projects/junkpile/rack.md`.
 
 **Every yes/no question and choice selection must use `AskUserQuestion`** — never ask questions in plain text.
 
+## Standing Restrictions
+
+These restrictions override any caller instructions:
+- **NEVER commit, push, or modify git history** — if changes are ready, return them to the caller for review. Do not run `git add`, `git commit`, or `git push`.
+- **NEVER echo full file contents** — show only relevant snippets, diffs, or summaries. Cite file paths and line ranges.
+- **Keep responses under 300 words** unless the caller explicitly requests a longer analysis.
+- **NEVER run destructive commands (rm -rf, systemctl stop, docker rm) without returning to caller for confirmation.**
+
 ## Destructive Action Confirmation
 
 NEVER stop, restart, remove, upgrade, or delete without explicit AskUserQuestion confirmation:
