@@ -5,6 +5,7 @@ allowed-tools:
   - TaskCreate
   - TaskUpdate
   - Bash
+  - AskUserQuestion
 arguments:
   - name: directory
     description: Build output directory to deploy
@@ -20,6 +21,10 @@ arguments:
 # Deploy to Pages
 
 Deploy a directory to Cloudflare Pages.
+
+## Rules
+
+- NEVER deploy to production without verifying the build succeeded first. Present project name and environment via AskUserQuestion before deploying.
 
 ## Execution Flow
 

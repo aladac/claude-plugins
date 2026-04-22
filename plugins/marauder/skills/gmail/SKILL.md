@@ -27,6 +27,12 @@ version: 1.0.0
 
 # Gmail Skill
 
+## Standing Restrictions
+
+- NEVER send, reply, forward, trash, or archive emails without presenting the action to the user via AskUserQuestion first.
+- NEVER send to external addresses without explicit approval.
+- NEVER include email body content in spoken TTS output.
+
 Search, read, send, and manage Gmail via `gog` CLI (gogcli). Multi-account support.
 
 ## Quick Reference

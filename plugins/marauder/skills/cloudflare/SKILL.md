@@ -29,6 +29,10 @@ version: 2.0.0
 
 Unified CLI for all Cloudflare operations via `cf.sh`. Each module uses a specific CLI tool -- never curl or the CF API directly.
 
+## Rules
+
+- NEVER execute destructive Cloudflare operations (dns delete, tunnel delete, pages destroy, worker delete) without confirming with the user via AskUserQuestion first. NEVER modify zones or tunnels outside the user's known infrastructure without explicit naming.
+
 ## CLI Tool Assignments
 
 | Tool | Modules | Installed On | Auth |

@@ -5,6 +5,7 @@ allowed-tools:
   - TaskCreate
   - TaskUpdate
   - Bash
+  - AskUserQuestion
 arguments:
   - name: zone
     description: Domain name (e.g., example.com)
@@ -18,19 +19,26 @@ arguments:
 
 Delete a DNS record from a Cloudflare zone.
 
+## Standing Restrictions
+
+- NEVER delete a DNS record without first presenting the record details (name, type, value) via AskUserQuestion and receiving explicit approval.
+
 ## Execution Flow
 
-1. **Create task with spinner**:
+1. **Present record for confirmation**:
+   Show the record to be deleted via AskUserQuestion (name, type, value). Only proceed after explicit approval.
+
+2. **Create task with spinner**:
    ```
    TaskCreate(subject: "Delete DNS record", activeForm: "Deleting DNS record...")
    ```
 
-2. **Execute command** (prompts for confirmation):
+3. **Execute command**:
    ```bash
    ${CLAUDE_PLUGIN_ROOT}/commands/cf/del-host.sh <zone> <record-id>
    ```
 
-3. **Complete and confirm**:
+4. **Complete and confirm**:
    ```
    TaskUpdate(taskId: "...", status: "completed")
    ```

@@ -5,6 +5,7 @@ allowed-tools:
   - TaskCreate
   - TaskUpdate
   - Bash
+  - AskUserQuestion
 arguments:
   - name: name
     description: Tunnel name or ID
@@ -15,19 +16,27 @@ arguments:
 
 Delete a Cloudflare Tunnel.
 
+## Standing Restrictions
+
+- NEVER delete a tunnel without first presenting tunnel name and status via AskUserQuestion and receiving explicit approval.
+- NEVER delete tunnels with active connections without explicit warning.
+
 ## Execution Flow
 
-1. **Create task with spinner**:
+1. **Present tunnel for confirmation**:
+   Show the tunnel name and status via AskUserQuestion. If the tunnel has active connections, warn explicitly. Only proceed after approval.
+
+2. **Create task with spinner**:
    ```
    TaskCreate(subject: "Delete tunnel", activeForm: "Deleting tunnel...")
    ```
 
-2. **Execute command**:
+3. **Execute command**:
    ```bash
    ${CLAUDE_PLUGIN_ROOT}/commands/cf/del-tunnel.sh <name>
    ```
 
-3. **Complete and confirm**:
+4. **Complete and confirm**:
    ```
    TaskUpdate(taskId: "...", status: "completed")
    ```

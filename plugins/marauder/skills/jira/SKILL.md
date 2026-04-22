@@ -65,9 +65,10 @@ hu jira update <KEY> --assign me
 hu jira update <KEY> --body "New description"
 ```
 
-## Update Safety
+## Rules
 
-**ALWAYS run `hu jira show <KEY>` before any update.** Display the current state to the Pilot, then apply the change. Never blindly overwrite — `--body` replaces the full description.
+- NEVER update a Jira ticket without first showing current state and confirming the intended change via AskUserQuestion.
+- NEVER change ticket status, assignee, or sprint without explicit approval.
 
 ## Authentication
 

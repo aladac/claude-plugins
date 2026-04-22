@@ -5,6 +5,7 @@ allowed-tools:
   - TaskCreate
   - TaskUpdate
   - Bash
+  - AskUserQuestion
 ---
 
 # Jira — Update Ticket
@@ -25,7 +26,7 @@ The user must provide a ticket key (e.g. `HU-42`) and what to change. If not pro
 hu jira show <KEY>
 ```
 
-Display the current state to the Pilot. Confirm the intended change.
+Display the current state to the Pilot. NEVER submit the update without presenting old vs new values via AskUserQuestion and receiving explicit approval.
 
 ### Step 2 — Apply the update
 

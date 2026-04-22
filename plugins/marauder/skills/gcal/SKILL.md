@@ -34,6 +34,10 @@ version: 1.0.0
 
 View, search, create, and manage Google Calendar events via `gog` CLI. Multi-account support.
 
+## Rules
+
+- NEVER delete calendar events without presenting event details via AskUserQuestion. NEVER create events that send invites to attendees without confirming with the user first.
+
 ## Quick Reference
 
 ```bash

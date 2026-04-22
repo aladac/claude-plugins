@@ -1,10 +1,19 @@
 ---
 description: Clean, build, and deploy marauder-os to all 4 mesh nodes
+allowed-tools:
+  - AskUserQuestion
 ---
 
 Build and deploy marauder-os to fuji, junkpile, moto, and tachikoma.
 
+## Standing Restrictions
+
+- NEVER deploy to production mesh nodes without presenting the version and target nodes via AskUserQuestion first and receiving explicit approval.
+- NEVER deploy without verifying the build succeeded.
+
 ## Instructions
+
+Present the current version from `Cargo.toml` and the target nodes (fuji, junkpile, moto, tachikoma) via AskUserQuestion before proceeding. Only continue after approval.
 
 Run the bump script:
 

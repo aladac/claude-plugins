@@ -24,6 +24,7 @@ bash ${CLAUDE_PLUGIN_ROOT}/commands/gacp.sh "<commit message>"
 
 ## Rules
 
+- NEVER force push (--force or --force-with-lease). NEVER push to main/master without explicit confirmation.
 - Use the user's message EXACTLY as provided — do not rewrite, expand, or add Co-Authored-By
 - If no message provided, run without arguments — the script auto-generates one
 - Do NOT ask for confirmation — just run it

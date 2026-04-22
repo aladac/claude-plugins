@@ -34,6 +34,10 @@ version: 1.0.0
 
 Manage the MikroTik router (yokohama, RB2011UiAS-2HnD, RouterOS 6.49.19) at 192.168.88.1 via the RouterOS TCP API on port 8728.
 
+## Rules
+
+- NEVER remove DNS entries or modify DHCP static leases without confirming via AskUserQuestion. NEVER modify firewall rules or routes — these are out of scope.
+
 ## MCP Tools
 
 Use these for structured, programmatic access from Claude:

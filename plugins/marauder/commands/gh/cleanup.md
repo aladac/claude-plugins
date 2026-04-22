@@ -5,25 +5,34 @@ allowed-tools:
   - TaskCreate
   - TaskUpdate
   - Bash
+  - AskUserQuestion
 ---
 
 # GitHub Actions Cleanup
 
 Delete failed, skipped, and cancelled workflow runs plus runs older than 2 weeks across all GitHub organizations.
 
+## Standing Restrictions
+
+- NEVER mass-delete workflow runs without presenting the count and target repos via AskUserQuestion first.
+- Show how many runs will be deleted before proceeding.
+
 ## Execution Flow
 
-1. **Create task with spinner**:
+1. **Scan and present for confirmation**:
+   Run the cleanup script in dry-run or preview mode to determine what will be deleted. Present the count of runs and target repos via AskUserQuestion. Only proceed after approval.
+
+2. **Create task with spinner**:
    ```
    TaskCreate(subject: "Clean up GitHub Actions", activeForm: "Cleaning up GitHub Actions runs...")
    ```
 
-2. **Execute the cleanup script**:
+3. **Execute the cleanup script**:
    ```bash
    bash ${CLAUDE_PLUGIN_ROOT}/commands/gh/cleanup.sh
    ```
 
-3. **Complete and report**:
+4. **Complete and report**:
    ```
    TaskUpdate(taskId: "...", status: "completed")
    ```
