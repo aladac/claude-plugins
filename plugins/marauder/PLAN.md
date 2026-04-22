@@ -1,62 +1,57 @@
-# SSH → MQTT Migration for Mesh Scripts
+# Jira Integration via `hu` CLI
 
-**Date:** 2026-04-20
-**Goal:** Replace SSH remote execution with MQTT `exec` commands in 5 skill scripts. Eliminates SSH auth failures, shell escaping issues, and agent key dependencies.
+**Date:** 2026-04-22
+**Goal:** Expose `hu jira` operations in marauder-plugin as a skill and slash commands. Jira only — other `hu` tools (gh, slack, pagerduty, etc.) excluded for now.
 
 ## Why
 
-- SSH agent failures (`sign_and_send_pubkey`) observed during bump deployments
-- MQTT exec is already deployed on all 4 nodes with authenticated users
-- No shell escaping needed (binary protocol)
-- Uniform command interface — `marauder mesh send <node> exec '{"command":"..."}'`
+- `hu` is already installed with full Jira OAuth support
+- Sprint/ticket visibility from the Claude Code interface saves context-switching
+- Slash commands give quick invocation; the skill gives proactive AI-driven access
 
-## Scripts to Migrate
+## Scope
 
-| Script | Target | SSH calls | MQTT replacement |
-|--------|--------|-----------|-----------------|
-| `moto-kitty/mk.sh` | moto | `ssh m "pgrep/nohup/am start/pkill"` | `marauder mesh send moto exec` |
-| `android/sere-display.sh` | moto | `ssh m "su -c/pgrep/kitten @"` | `marauder mesh send moto exec` |
-| `junkpile-desktop-mode` | junkpile | `ssh j "sudo systemctl start"` | `marauder mesh send junkpile exec` |
-| `junkpile-server-mode` | junkpile | `ssh j "sudo systemctl stop"` | `marauder mesh send junkpile exec` |
-| `dotfiles/dotfiles.sh` | junkpile | `ssh j "cd ~/Projects/dotfiles && git pull"` | `marauder mesh send junkpile exec` |
+| hu subcommand | Slash command | Skill operation |
+|---------------|---------------|-----------------|
+| `hu jira tickets` | `/jira:tickets` | List my sprint tickets |
+| `hu jira sprint` | `/jira:sprint` | Full sprint board |
+| `hu jira sprints` | `/jira:sprints` | List sprints (active/future/closed) |
+| `hu jira show <KEY>` | `/jira:show` | Ticket details |
+| `hu jira search <JQL>` | `/jira:search` | JQL search |
+| `hu jira update <KEY>` | `/jira:update` | Update ticket (read-before-write enforced) |
 
-## Pattern
+## Architecture
 
-Replace:
-```bash
-ssh m "pgrep -f kitty"
+**No new dependencies.** Pure markdown/config additions to marauder-plugin.
+
+```
+marauder-plugin/
+  skills/jira/
+    SKILL.md          ← skill definition, all hu jira operations
+  commands/jira/
+    tickets.md        ← /jira:tickets
+    sprint.md         ← /jira:sprint
+    sprints.md        ← /jira:sprints
+    show.md           ← /jira:show
+    search.md         ← /jira:search
+    update.md         ← /jira:update
 ```
 
-With:
-```bash
-marauder mesh send moto exec '{"command":"pgrep -f kitty"}'
-```
-
-### Response handling
-
-Current MQTT `exec` is fire-and-forget — result publishes to `marauder/{node}/log` but `mesh send` doesn't wait. For scripts that check exit codes or capture stdout (pgrep, settings get), we use a **hybrid approach**:
-
-- **Fire-and-forget** → MQTT: nohup, pkill, am start, systemctl, git pull
-- **Needs stdout** → SSH (kept): pgrep, dumpsys, settings get, kitten @ ls
-
-Mark `marauder mesh send --wait` as a future enhancement that would eliminate the remaining SSH calls.
+**Update safety:** `hu jira update` always fetches current ticket via `hu jira show <KEY>` first, displays it, then applies changes. Enforced in `update.md` execution flow.
 
 ## Phases
 
-### Phase 1: Junkpile service control
-`junkpile-desktop-mode.sh` and `junkpile-server-mode.sh` — pure fire-and-forget systemctl calls. No stdout needed.
+### Phase 1: Jira Skill
+Create `skills/jira/SKILL.md` with complete `hu jira` quick reference, examples, and update safety notes.
 
-### Phase 2: Dotfiles sync
-`dotfiles.sh` junkpile sync — git pull is fire-and-forget.
+### Phase 2: Slash Commands
+Create `commands/jira/` directory with 6 command files. Each wraps the corresponding `hu jira` subcommand with TaskCreate spinner and structured output.
 
-### Phase 3: Moto process management (hybrid)
-`moto-kitty/mk.sh` — MQTT for start/stop (nohup, pkill, am start). Keep SSH for status (pgrep, dumpsys).
+### Phase 3: Reinstall + Smoke Test
+Run `/plugin-reinstall`, restart session, verify commands appear and auth works.
 
-### Phase 4: SERE display orchestration (hybrid)
-`sere-display.sh` — MQTT for keep-awake, process kill, kitten @ launch. Keep SSH for Kitty ls JSON parsing.
+## Not in Scope (This Phase)
 
-## Not Changing
-
-- `android/moto-screenshot.sh` — binary ADB pipe, not text exec
-- `bump.sh` — streaming cargo build output
-- `cargo/brew/uv/gem/ruby` — streaming stdout needed
+- `hu gh` — GitHub operations (already covered by native gh CLI)
+- `hu slack`, `hu pagerduty`, `hu sentry`, `hu newrelic` — future phases
+- `hu jira auth` — not a slash command, user runs manually
